@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Observatorio Judicial Argentino — Frontend
 
-## Getting Started
+[![CI](https://github.com/tu-org/observatorio-judicial-argentino/actions/workflows/ci.yml/badge.svg)](https://github.com/tu-org/observatorio-judicial-argentino/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
-First, run the development server:
+Interfaz pública del Observatorio Judicial Argentino. Permite visualizar la tasa de falla procesal de jueces por jurisdicción, cargar información de casos con respaldo documental y gestionar la identidad de los reportantes.
+
+---
+
+## ¿Qué es el Observatorio Judicial Argentino?
+
+Es una plataforma de transparencia judicial de código abierto que registra y analiza las resoluciones de jueces argentinos sobre libertades cautelares, con foco en los casos donde la persona liberada:
+
+- **No compareció** a juicio (FTA)
+- **Fue detenida nuevamente** por un nuevo delito
+- **Le fue revocada** la medida cautelar
+
+El sistema **no tiene fines punitivos ni políticos**. Es estadístico, trazable y basado en datos públicos del Poder Judicial.
+
+---
+
+## Stack
+
+| Capa | Tecnología |
+|------|-----------|
+| Framework | Next.js 16 (App Router) |
+| Lenguaje | TypeScript 5 |
+| Estilos | Tailwind CSS 4 |
+| Auth | JWT via cookie HTTP-only (backend) |
+| Calidad | ESLint · Prettier · Husky · commitlint |
+
+---
+
+## Requisitos previos
+
+- Node.js ≥ 20
+- Backend corriendo en `http://localhost:3600` ([ver repo backend](../observatorio-backend/README.md))
+
+---
+
+## Instalación y desarrollo
 
 ```bash
+# 1. Clonar
+git clone https://github.com/tu-org/observatorio-judicial-argentino.git
+cd observatorio-judicial-argentino
+
+# 2. Instalar dependencias (también instala los hooks de Husky)
+npm install
+
+# 3. Levantar el servidor de desarrollo
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# → http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts disponibles
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Comando | Descripción |
+|---------|-------------|
+| `npm run dev` | Servidor de desarrollo |
+| `npm run build` | Build de producción |
+| `npm run start` | Servidor de producción |
+| `npm run lint` | Verificar ESLint |
+| `npm run lint:fix` | Corregir ESLint automáticamente |
+| `npm run format` | Formatear con Prettier |
+| `npm run format:check` | Verificar formato sin modificar |
+| `npm run typecheck` | Verificar tipos TypeScript |
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Estructura del proyecto
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+app/
+├── components/
+│   ├── AuthModal.tsx           # Login / registro
+│   ├── JudgeCard.tsx           # Tarjeta de juez
+│   ├── JurisdictionStats.tsx   # Árbol jerárquico de jurisdicciones
+│   ├── Navbar.tsx
+│   ├── SubmitJudgeModal.tsx    # Carga de información de jueces
+│   └── StatsBar.tsx
+├── context/
+│   └── AuthContext.tsx         # Estado global de autenticación
+├── lib/
+│   ├── api.ts                  # Fetch de jueces y jerarquía
+│   └── auth-api.ts             # Funciones de auth
+├── providers.tsx
+├── page.tsx
+└── layout.tsx
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Cómo contribuir
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Leé [CONTRIBUTING.md](CONTRIBUTING.md) antes de abrir un PR. En resumen:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Abrí un issue describiendo el cambio
+2. Hacé fork y creá una rama (`feat/nombre-de-la-feature`)
+3. Seguí los [Conventional Commits](https://conventionalcommits.org)
+4. Los hooks de Husky verifican el formato y los tipos automáticamente
+5. Abrí un PR con el template completo
+
+---
+
+## Licencia
+
+[MIT](LICENSE) — Observatorio Judicial Argentino

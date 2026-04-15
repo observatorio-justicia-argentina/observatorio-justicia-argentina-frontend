@@ -1,26 +1,49 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg:          #0d1117;
+  --surface:     #161b22;
+  --surface-2:   #1e2530;
+  --border:      #21262d;
+  --border-2:    #30363d;
+  --text:        #e6edf3;
+  --text-muted:  #7d8590;
+  --celeste:     #74ACDF;
+  --celeste-dim: #4a7aa8;
+  --gold:        #F4B942;
+  --gold-dim:    #b8892f;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-bg:          var(--bg);
+  --color-surface:     var(--surface);
+  --color-surface-2:   var(--surface-2);
+  --color-border:      var(--border);
+  --color-text:        var(--text);
+  --color-text-muted:  var(--text-muted);
+  --color-celeste:     var(--celeste);
+  --color-gold:        var(--gold);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html, body {
+  min-height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Geist', Arial, Helvetica, sans-serif;
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.modal-enter { animation: fadeIn 0.2s ease-out; }
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.overlay-enter { animation: overlayIn 0.15s ease-out; }

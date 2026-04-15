@@ -1,0 +1,5 @@
+echo "▶ Verificando tipos TypeScript..."
+npm run typecheck
+
+echo "▶ Ejecutando build de producción..."
+npm run build
