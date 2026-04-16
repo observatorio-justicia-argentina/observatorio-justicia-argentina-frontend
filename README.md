@@ -1,6 +1,6 @@
 # Observatorio Judicial Argentino — Frontend
 
-[![CI](https://github.com/tu-org/observatorio-judicial-argentino/actions/workflows/ci.yml/badge.svg)](https://github.com/tu-org/observatorio-judicial-argentino/actions/workflows/ci.yml)
+[![CI](https://github.com/observatorio-justicia-argentina/observatorio-justicia-argentina-frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/observatorio-justicia-argentina/observatorio-justicia-argentina-frontend/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
@@ -35,7 +35,7 @@ El sistema **no tiene fines punitivos ni políticos**. Es estadístico, trazable
 ## Requisitos previos
 
 - Node.js ≥ 20
-- Backend corriendo en `http://localhost:3600` ([ver repo backend](../observatorio-backend/README.md))
+- Backend corriendo en `http://localhost:3600` ([ver repo backend](https://github.com/observatorio-justicia-argentina/observatorio-justicia-argentina-backend))
 
 ---
 
@@ -43,8 +43,8 @@ El sistema **no tiene fines punitivos ni políticos**. Es estadístico, trazable
 
 ```bash
 # 1. Clonar
-git clone https://github.com/tu-org/observatorio-judicial-argentino.git
-cd observatorio-judicial-argentino
+git clone https://github.com/observatorio-justicia-argentina/observatorio-justicia-argentina-frontend.git
+cd observatorio-justicia-argentina-frontend
 
 # 2. Instalar dependencias (también instala los hooks de Husky)
 npm install
