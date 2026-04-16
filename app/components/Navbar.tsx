@@ -76,6 +76,14 @@ export default function Navbar() {
               </button>
             )}
 
+            <a
+              href="#jueces"
+              className="rounded-md border px-3 py-1.5 text-xs font-medium transition-all hover:bg-white/5"
+              style={{ borderColor: "#21262d", color: "#e6edf3" }}
+            >
+              Jueces
+            </a>
+
             <button
               onClick={() => setDisclaimerOpen(true)}
               className="cursor-pointer rounded-md border px-3 py-1.5 text-xs font-medium transition-all hover:bg-white/5"
@@ -230,6 +238,14 @@ export default function Navbar() {
               >
                 + Cargar informe {!user && "(requiere sesión)"}
               </button>
+              <a
+                href="#jueces"
+                onClick={() => setMenuOpen(false)}
+                className="rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5"
+                style={{ color: "#e6edf3" }}
+              >
+                Jueces
+              </a>
               <button
                 onClick={() => {
                   setDisclaimerOpen(true);

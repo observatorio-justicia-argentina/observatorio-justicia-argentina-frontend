@@ -129,7 +129,7 @@ export default function HomePage() {
       )}
 
       {/* Judge browser */}
-      <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <main id="jueces" className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="mb-6 flex items-center gap-3">
           <h2 className="text-lg font-bold" style={{ color: "#e6edf3" }}>

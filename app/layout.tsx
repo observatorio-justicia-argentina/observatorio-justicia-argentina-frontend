@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
+import DisclaimerBanner from "./components/DisclaimerBanner";
 import Navbar from "./components/Navbar";
 import { Providers } from "./providers";
 
@@ -25,6 +26,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         <Providers>
           <Navbar />
+          <DisclaimerBanner />
           {children}
         </Providers>
       </body>
