@@ -85,7 +85,7 @@ export default function Navbar() {
             </button>
 
             <a
-              href="https://github.com"
+              href="https://github.com/observatorio-justicia-argentina/observatorio-justicia-argentina-frontend"
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-md border px-3 py-1.5 text-xs font-medium transition-all hover:bg-white/5"
@@ -241,7 +241,7 @@ export default function Navbar() {
                 ⚠ Aviso sobre los datos
               </button>
               <a
-                href="https://github.com"
+                href="https://github.com/observatorio-justicia-argentina/observatorio-justicia-argentina-frontend"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5"
