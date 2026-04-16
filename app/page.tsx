@@ -307,7 +307,7 @@ export default function HomePage() {
             registros públicos del poder judicial argentino.
           </p>
           <a
-            href="https://github.com"
+            href="https://github.com/observatorio-justicia-argentina/observatorio-justicia-argentina-frontend"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-2 inline-block text-xs hover:underline"
