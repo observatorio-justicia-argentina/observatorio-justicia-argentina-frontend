@@ -144,6 +144,26 @@ export interface JurisdictionNode {
   children?: JurisdictionNode[];
 }
 
+// ── Tipos de detalle de juez (endpoint /judges/:id/casos y /archivos) ────────
+
+export type ResultadoCaso = "fta" | "nuevo_arresto" | "revocada" | "pendiente";
+
+export interface Caso {
+  id: string;
+  nroExpediente: string;
+  fechaResolucion: string; // ISO date (YYYY-MM-DD)
+  tipoMedida: string;
+  resultado: ResultadoCaso;
+  observaciones?: string;
+}
+
+export interface ArchivoPublico {
+  id: string;
+  nombre: string;
+  url: string;
+  fechaCarga: string; // ISO date
+}
+
 // ── Fetch ────────────────────────────────────────────────────────────────────
 
 export async function fetchJudges(): Promise<Judge[]> {
@@ -155,5 +175,17 @@ export async function fetchJudges(): Promise<Judge[]> {
 export async function fetchHierarchy(): Promise<JurisdictionNode> {
   const res = await fetch(`${API_BASE}/stats/hierarchy`);
   if (!res.ok) throw new Error(`Error ${res.status} al cargar jerarquía`);
+  return res.json();
+}
+
+export async function fetchJudgeCases(id: number): Promise<Caso[]> {
+  const res = await fetch(`${API_BASE}/judges/${id}/casos`);
+  if (!res.ok) throw new Error(`Error ${res.status} al cargar casos del juez`);
+  return res.json();
+}
+
+export async function fetchJudgeArchivos(id: number): Promise<ArchivoPublico[]> {
+  const res = await fetch(`${API_BASE}/judges/${id}/archivos`);
+  if (!res.ok) throw new Error(`Error ${res.status} al cargar archivos del juez`);
   return res.json();
 }
