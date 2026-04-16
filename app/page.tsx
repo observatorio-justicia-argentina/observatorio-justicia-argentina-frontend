@@ -1,27 +1,28 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import DisclaimerModal from "./components/DisclaimerModal";
 import Hero from "./components/Hero";
 import JudgeCard from "./components/JudgeCard";
+import JudgeFilters, { FilterState, applyFilters } from "./components/JudgeFilters";
 import JurisdictionStats from "./components/JurisdictionStats";
 import StatsBar from "./components/StatsBar";
 import { fetchHierarchy, fetchJudges, Judge, JurisdictionNode } from "./lib/api";
 
-type SortKey =
-  | "name"
-  | "totalReleases"
-  | "ftaCount"
-  | "newArrestCount"
-  | "revokedCount"
-  | "failureRate";
+// El mapa usa APIs del browser (SVG + eventos de mouse) — se carga solo en el cliente
+const MapArgentina = dynamic(() => import("./components/MapArgentina"), { ssr: false });
 
-const SORT_OPTIONS: { key: SortKey; label: string }[] = [
-  { key: "failureRate", label: "Tasa de falla" },
-  { key: "totalReleases", label: "Libertades" },
-  { key: "newArrestCount", label: "Nuevos arrestos" },
-  { key: "name", label: "Nombre" },
-];
+const DEFAULT_FILTERS: FilterState = {
+  search: "",
+  sortKey: "failureRate",
+  sortDir: "desc",
+  activeFuero: null,
+  activeInstance: null,
+  activeScope: null,
+  activeSalaryBand: null,
+  activeYearsBand: null,
+};
 
 export default function HomePage() {
   const [judges, setJudges] = useState<Judge[]>([]);
@@ -29,14 +30,11 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [search, setSearch] = useState("");
-  const [sortKey, setSortKey] = useState<SortKey>("failureRate");
-  const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [activeProvince, setActiveProvince] = useState<string | null>(null);
+  const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
 
   useEffect(() => {
     let cancelled = false;
-
     async function load() {
       setLoading(true);
       setError(null);
@@ -56,7 +54,6 @@ export default function HomePage() {
         if (!cancelled) setLoading(false);
       }
     }
-
     load();
     return () => {
       cancelled = true;
@@ -66,44 +63,25 @@ export default function HomePage() {
   const totalReleases = judges.reduce((s, j) => s + j.totalReleases, 0);
   const totalFailures = judges.reduce((s, j) => s + j.totalFailures, 0);
 
-  const filtered = judges
-    .filter((j) => {
-      const matchesSearch =
-        j.name.toLowerCase().includes(search.toLowerCase()) ||
-        j.court.toLowerCase().includes(search.toLowerCase()) ||
-        j.location.province.toLowerCase().includes(search.toLowerCase()) ||
-        j.location.department.toLowerCase().includes(search.toLowerCase());
+  // Filtrar primero por provincia (del mapa) luego por el resto de filtros
+  const judgesInProvince = activeProvince
+    ? judges.filter((j) => j.location.province === activeProvince)
+    : judges;
 
-      const matchesProvince = activeProvince ? j.location.province === activeProvince : true;
+  const filtered = applyFilters(judgesInProvince, filters);
 
-      return matchesSearch && matchesProvince;
-    })
-    .sort((a, b) => {
-      let av: number | string;
-      let bv: number | string;
-      if (sortKey === "name") {
-        av = a.name;
-        bv = b.name;
-      } else if (sortKey === "failureRate") {
-        av = a.failureRate;
-        bv = b.failureRate;
-      } else {
-        av = a[sortKey];
-        bv = b[sortKey];
-      }
-      if (typeof av === "string" && typeof bv === "string") {
-        return sortDir === "asc" ? av.localeCompare(bv, "es") : bv.localeCompare(av, "es");
-      }
-      return sortDir === "asc" ? (av as number) - (bv as number) : (bv as number) - (av as number);
-    });
+  function patchFilters(patch: Partial<FilterState>) {
+    setFilters((prev) => ({ ...prev, ...patch }));
+  }
 
-  const handleSort = (key: SortKey) => {
-    if (sortKey === key) setSortDir((d) => (d === "asc" ? "desc" : "asc"));
-    else {
-      setSortKey(key);
-      setSortDir("desc");
-    }
-  };
+  const hasAnyFilter =
+    activeProvince ||
+    filters.search ||
+    filters.activeFuero ||
+    filters.activeInstance ||
+    filters.activeScope ||
+    filters.activeSalaryBand ||
+    filters.activeYearsBand;
 
   return (
     <>
@@ -128,10 +106,20 @@ export default function HomePage() {
         />
       )}
 
-      {/* Judge browser */}
       <main id="jueces" className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        {/* Mapa interactivo */}
+        {!loading && !error && (
+          <div className="mb-8">
+            <MapArgentina
+              judges={judges}
+              activeProvince={activeProvince}
+              onProvinceSelect={setActiveProvince}
+            />
+          </div>
+        )}
+
         {/* Section header */}
-        <div className="mb-6 flex items-center gap-3">
+        <div className="mb-5 flex flex-wrap items-center gap-3">
           <h2 className="text-lg font-bold" style={{ color: "#e6edf3" }}>
             Jueces
           </h2>
@@ -141,7 +129,8 @@ export default function HomePage() {
           >
             {judges.length}
           </span>
-          {loading ? (
+
+          {loading && (
             <span
               className="ml-1 rounded-full px-2.5 py-0.5 text-xs font-medium"
               style={{
@@ -152,7 +141,8 @@ export default function HomePage() {
             >
               Cargando...
             </span>
-          ) : error ? (
+          )}
+          {!loading && error && (
             <span
               className="ml-1 rounded-full px-2.5 py-0.5 text-xs font-medium"
               style={{
@@ -163,7 +153,8 @@ export default function HomePage() {
             >
               Sin conexión al backend
             </span>
-          ) : (
+          )}
+          {!loading && !error && (
             <span
               className="ml-1 rounded-full px-2.5 py-0.5 text-xs font-medium"
               style={{
@@ -184,7 +175,7 @@ export default function HomePage() {
                 border: "1px solid #74ACDF50",
               }}
             >
-              Filtrado: {activeProvince}
+              Provincia: {activeProvince}
             </span>
           )}
         </div>
@@ -193,65 +184,20 @@ export default function HomePage() {
         {error && (
           <div
             className="mb-5 rounded-lg border px-4 py-3 text-sm"
-            style={{ backgroundColor: "#f8514910", borderColor: "#f85149", color: "#f85149" }}
+            style={{
+              backgroundColor: "#f8514910",
+              borderColor: "#f85149",
+              color: "#f85149",
+            }}
           >
             {error}
           </div>
         )}
 
-        {/* Search & sort controls */}
+        {/* Filtros */}
         {!loading && !error && (
-          <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="relative flex-1 sm:max-w-sm">
-              <svg
-                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2"
-                style={{ color: "#74ACDF" }}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
-                />
-              </svg>
-              <input
-                type="search"
-                placeholder="Buscar por nombre, tribunal, provincia o depto. judicial..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full rounded-lg border py-2.5 pl-9 pr-4 text-sm outline-none"
-                style={{
-                  borderColor: "#30363d",
-                  backgroundColor: "#161b22",
-                  color: "#e6edf3",
-                }}
-                aria-label="Buscar jueces"
-              />
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-medium" style={{ color: "#7d8590" }}>
-                Ordenar:
-              </span>
-              {SORT_OPTIONS.map(({ key, label }) => (
-                <button
-                  key={key}
-                  onClick={() => handleSort(key)}
-                  className="cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium transition-colors"
-                  style={{
-                    backgroundColor: sortKey === key ? "#74ACDF" : "#21262d",
-                    color: sortKey === key ? "#0d1117" : "#8b949e",
-                    border: "1px solid " + (sortKey === key ? "#74ACDF" : "#30363d"),
-                  }}
-                  aria-pressed={sortKey === key}
-                >
-                  {label} {sortKey === key ? (sortDir === "desc" ? "↓" : "↑") : ""}
-                </button>
-              ))}
-            </div>
+          <div className="mb-5">
+            <JudgeFilters filters={filters} onChange={patchFilters} judges={judges} />
           </div>
         )}
 
@@ -275,7 +221,7 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* Judge cards grid */}
+        {/* Judge cards */}
         {!loading && !error && filtered.length > 0 && (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((judge) => (
@@ -293,8 +239,9 @@ export default function HomePage() {
               No se encontraron jueces
             </p>
             <p className="mt-1 text-sm" style={{ color: "#7d8590" }}>
-              Probá con otro término de búsqueda
-              {activeProvince && " o quitá el filtro de provincia"}
+              {hasAnyFilter
+                ? "Probá ajustando los filtros o hacé click en el mapa para cambiar la provincia"
+                : "No hay jueces disponibles"}
             </p>
           </div>
         )}

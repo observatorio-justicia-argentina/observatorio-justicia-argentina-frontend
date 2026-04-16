@@ -1,26 +1,132 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3600/api";
 
-// ── Tipos espejados del backend ──────────────────────────────────────────────
+// ── Ubicación ────────────────────────────────────────────────────────────────
 
 export interface JudgeLocation {
   country: string;
   province: string;
-  /** Departamento Judicial. En CABA = ciudad entera; en el interior = depto. judicial oficial. */
   department: string;
 }
 
+// ── Jurisdicción ─────────────────────────────────────────────────────────────
+
+export interface JudgeJurisdiction {
+  fuero: string;
+  instance: string;
+  scope: "Nacional" | "Federal" | "Provincial";
+  competence: "Ordinaria" | "Federal";
+}
+
+// ── Remuneración ─────────────────────────────────────────────────────────────
+
+export interface JudgeSalary {
+  grossMonthlyARS: number;
+  acordada: string;
+  category: string;
+  lastUpdated: string;
+}
+
+// ── Causas ───────────────────────────────────────────────────────────────────
+
+export interface JudgeCase {
+  expediente: string;
+  defendant: string;
+  crime: string;
+  crimeArticle: string;
+  decisionType: string;
+  decisionDate: string;
+  legalBasis: string;
+  outcome: "fta" | "newArrest" | "revoked" | "ongoing";
+  outcomeDate?: string;
+  outcomeDetail?: string;
+}
+
+// ── Fuentes ──────────────────────────────────────────────────────────────────
+
+export interface JudgeSourceLink {
+  label: string;
+  url: string;
+  description: string;
+}
+
+// ── Campos extendidos (opcionales) ────────────────────────────────────────────
+
+export interface JudgeEducation {
+  degree: string;
+  institution: string;
+  year: number;
+}
+
+export interface JudgeCareerEntry {
+  role: string;
+  institution: string;
+  period: string;
+}
+
+export interface JudgeNotableDecision {
+  year: number;
+  description: string;
+  article?: string;
+  outcome: string;
+}
+
+export interface JudgeExtendedStats {
+  avgResolutionDays: number;
+  pendingCases: number;
+  recusals: number;
+  appealedDecisions: number;
+  reversedOnAppeal: number;
+  reversalRate: number;
+}
+
+// ── Juez ─────────────────────────────────────────────────────────────────────
+
 export interface Judge {
   id: number;
+  isDemoData: boolean;
   name: string;
   court: string;
   location: JudgeLocation;
+  jurisdiction: JudgeJurisdiction;
+  workAddress: string;
+  workHours: string;
+  salary: JudgeSalary;
+  appointmentDate: string;
+  appointmentBody: string;
+  yearsOnBench: number;
   totalReleases: number;
   ftaCount: number;
   newArrestCount: number;
   revokedCount: number;
   totalFailures: number;
   failureRate: number;
+  cases: JudgeCase[];
+  sourceLinks: JudgeSourceLink[];
+  // Opcionales — disponibles en perfiles completos
+  publicBio?: string;
+  education?: JudgeEducation[];
+  careerHistory?: JudgeCareerEntry[];
+  notableDecisions?: JudgeNotableDecision[];
+  extendedStats?: JudgeExtendedStats;
 }
+
+// ── Bandas salariales ─────────────────────────────────────────────────────────
+
+export type SalaryBand = "baja" | "media" | "alta";
+
+export function getSalaryBand(grossMonthlyARS: number): SalaryBand {
+  if (grossMonthlyARS < 6_000_000) return "baja";
+  if (grossMonthlyARS <= 10_000_000) return "media";
+  return "alta";
+}
+
+export const SALARY_BAND_LABELS: Record<SalaryBand, string> = {
+  baja: "Baja (< $6M)",
+  media: "Media ($6M – $10M)",
+  alta: "Alta (> $10M)",
+};
+
+// ── Jerarquía de jurisdicciones ──────────────────────────────────────────────
 
 export type JurisdictionLevel = "country" | "province" | "department";
 
@@ -38,7 +144,7 @@ export interface JurisdictionNode {
   children?: JurisdictionNode[];
 }
 
-// ── Funciones de fetch ───────────────────────────────────────────────────────
+// ── Fetch ────────────────────────────────────────────────────────────────────
 
 export async function fetchJudges(): Promise<Judge[]> {
   const res = await fetch(`${API_BASE}/judges`);
