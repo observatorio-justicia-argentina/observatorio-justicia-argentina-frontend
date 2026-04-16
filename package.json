@@ -20,12 +20,9 @@
     ]
   },
   "dependencies": {
-    "@types/topojson-client": "^3.1.5",
     "next": "16.2.3",
     "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "react-simple-maps": "^3.0.0",
-    "topojson-client": "^3.1.0"
+    "react-dom": "19.2.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.5.0",
