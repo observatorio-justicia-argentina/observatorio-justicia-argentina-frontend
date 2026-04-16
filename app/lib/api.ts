@@ -164,6 +164,14 @@ export interface ArchivoPublico {
   fechaCarga: string; // ISO date
 }
 
+export interface PaginatedResult<T> {
+  data: T[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
 // ── Fetch ────────────────────────────────────────────────────────────────────
 
 export async function fetchJudges(): Promise<Judge[]> {
@@ -178,8 +186,12 @@ export async function fetchHierarchy(): Promise<JurisdictionNode> {
   return res.json();
 }
 
-export async function fetchJudgeCases(id: number): Promise<Caso[]> {
-  const res = await fetch(`${API_BASE}/judges/${id}/casos`);
+export async function fetchJudgeCases(
+  id: number,
+  page = 1,
+  limit = 10,
+): Promise<PaginatedResult<Caso>> {
+  const res = await fetch(`${API_BASE}/judges/${id}/casos?page=${page}&limit=${limit}`);
   if (!res.ok) throw new Error(`Error ${res.status} al cargar casos del juez`);
   return res.json();
 }

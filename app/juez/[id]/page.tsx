@@ -9,60 +9,56 @@ import {
   fetchJudgeCases,
   fetchJudges,
   Judge,
+  PaginatedResult,
   ResultadoCaso,
 } from "../../lib/api";
 
 // ── Mock data ─────────────────────────────────────────────────────────────────
-// Se usa como fallback hasta que el backend implemente GET /api/judges/:id/casos
-// y GET /api/judges/:id/archivos. Remover cuando estén disponibles.
+// Fallback cuando el backend no tiene los endpoints aún.
 
-const MOCK_CASOS: Caso[] = [
-  {
-    id: "mock-1",
-    nroExpediente: "12345/2024",
-    fechaResolucion: "2024-03-15",
-    tipoMedida: "Libertad cautelar",
-    resultado: "fta",
-    observaciones: "El imputado no se presentó a la audiencia fijada para el 20/04/2024.",
-  },
-  {
-    id: "mock-2",
-    nroExpediente: "98732/2024",
-    fechaResolucion: "2024-06-02",
-    tipoMedida: "Excarcelación",
-    resultado: "nuevo_arresto",
-    observaciones: "Detenido nuevamente el 14/07/2024 por robo agravado.",
-  },
-  {
-    id: "mock-3",
-    nroExpediente: "45210/2023",
-    fechaResolucion: "2023-11-20",
-    tipoMedida: "Prisión preventiva atenuada",
-    resultado: "revocada",
-    observaciones: "La Cámara revocó la medida por incumplimiento de condiciones.",
-  },
-  {
-    id: "mock-4",
-    nroExpediente: "67891/2025",
-    fechaResolucion: "2025-01-10",
-    tipoMedida: "Libertad cautelar",
-    resultado: "pendiente",
-  },
-];
+const MOCK_PAGINATED: PaginatedResult<Caso> = {
+  data: [
+    {
+      id: "mock-1",
+      nroExpediente: "12345/2024",
+      fechaResolucion: "2024-03-15",
+      tipoMedida: "Libertad cautelar",
+      resultado: "fta",
+      observaciones: "El imputado no se presentó a la audiencia fijada para el 20/04/2024.",
+    },
+    {
+      id: "mock-2",
+      nroExpediente: "98732/2024",
+      fechaResolucion: "2024-06-02",
+      tipoMedida: "Excarcelación",
+      resultado: "nuevo_arresto",
+      observaciones: "Detenido nuevamente el 14/07/2024 por robo agravado.",
+    },
+    {
+      id: "mock-3",
+      nroExpediente: "45210/2023",
+      fechaResolucion: "2023-11-20",
+      tipoMedida: "Prisión preventiva atenuada",
+      resultado: "revocada",
+      observaciones: "La Cámara revocó la medida por incumplimiento de condiciones.",
+    },
+    {
+      id: "mock-4",
+      nroExpediente: "67891/2025",
+      fechaResolucion: "2025-01-10",
+      tipoMedida: "Libertad cautelar",
+      resultado: "pendiente",
+    },
+  ],
+  total: 4,
+  page: 1,
+  limit: 10,
+  totalPages: 1,
+};
 
 const MOCK_ARCHIVOS: ArchivoPublico[] = [
-  {
-    id: "arch-1",
-    nombre: "Resolución 12345-2024.pdf",
-    url: "#",
-    fechaCarga: "2024-04-01",
-  },
-  {
-    id: "arch-2",
-    nombre: "Acta audiencia 98732-2024.pdf",
-    url: "#",
-    fechaCarga: "2024-07-20",
-  },
+  { id: "arch-1", nombre: "Resolución 12345-2024.pdf", url: "#", fechaCarga: "2024-04-01" },
+  { id: "arch-2", nombre: "Acta audiencia 98732-2024.pdf", url: "#", fechaCarga: "2024-07-20" },
 ];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -109,21 +105,53 @@ function StatBox({ value, label, color }: { value: number; label: string; color:
   );
 }
 
+function InfoRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex flex-col gap-0.5 py-2.5" style={{ borderBottom: "1px solid #21262d" }}>
+      <span className="text-xs font-medium uppercase tracking-wide" style={{ color: "#7d8590" }}>
+        {label}
+      </span>
+      <span className="text-sm" style={{ color: "#e6edf3" }}>
+        {value}
+      </span>
+    </div>
+  );
+}
+
+function formatARS(amount: number) {
+  return new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
+
+function formatDate(iso: string) {
+  return new Date(iso + "T00:00:00").toLocaleDateString("es-AR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+}
+
 // ── Componente principal ──────────────────────────────────────────────────────
+
+const LIMIT = 10;
 
 export default function JudgeDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const judgeId = Number(id);
 
   const [judge, setJudge] = useState<Judge | null>(null);
-  const [casos, setCasos] = useState<Caso[]>([]);
+  const [paginated, setPaginated] = useState<PaginatedResult<Caso> | null>(null);
   const [archivos, setArchivos] = useState<ArchivoPublico[]>([]);
+  const [page, setPage] = useState(1);
   const [loadingJudge, setLoadingJudge] = useState(true);
   const [loadingCasos, setLoadingCasos] = useState(true);
   const [errorJudge, setErrorJudge] = useState<string | null>(null);
   const [usingMockData, setUsingMockData] = useState(false);
 
-  // Cargar datos del juez desde la lista existente
+  // Cargar datos del juez
   useEffect(() => {
     let cancelled = false;
     async function load() {
@@ -146,24 +174,23 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ id: stri
     };
   }, [judgeId]);
 
-  // Cargar casos e archivos — con fallback a mock data
+  // Cargar casos paginados
   useEffect(() => {
     let cancelled = false;
     async function load() {
       setLoadingCasos(true);
       try {
         const [casosData, archivosData] = await Promise.all([
-          fetchJudgeCases(judgeId),
-          fetchJudgeArchivos(judgeId),
+          fetchJudgeCases(judgeId, page, LIMIT),
+          page === 1 ? fetchJudgeArchivos(judgeId) : Promise.resolve(archivos),
         ]);
         if (!cancelled) {
-          setCasos(casosData);
-          setArchivos(archivosData);
+          setPaginated(casosData);
+          if (page === 1) setArchivos(archivosData);
         }
       } catch {
-        // El endpoint aún no existe en el backend — usar datos de ejemplo
         if (!cancelled) {
-          setCasos(MOCK_CASOS);
+          setPaginated(MOCK_PAGINATED);
           setArchivos(MOCK_ARCHIVOS);
           setUsingMockData(true);
         }
@@ -175,7 +202,8 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ id: stri
     return () => {
       cancelled = true;
     };
-  }, [judgeId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [judgeId, page]);
 
   const failureRate =
     judge && judge.totalReleases > 0
@@ -214,7 +242,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ id: stri
         Volver al dashboard
       </Link>
 
-      {/* Error state */}
+      {/* Error */}
       {errorJudge && !loadingJudge && (
         <div
           className="rounded-lg border px-4 py-3 text-sm"
@@ -238,22 +266,35 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ id: stri
         </div>
       )}
 
-      {/* Judge header */}
       {!loadingJudge && judge && (
         <>
+          {/* ── Header ─────────────────────────────────────────────────────── */}
           <article
-            className="rounded-xl border overflow-hidden mb-6"
+            className="mb-6 overflow-hidden rounded-xl border"
             style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
           >
-            {/* Header */}
             <div
               className="flex flex-wrap items-start justify-between gap-3 px-6 py-5"
               style={{ borderBottom: "1px solid #21262d" }}
             >
               <div className="min-w-0">
-                <h1 className="text-xl font-bold" style={{ color: "#e6edf3" }}>
-                  {judge.name}
-                </h1>
+                <div className="flex items-center gap-2">
+                  <h1 className="text-xl font-bold" style={{ color: "#e6edf3" }}>
+                    {judge.name}
+                  </h1>
+                  {judge.isDemoData && (
+                    <span
+                      className="rounded-full px-2 py-0.5 text-xs"
+                      style={{
+                        backgroundColor: "#d2992215",
+                        color: "#d29922",
+                        border: "1px solid #d2992230",
+                      }}
+                    >
+                      Demo
+                    </span>
+                  )}
+                </div>
                 <p className="mt-1 text-sm" style={{ color: "#74ACDF" }}>
                   {judge.court}
                 </p>
@@ -294,15 +335,128 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ id: stri
             </div>
           </article>
 
-          {/* Mock data notice */}
+          {/* ── Info del cargo ─────────────────────────────────────────────── */}
+          <section
+            className="mb-6 overflow-hidden rounded-xl border"
+            style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
+          >
+            <div className="px-5 py-3" style={{ borderBottom: "1px solid #21262d" }}>
+              <h2 className="text-sm font-semibold" style={{ color: "#e6edf3" }}>
+                Datos del cargo
+              </h2>
+            </div>
+            <div className="grid gap-x-8 px-5 sm:grid-cols-2">
+              <div>
+                <InfoRow label="Fuero" value={judge.jurisdiction?.fuero ?? "—"} />
+                <InfoRow label="Instancia" value={judge.jurisdiction?.instance ?? "—"} />
+                <InfoRow
+                  label="Alcance / Competencia"
+                  value={
+                    judge.jurisdiction
+                      ? `${judge.jurisdiction.scope} / ${judge.jurisdiction.competence}`
+                      : "—"
+                  }
+                />
+                <InfoRow label="Domicilio laboral" value={judge.workAddress ?? "—"} />
+              </div>
+              <div>
+                <InfoRow label="Horario de atención" value={judge.workHours ?? "—"} />
+                <InfoRow label="Designado por" value={judge.appointmentBody ?? "—"} />
+                <InfoRow label="Fecha de designación" value={judge.appointmentDate ?? "—"} />
+                <InfoRow
+                  label="Antigüedad en el cargo"
+                  value={judge.yearsOnBench != null ? `${judge.yearsOnBench} años` : "—"}
+                />
+              </div>
+            </div>
+            {/* Remuneración */}
+            {judge.salary && (
+              <div className="mx-5 py-2.5" style={{ borderBottom: "1px solid #21262d" }}>
+                <span
+                  className="text-xs font-medium uppercase tracking-wide"
+                  style={{ color: "#7d8590" }}
+                >
+                  Remuneración bruta mensual
+                </span>
+                <div className="mt-1 flex flex-wrap items-baseline gap-2">
+                  <span className="text-lg font-bold" style={{ color: "#3fb950" }}>
+                    {formatARS(judge.salary.grossMonthlyARS)}
+                  </span>
+                  <span className="text-xs" style={{ color: "#7d8590" }}>
+                    {judge.salary.category} — {judge.salary.acordada} ({judge.salary.lastUpdated})
+                  </span>
+                </div>
+              </div>
+            )}
+            {/* Bio */}
+            {judge.publicBio && (
+              <div className="px-5 py-3">
+                <span
+                  className="text-xs font-medium uppercase tracking-wide"
+                  style={{ color: "#7d8590" }}
+                >
+                  Biografía pública
+                </span>
+                <p className="mt-1 text-sm leading-relaxed" style={{ color: "#8b949e" }}>
+                  {judge.publicBio}
+                </p>
+              </div>
+            )}
+          </section>
+
+          {/* ── Fuentes ────────────────────────────────────────────────────── */}
+          {judge.sourceLinks && judge.sourceLinks.length > 0 && (
+            <section
+              className="mb-6 overflow-hidden rounded-xl border"
+              style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
+            >
+              <div className="px-5 py-3" style={{ borderBottom: "1px solid #21262d" }}>
+                <h2 className="text-sm font-semibold" style={{ color: "#e6edf3" }}>
+                  Fuentes oficiales
+                </h2>
+              </div>
+              <div className="divide-y" style={{ borderColor: "#21262d" }}>
+                {judge.sourceLinks.map((link, i) => (
+                  <a
+                    key={i}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-start gap-3 px-5 py-3 transition-colors hover:bg-white/5"
+                  >
+                    <svg
+                      className="mt-0.5 h-4 w-4 shrink-0"
+                      style={{ color: "#74ACDF" }}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
+                    </svg>
+                    <div>
+                      <p className="text-sm font-medium" style={{ color: "#74ACDF" }}>
+                        {link.label}
+                      </p>
+                      <p className="text-xs" style={{ color: "#7d8590" }}>
+                        {link.description}
+                      </p>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* ── Mock data notice ────────────────────────────────────────────── */}
           {usingMockData && (
             <div
               className="mb-5 flex items-start gap-3 rounded-lg border px-4 py-3 text-sm"
-              style={{
-                backgroundColor: "#d2992210",
-                borderColor: "#d2992240",
-                color: "#d29922",
-              }}
+              style={{ backgroundColor: "#d2992210", borderColor: "#d2992240", color: "#d29922" }}
             >
               <svg
                 className="mt-0.5 h-4 w-4 shrink-0"
@@ -322,23 +476,23 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ id: stri
                 <code className="rounded px-1 text-xs" style={{ backgroundColor: "#21262d" }}>
                   GET /api/judges/:id/casos
                 </code>{" "}
-                aún no está implementado en el backend. Los casos mostrados son ficticios.
+                aún no está disponible. Los casos mostrados son ficticios.
               </span>
             </div>
           )}
 
-          {/* Cases section */}
-          <section>
+          {/* ── Casos ──────────────────────────────────────────────────────── */}
+          <section className="mb-6">
             <div className="mb-4 flex items-center gap-2">
               <h2 className="text-base font-bold" style={{ color: "#e6edf3" }}>
                 Casos registrados
               </h2>
-              {!loadingCasos && (
+              {paginated && (
                 <span
                   className="rounded-full px-2 py-0.5 text-xs font-semibold"
                   style={{ backgroundColor: "#21262d", color: "#7d8590" }}
                 >
-                  {casos.length}
+                  {paginated.total}
                 </span>
               )}
             </div>
@@ -348,7 +502,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ id: stri
                 className="h-40 animate-pulse rounded-xl border"
                 style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
               />
-            ) : casos.length === 0 ? (
+            ) : !paginated || paginated.data.length === 0 ? (
               <div
                 className="flex flex-col items-center justify-center rounded-xl border py-12"
                 style={{ borderColor: "#21262d", backgroundColor: "#161b22" }}
@@ -361,65 +515,108 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ id: stri
                 </p>
               </div>
             ) : (
-              <div className="overflow-hidden rounded-xl border" style={{ borderColor: "#21262d" }}>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr style={{ backgroundColor: "#161b22", borderBottom: "1px solid #21262d" }}>
-                        {["Expediente", "Fecha resolución", "Tipo de medida", "Resultado"].map(
-                          (col) => (
-                            <th
-                              key={col}
-                              className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide"
-                              style={{ color: "#7d8590" }}
-                            >
-                              {col}
-                            </th>
-                          ),
-                        )}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {casos.map((caso, i) => (
+              <>
+                <div
+                  className="overflow-hidden rounded-xl border"
+                  style={{ borderColor: "#21262d" }}
+                >
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
                         <tr
-                          key={caso.id}
-                          style={{
-                            backgroundColor: i % 2 === 0 ? "#0d1117" : "#161b22",
-                            borderBottom: "1px solid #21262d",
-                          }}
+                          style={{ backgroundColor: "#161b22", borderBottom: "1px solid #21262d" }}
                         >
-                          <td className="px-4 py-3 font-mono text-xs" style={{ color: "#74ACDF" }}>
-                            {caso.nroExpediente}
-                          </td>
-                          <td className="px-4 py-3" style={{ color: "#e6edf3" }}>
-                            {new Date(caso.fechaResolucion + "T00:00:00").toLocaleDateString(
-                              "es-AR",
-                              { day: "2-digit", month: "2-digit", year: "numeric" },
-                            )}
-                          </td>
-                          <td className="px-4 py-3" style={{ color: "#8b949e" }}>
-                            {caso.tipoMedida}
-                          </td>
-                          <td className="px-4 py-3">
-                            <ResultadoBadge resultado={caso.resultado} />
-                            {caso.observaciones && (
-                              <p className="mt-1 text-xs" style={{ color: "#7d8590" }}>
-                                {caso.observaciones}
-                              </p>
-                            )}
-                          </td>
+                          {["Expediente", "Fecha resolución", "Tipo de medida", "Resultado"].map(
+                            (col) => (
+                              <th
+                                key={col}
+                                className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide"
+                                style={{ color: "#7d8590" }}
+                              >
+                                {col}
+                              </th>
+                            ),
+                          )}
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {paginated.data.map((caso, i) => (
+                          <tr
+                            key={caso.id}
+                            style={{
+                              backgroundColor: i % 2 === 0 ? "#0d1117" : "#161b22",
+                              borderBottom: "1px solid #21262d",
+                            }}
+                          >
+                            <td
+                              className="px-4 py-3 font-mono text-xs"
+                              style={{ color: "#74ACDF" }}
+                            >
+                              {caso.nroExpediente}
+                            </td>
+                            <td className="px-4 py-3" style={{ color: "#e6edf3" }}>
+                              {formatDate(caso.fechaResolucion)}
+                            </td>
+                            <td className="px-4 py-3" style={{ color: "#8b949e" }}>
+                              {caso.tipoMedida}
+                            </td>
+                            <td className="px-4 py-3">
+                              <ResultadoBadge resultado={caso.resultado} />
+                              {caso.observaciones && (
+                                <p className="mt-1 text-xs" style={{ color: "#7d8590" }}>
+                                  {caso.observaciones}
+                                </p>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-              </div>
+
+                {/* Paginación */}
+                {paginated.totalPages > 1 && (
+                  <div className="mt-4 flex items-center justify-between">
+                    <span className="text-xs" style={{ color: "#7d8590" }}>
+                      Página {paginated.page} de {paginated.totalPages} — {paginated.total} casos en
+                      total
+                    </span>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setPage((p) => p - 1)}
+                        disabled={paginated.page === 1}
+                        className="rounded-md px-3 py-1.5 text-xs font-medium transition-colors disabled:opacity-40"
+                        style={{
+                          backgroundColor: "#21262d",
+                          color: "#e6edf3",
+                          border: "1px solid #30363d",
+                        }}
+                      >
+                        ← Anterior
+                      </button>
+                      <button
+                        onClick={() => setPage((p) => p + 1)}
+                        disabled={paginated.page === paginated.totalPages}
+                        className="rounded-md px-3 py-1.5 text-xs font-medium transition-colors disabled:opacity-40"
+                        style={{
+                          backgroundColor: "#21262d",
+                          color: "#e6edf3",
+                          border: "1px solid #30363d",
+                        }}
+                      >
+                        Siguiente →
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </section>
 
-          {/* Documents section */}
-          {!loadingCasos && archivos.length > 0 && (
-            <section className="mt-8">
+          {/* ── Documentación pública ──────────────────────────────────────── */}
+          {archivos.length > 0 && (
+            <section>
               <h2 className="mb-4 text-base font-bold" style={{ color: "#e6edf3" }}>
                 Documentación pública
               </h2>
@@ -454,11 +651,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ id: stri
                     </div>
                     <div className="flex items-center gap-3">
                       <span className="text-xs" style={{ color: "#7d8590" }}>
-                        {new Date(archivo.fechaCarga + "T00:00:00").toLocaleDateString("es-AR", {
-                          day: "2-digit",
-                          month: "2-digit",
-                          year: "numeric",
-                        })}
+                        {formatDate(archivo.fechaCarga)}
                       </span>
                       <svg
                         className="h-4 w-4"
