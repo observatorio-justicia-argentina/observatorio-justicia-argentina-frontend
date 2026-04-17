@@ -193,12 +193,13 @@ export default function JurisdictionStats({
         />
       </div>
 
-      {activeProvince && (
-        <p className="mt-2 text-xs" style={{ color: "#74ACDF" }}>
-          Mostrando jueces de <strong>{activeProvince}</strong>. Hacé clic en &ldquo;✕ Filtro
-          activo&rdquo; para ver todos.
-        </p>
-      )}
+      <p
+        className="mt-2 text-xs"
+        style={{ color: "#74ACDF", visibility: activeProvince ? "visible" : "hidden" }}
+      >
+        Mostrando jueces de <strong>{activeProvince ?? "—"}</strong>. Hacé clic en &ldquo;✕ Filtro
+        activo&rdquo; para ver todos.
+      </p>
     </section>
   );
 }
