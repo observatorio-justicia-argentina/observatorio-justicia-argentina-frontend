@@ -8,6 +8,7 @@ import JudgeCard from "./components/JudgeCard";
 import JudgeFilters, { FilterState, applyFilters } from "./components/JudgeFilters";
 import JurisdictionStats from "./components/JurisdictionStats";
 import StatsBar from "./components/StatsBar";
+import Link from "next/link";
 import { fetchHierarchy, fetchJudges, Judge, JurisdictionNode } from "./lib/api";
 
 // El mapa usa APIs del browser (SVG + eventos de mouse) — se carga solo en el cliente
@@ -225,7 +226,13 @@ export default function HomePage() {
         {!loading && !error && filtered.length > 0 && (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((judge) => (
-              <JudgeCard key={judge.id} {...judge} />
+              <Link
+                key={judge.id}
+                href={`/juez/${judge.slug}`}
+                className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#74ACDF] rounded-xl"
+              >
+                <JudgeCard {...judge} />
+              </Link>
             ))}
           </div>
         )}

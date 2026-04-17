@@ -122,9 +122,9 @@ export function applyFilters(judges: Judge[], filters: FilterState): Judge[] {
 }
 
 export default function JudgeFilters({ filters, onChange, judges }: Props) {
-  const fueros = [...new Set(judges.map((j) => j.jurisdiction.fuero))];
-  const instances = [...new Set(judges.map((j) => j.jurisdiction.instance))];
-  const scopes = [...new Set(judges.map((j) => j.jurisdiction.scope))];
+  const fueros = [...new Set(judges.map((j) => j.jurisdiction?.fuero).filter(Boolean))];
+  const instances = [...new Set(judges.map((j) => j.jurisdiction?.instance).filter(Boolean))];
+  const scopes = [...new Set(judges.map((j) => j.jurisdiction?.scope).filter(Boolean))];
 
   const hasActiveFilters =
     filters.activeFuero ||
