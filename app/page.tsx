@@ -228,7 +228,7 @@ export default function HomePage() {
             {filtered.map((judge) => (
               <Link
                 key={judge.id}
-                href={`/juez/${judge.id}`}
+                href={`/juez/${judge.slug}`}
                 className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#74ACDF] rounded-xl"
               >
                 <JudgeCard {...judge} />

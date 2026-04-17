@@ -83,6 +83,7 @@ export interface JudgeExtendedStats {
 
 export interface Judge {
   id: number;
+  slug: string;
   isDemoData: boolean;
   name: string;
   court: string;
@@ -199,5 +200,11 @@ export async function fetchJudgeCases(
 export async function fetchJudgeArchivos(id: number): Promise<ArchivoPublico[]> {
   const res = await fetch(`${API_BASE}/judges/${id}/archivos`);
   if (!res.ok) throw new Error(`Error ${res.status} al cargar archivos del juez`);
+  return res.json();
+}
+
+export async function fetchJudgeBySlug(slug: string): Promise<Judge> {
+  const res = await fetch(`${API_BASE}/judges/${slug}`);
+  if (!res.ok) throw new Error(`Error ${res.status} al cargar el juez`);
   return res.json();
 }

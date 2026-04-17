@@ -7,7 +7,7 @@ import {
   Caso,
   fetchJudgeArchivos,
   fetchJudgeCases,
-  fetchJudges,
+  fetchJudgeBySlug,
   Judge,
   PaginatedResult,
   ResultadoCaso,
@@ -138,9 +138,8 @@ function formatDate(iso: string) {
 
 const LIMIT = 10;
 
-export default function JudgeDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
-  const judgeId = Number(id);
+export default function JudgeDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
 
   const [judge, setJudge] = useState<Judge | null>(null);
   const [paginated, setPaginated] = useState<PaginatedResult<Caso> | null>(null);
@@ -151,16 +150,14 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ id: stri
   const [errorJudge, setErrorJudge] = useState<string | null>(null);
   const [usingMockData, setUsingMockData] = useState(false);
 
-  // Cargar datos del juez
+  // Cargar datos del juez por slug
   useEffect(() => {
     let cancelled = false;
     async function load() {
       try {
-        const judges = await fetchJudges();
+        const found = await fetchJudgeBySlug(slug);
         if (!cancelled) {
-          const found = judges.find((j) => j.id === judgeId) ?? null;
           setJudge(found);
-          if (!found) setErrorJudge("Juez no encontrado.");
         }
       } catch {
         if (!cancelled) setErrorJudge("No se pudo conectar con el backend.");
@@ -172,10 +169,12 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ id: stri
     return () => {
       cancelled = true;
     };
-  }, [judgeId]);
+  }, [slug]);
 
-  // Cargar casos paginados
+  // Cargar casos paginados (usa el ID numérico interno del juez)
+  const judgeId = judge?.id ?? 0;
   useEffect(() => {
+    if (!judgeId) return;
     let cancelled = false;
     async function load() {
       setLoadingCasos(true);
