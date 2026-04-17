@@ -171,17 +171,15 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
     };
   }, [slug]);
 
-  // Cargar casos paginados (usa el ID numérico interno del juez)
-  const judgeId = judge?.id ?? 0;
+  // Cargar casos paginados
   useEffect(() => {
-    if (!judgeId) return;
     let cancelled = false;
     async function load() {
       setLoadingCasos(true);
       try {
         const [casosData, archivosData] = await Promise.all([
-          fetchJudgeCases(judgeId, page, LIMIT),
-          page === 1 ? fetchJudgeArchivos(judgeId) : Promise.resolve(archivos),
+          fetchJudgeCases(slug, page, LIMIT),
+          page === 1 ? fetchJudgeArchivos(slug) : Promise.resolve(archivos),
         ]);
         if (!cancelled) {
           setPaginated(casosData);
@@ -201,8 +199,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [judgeId, page]);
+  }, [slug, page]);
 
   const failureRate =
     judge && judge.totalReleases > 0

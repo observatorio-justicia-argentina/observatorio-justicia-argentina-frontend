@@ -188,17 +188,17 @@ export async function fetchHierarchy(): Promise<JurisdictionNode> {
 }
 
 export async function fetchJudgeCases(
-  id: number,
+  slug: string,
   page = 1,
   limit = 10,
 ): Promise<PaginatedResult<Caso>> {
-  const res = await fetch(`${API_BASE}/judges/${id}/casos?page=${page}&limit=${limit}`);
+  const res = await fetch(`${API_BASE}/judges/${slug}/casos?page=${page}&limit=${limit}`);
   if (!res.ok) throw new Error(`Error ${res.status} al cargar casos del juez`);
   return res.json();
 }
 
-export async function fetchJudgeArchivos(id: number): Promise<ArchivoPublico[]> {
-  const res = await fetch(`${API_BASE}/judges/${id}/archivos`);
+export async function fetchJudgeArchivos(slug: string): Promise<ArchivoPublico[]> {
+  const res = await fetch(`${API_BASE}/judges/${slug}/archivos`);
   if (!res.ok) throw new Error(`Error ${res.status} al cargar archivos del juez`);
   return res.json();
 }
