@@ -33,31 +33,20 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className="sticky top-0 z-40 w-full"
-        style={{
-          backgroundColor: "#0d1117",
-          borderBottom: "1px solid #21262d",
-          boxShadow: "0 1px 8px rgba(0,0,0,0.5)",
-        }}
+        className="bg-ink border-border sticky top-0 z-40 w-full border-b shadow-[0_1px_8px_rgba(0,0,0,0.5)]"
         aria-label="Navegación principal"
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           {/* Logo */}
-          <div className="flex items-center gap-2.5 min-w-0">
+          <div className="flex min-w-0 items-center gap-2.5">
             <span className="text-xl sm:text-2xl" aria-hidden="true">
               ⚖️
             </span>
             <div className="min-w-0">
-              <span
-                className="block truncate text-sm font-bold leading-tight"
-                style={{ color: "#e6edf3" }}
-              >
+              <span className="text-cream block truncate font-serif text-sm font-bold leading-tight sm:text-base">
                 Observatorio Judicial Argentino
               </span>
-              <span
-                className="block text-xs leading-tight font-medium"
-                style={{ color: "#74ACDF" }}
-              >
+              <span className="text-gold block text-xs font-medium leading-tight">
                 Conocé a los jueces
               </span>
             </div>
@@ -65,12 +54,10 @@ export default function Navbar() {
 
           {/* Desktop actions */}
           <div className="hidden items-center gap-2 sm:flex">
-            {/* Cargar informe (solo visible logueado) */}
             {user && (
               <button
                 onClick={handleSubmitClick}
-                className="cursor-pointer rounded-md border px-3 py-1.5 text-xs font-semibold transition-all hover:opacity-90"
-                style={{ backgroundColor: "#74ACDF", borderColor: "#74ACDF", color: "#0d1117" }}
+                className="bg-royal text-cream hover:bg-royal-strong cursor-pointer rounded-md px-3 py-1.5 text-xs font-semibold transition-colors"
               >
                 + Cargar informe
               </button>
@@ -78,16 +65,14 @@ export default function Navbar() {
 
             <a
               href="#jueces"
-              className="rounded-md border px-3 py-1.5 text-xs font-medium transition-all hover:bg-white/5"
-              style={{ borderColor: "#21262d", color: "#e6edf3" }}
+              className="border-border text-cream hover:bg-cream/5 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors"
             >
               Jueces
             </a>
 
             <button
               onClick={() => setDisclaimerOpen(true)}
-              className="cursor-pointer rounded-md border px-3 py-1.5 text-xs font-medium transition-all hover:bg-white/5"
-              style={{ borderColor: "#F4B942", color: "#F4B942" }}
+              className="border-gold text-gold hover:bg-gold/10 cursor-pointer rounded-md border px-3 py-1.5 text-xs font-medium transition-colors"
             >
               ⚠ Aviso
             </button>
@@ -96,58 +81,38 @@ export default function Navbar() {
               href="https://github.com/observatorio-justicia-argentina/observatorio-justicia-argentina-frontend"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-md border px-3 py-1.5 text-xs font-medium transition-all hover:bg-white/5"
-              style={{ borderColor: "#21262d", color: "#7d8590" }}
+              className="border-border text-cream-muted hover:bg-cream/5 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors"
             >
               Código fuente
             </a>
 
             {/* Auth section */}
             {booting ? null : user ? (
-              /* Usuario logueado — avatar + menú desplegable */
               <div className="relative">
                 <button
                   onClick={() => setUserMenuOpen((v) => !v)}
-                  className="flex items-center gap-2 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition-all hover:bg-white/5"
-                  style={{ borderColor: "#30363d", color: "#e6edf3" }}
+                  className="border-border-strong text-cream hover:bg-cream/5 flex items-center gap-2 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition-colors"
                 >
-                  <span
-                    className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold"
-                    style={{
-                      backgroundColor: "#74ACDF20",
-                      color: "#74ACDF",
-                      border: "1px solid #74ACDF40",
-                    }}
-                  >
+                  <span className="bg-royal-soft text-royal border-royal/40 flex h-6 w-6 items-center justify-center rounded-full border text-xs font-bold">
                     <UserInitials nombre={user.nombre} />
                   </span>
                   <span className="max-w-30 truncate">{user.nombre.split(" ")[0]}</span>
-                  <span style={{ color: "#7d8590" }}>▾</span>
+                  <span className="text-cream-muted">▾</span>
                 </button>
 
                 {userMenuOpen && (
-                  <div
-                    className="absolute right-0 mt-1 w-52 rounded-xl border py-1 shadow-2xl"
-                    style={{ backgroundColor: "#161b22", borderColor: "#21262d", zIndex: 100 }}
-                  >
-                    <div className="border-b px-4 py-2.5" style={{ borderColor: "#21262d" }}>
-                      <p className="text-xs font-semibold truncate" style={{ color: "#e6edf3" }}>
-                        {user.nombre}
-                      </p>
-                      <p className="text-xs truncate" style={{ color: "#7d8590" }}>
-                        {user.email}
-                      </p>
-                      <p className="mt-0.5 text-xs" style={{ color: "#7d8590" }}>
-                        DNI: {user.dni}
-                      </p>
+                  <div className="bg-ink-elevated border-border absolute right-0 z-[100] mt-1 w-52 rounded-xl border py-1 shadow-2xl">
+                    <div className="border-border border-b px-4 py-2.5">
+                      <p className="text-cream truncate text-xs font-semibold">{user.nombre}</p>
+                      <p className="text-cream-muted truncate text-xs">{user.email}</p>
+                      <p className="text-cream-muted mt-0.5 text-xs">DNI: {user.dni}</p>
                     </div>
                     <button
                       onClick={() => {
                         handleSubmitClick();
                         setUserMenuOpen(false);
                       }}
-                      className="w-full px-4 py-2 text-left text-xs hover:bg-white/5"
-                      style={{ color: "#74ACDF" }}
+                      className="text-royal hover:bg-cream/5 w-full px-4 py-2 text-left text-xs"
                     >
                       + Cargar informe
                     </button>
@@ -156,8 +121,7 @@ export default function Navbar() {
                         logout();
                         setUserMenuOpen(false);
                       }}
-                      className="w-full px-4 py-2 text-left text-xs hover:bg-white/5"
-                      style={{ color: "#f85149" }}
+                      className="text-danger hover:bg-cream/5 w-full px-4 py-2 text-left text-xs"
                     >
                       Cerrar sesión
                     </button>
@@ -165,11 +129,9 @@ export default function Navbar() {
                 )}
               </div>
             ) : (
-              /* No logueado */
               <button
                 onClick={() => setAuthOpen(true)}
-                className="cursor-pointer rounded-md border px-3 py-1.5 text-xs font-semibold transition-all hover:bg-white/5"
-                style={{ borderColor: "#74ACDF", color: "#74ACDF" }}
+                className="border-royal text-royal hover:bg-royal/10 cursor-pointer rounded-md border px-3 py-1.5 text-xs font-semibold transition-colors"
               >
                 Iniciar sesión
               </button>
@@ -178,8 +140,7 @@ export default function Navbar() {
 
           {/* Mobile hamburger */}
           <button
-            className="flex sm:hidden items-center justify-center rounded-md p-2 hover:bg-white/5"
-            style={{ color: "#7d8590" }}
+            className="text-cream-muted hover:bg-cream/5 flex items-center justify-center rounded-md p-2 sm:hidden"
             onClick={() => setMenuOpen((v) => !v)}
             aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
           >
@@ -209,19 +170,12 @@ export default function Navbar() {
 
         {/* Mobile menu */}
         {menuOpen && (
-          <div style={{ borderTop: "1px solid #21262d", backgroundColor: "#0d1117" }}>
+          <div className="border-border bg-ink border-t">
             <div className="flex flex-col gap-1 px-4 py-3">
               {user && (
-                <div
-                  className="mb-2 rounded-lg p-3"
-                  style={{ backgroundColor: "#161b22", border: "1px solid #21262d" }}
-                >
-                  <p className="text-xs font-semibold" style={{ color: "#e6edf3" }}>
-                    {user.nombre}
-                  </p>
-                  <p className="text-xs" style={{ color: "#7d8590" }}>
-                    {user.email}
-                  </p>
+                <div className="bg-ink-elevated border-border mb-2 rounded-lg border p-3">
+                  <p className="text-cream text-xs font-semibold">{user.nombre}</p>
+                  <p className="text-cream-muted text-xs">{user.email}</p>
                 </div>
               )}
               <button
@@ -229,20 +183,14 @@ export default function Navbar() {
                   handleSubmitClick();
                   setMenuOpen(false);
                 }}
-                className="cursor-pointer rounded-md px-3 py-2 text-left text-sm font-semibold"
-                style={{
-                  backgroundColor: "#74ACDF15",
-                  color: "#74ACDF",
-                  border: "1px solid #74ACDF30",
-                }}
+                className="bg-royal-soft text-royal border-royal/30 cursor-pointer rounded-md border px-3 py-2 text-left text-sm font-semibold"
               >
                 + Cargar informe {!user && "(requiere sesión)"}
               </button>
               <a
                 href="#jueces"
                 onClick={() => setMenuOpen(false)}
-                className="rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5"
-                style={{ color: "#e6edf3" }}
+                className="text-cream hover:bg-cream/5 rounded-md px-3 py-2 text-sm font-medium"
               >
                 Jueces
               </a>
@@ -251,8 +199,7 @@ export default function Navbar() {
                   setDisclaimerOpen(true);
                   setMenuOpen(false);
                 }}
-                className="cursor-pointer rounded-md px-3 py-2 text-left text-sm font-medium hover:bg-white/5"
-                style={{ color: "#F4B942" }}
+                className="text-gold hover:bg-cream/5 cursor-pointer rounded-md px-3 py-2 text-left text-sm font-medium"
               >
                 ⚠ Aviso sobre los datos
               </button>
@@ -260,8 +207,7 @@ export default function Navbar() {
                 href="https://github.com/observatorio-justicia-argentina/observatorio-justicia-argentina-frontend"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5"
-                style={{ color: "#7d8590" }}
+                className="text-cream-muted hover:bg-cream/5 rounded-md px-3 py-2 text-sm font-medium"
               >
                 Código fuente
               </a>
@@ -271,8 +217,7 @@ export default function Navbar() {
                     setAuthOpen(true);
                     setMenuOpen(false);
                   }}
-                  className="cursor-pointer rounded-md border px-3 py-2 text-left text-sm font-semibold"
-                  style={{ borderColor: "#74ACDF", color: "#74ACDF" }}
+                  className="border-royal text-royal cursor-pointer rounded-md border px-3 py-2 text-left text-sm font-semibold"
                 >
                   Iniciar sesión
                 </button>
@@ -283,8 +228,7 @@ export default function Navbar() {
                     logout();
                     setMenuOpen(false);
                   }}
-                  className="cursor-pointer rounded-md px-3 py-2 text-left text-sm font-medium hover:bg-white/5"
-                  style={{ color: "#f85149" }}
+                  className="text-danger hover:bg-cream/5 cursor-pointer rounded-md px-3 py-2 text-left text-sm font-medium"
                 >
                   Cerrar sesión
                 </button>
