@@ -357,7 +357,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
           if (justDraggedRef.current) return;
           setIsOpen((o) => !o);
         }}
-        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left hover:bg-white/[0.03] transition-colors"
+        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left hover:bg-white/3 transition-colors"
         style={{ borderBottom: isOpen ? "1px solid #21262d" : "none" }}
       >
         {/* Ícono mapa */}

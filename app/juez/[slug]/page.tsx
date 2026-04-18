@@ -20,34 +20,34 @@ const MOCK_PAGINATED: PaginatedResult<Caso> = {
   data: [
     {
       id: "mock-1",
-      nroExpediente: "12345/2024",
-      fechaResolucion: "2024-03-15",
-      tipoMedida: "Libertad cautelar",
-      resultado: "fta",
-      observaciones: "El imputado no se presentó a la audiencia fijada para el 20/04/2024.",
+      expediente: "12345/2024",
+      decisionDate: "2024-03-15",
+      decisionType: "Libertad cautelar",
+      outcome: "fta",
+      outcomeDetail: "El imputado no se presentó a la audiencia fijada para el 20/04/2024.",
     },
     {
       id: "mock-2",
-      nroExpediente: "98732/2024",
-      fechaResolucion: "2024-06-02",
-      tipoMedida: "Excarcelación",
-      resultado: "nuevo_arresto",
-      observaciones: "Detenido nuevamente el 14/07/2024 por robo agravado.",
+      expediente: "98732/2024",
+      decisionDate: "2024-06-02",
+      decisionType: "Excarcelación",
+      outcome: "newArrest",
+      outcomeDetail: "Detenido nuevamente el 14/07/2024 por robo agravado.",
     },
     {
       id: "mock-3",
-      nroExpediente: "45210/2023",
-      fechaResolucion: "2023-11-20",
-      tipoMedida: "Prisión preventiva atenuada",
-      resultado: "revocada",
-      observaciones: "La Cámara revocó la medida por incumplimiento de condiciones.",
+      expediente: "45210/2023",
+      decisionDate: "2023-11-20",
+      decisionType: "Prisión preventiva atenuada",
+      outcome: "revoked",
+      outcomeDetail: "La Cámara revocó la medida por incumplimiento de condiciones.",
     },
     {
       id: "mock-4",
-      nroExpediente: "67891/2025",
-      fechaResolucion: "2025-01-10",
-      tipoMedida: "Libertad cautelar",
-      resultado: "pendiente",
+      expediente: "67891/2025",
+      decisionDate: "2025-01-10",
+      decisionType: "Libertad cautelar",
+      outcome: "ongoing",
     },
   ],
   total: 4,
@@ -65,16 +65,16 @@ const MOCK_ARCHIVOS: ArchivoPublico[] = [
 
 const RESULTADO_LABEL: Record<ResultadoCaso, string> = {
   fta: "No compareció",
-  nuevo_arresto: "Nuevo arresto",
-  revocada: "Revocada",
-  pendiente: "Pendiente",
+  newArrest: "Nuevo arresto",
+  revoked: "Revocada",
+  ongoing: "Pendiente",
 };
 
 const RESULTADO_COLOR: Record<ResultadoCaso, { bg: string; text: string; border: string }> = {
   fta: { bg: "#d2992220", text: "#d29922", border: "#d2992240" },
-  nuevo_arresto: { bg: "#f8514920", text: "#f85149", border: "#f8514940" },
-  revocada: { bg: "#a371f720", text: "#a371f7", border: "#a371f740" },
-  pendiente: { bg: "#74ACDF20", text: "#74ACDF", border: "#74ACDF40" },
+  newArrest: { bg: "#f8514920", text: "#f85149", border: "#f8514940" },
+  revoked: { bg: "#a371f720", text: "#a371f7", border: "#a371f740" },
+  ongoing: { bg: "#74ACDF20", text: "#74ACDF", border: "#74ACDF40" },
 };
 
 function ResultadoBadge({ resultado }: { resultado: ResultadoCaso }) {
@@ -548,19 +548,19 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                               className="px-4 py-3 font-mono text-xs"
                               style={{ color: "#74ACDF" }}
                             >
-                              {caso.nroExpediente}
+                              {caso.expediente}
                             </td>
                             <td className="px-4 py-3" style={{ color: "#e6edf3" }}>
-                              {formatDate(caso.fechaResolucion)}
+                              {formatDate(caso.decisionDate)}
                             </td>
                             <td className="px-4 py-3" style={{ color: "#8b949e" }}>
-                              {caso.tipoMedida}
+                              {caso.decisionType}
                             </td>
                             <td className="px-4 py-3">
-                              <ResultadoBadge resultado={caso.resultado} />
-                              {caso.observaciones && (
+                              <ResultadoBadge resultado={caso.outcome} />
+                              {caso.outcomeDetail && (
                                 <p className="mt-1 text-xs" style={{ color: "#7d8590" }}>
-                                  {caso.observaciones}
+                                  {caso.outcomeDetail}
                                 </p>
                               )}
                             </td>
