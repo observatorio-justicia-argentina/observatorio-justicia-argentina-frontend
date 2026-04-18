@@ -147,15 +147,19 @@ export interface JurisdictionNode {
 
 // ── Tipos de detalle de juez (endpoint /judges/:id/casos y /archivos) ────────
 
-export type ResultadoCaso = "fta" | "nuevo_arresto" | "revocada" | "pendiente";
+export type ResultadoCaso = "fta" | "newArrest" | "revoked" | "ongoing";
 
 export interface Caso {
   id: string;
-  nroExpediente: string;
-  fechaResolucion: string; // ISO date (YYYY-MM-DD)
-  tipoMedida: string;
-  resultado: ResultadoCaso;
-  observaciones?: string;
+  expediente: string;
+  decisionDate: string; // ISO date (YYYY-MM-DD)
+  decisionType: string;
+  outcome: ResultadoCaso;
+  outcomeDetail?: string;
+  crime?: string;
+  crimeArticle?: string;
+  legalBasis?: string;
+  sourceFile?: string;
 }
 
 export interface ArchivoPublico {
