@@ -1,49 +1,101 @@
 @import "tailwindcss";
 
 :root {
-  --bg:          #0d1117;
-  --surface:     #161b22;
-  --surface-2:   #1e2530;
-  --border:      #21262d;
-  --border-2:    #30363d;
-  --text:        #e6edf3;
-  --text-muted:  #7d8590;
-  --celeste:     #74ACDF;
-  --celeste-dim: #4a7aa8;
-  --gold:        #F4B942;
-  --gold-dim:    #b8892f;
+  /* === Brand palette: dark formal === */
+  /* Midnight surfaces */
+  --ink:            #040f28;
+  --ink-elevated:   #0a1836;
+  --ink-raised:     #142145;
+  --border:         #1c2a52;
+  --border-strong:  #2a3b6e;
+
+  /* Cream typography */
+  --cream:          #f4f2e6;
+  --cream-muted:    #a8a496;
+  --cream-subtle:   #6f6c60;
+
+  /* Royal blue — primary */
+  --royal:          #0944b1;
+  --royal-strong:   #0b52d4;
+  --royal-soft:     rgba(9, 68, 177, 0.18);
+
+  /* Gold — accent */
+  --gold:           #c18a38;
+  --gold-strong:    #d79d48;
+  --gold-soft:      rgba(193, 138, 56, 0.18);
+
+  /* State */
+  --success:        #3fb950;
+  --success-soft:   rgba(63, 185, 80, 0.15);
+  --danger:         #f85149;
+  --danger-soft:    rgba(248, 81, 73, 0.15);
+  --warning:        #f4b942;
+  --warning-soft:   rgba(244, 185, 66, 0.15);
 }
 
 @theme inline {
-  --color-bg:          var(--bg);
-  --color-surface:     var(--surface);
-  --color-surface-2:   var(--surface-2);
-  --color-border:      var(--border);
-  --color-text:        var(--text);
-  --color-text-muted:  var(--text-muted);
-  --color-celeste:     var(--celeste);
-  --color-gold:        var(--gold);
-  --font-sans: var(--font-geist-sans);
+  --color-ink:           var(--ink);
+  --color-ink-elevated:  var(--ink-elevated);
+  --color-ink-raised:    var(--ink-raised);
+  --color-border:        var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-cream:         var(--cream);
+  --color-cream-muted:   var(--cream-muted);
+  --color-cream-subtle:  var(--cream-subtle);
+
+  --color-royal:         var(--royal);
+  --color-royal-strong:  var(--royal-strong);
+  --color-royal-soft:    var(--royal-soft);
+
+  --color-gold:          var(--gold);
+  --color-gold-strong:   var(--gold-strong);
+  --color-gold-soft:     var(--gold-soft);
+
+  --color-success:       var(--success);
+  --color-success-soft:  var(--success-soft);
+  --color-danger:        var(--danger);
+  --color-danger-soft:   var(--danger-soft);
+  --color-warning:       var(--warning);
+  --color-warning-soft:  var(--warning-soft);
+
+  --font-sans:  var(--font-geist-sans);
+  --font-serif: var(--font-fraunces);
 }
 
-html, body {
+html,
+body {
   min-height: 100%;
 }
 
 body {
-  background-color: var(--bg);
-  color: var(--text);
-  font-family: 'Geist', Arial, Helvetica, sans-serif;
+  background-color: var(--ink);
+  color: var(--cream);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.97); }
-  to   { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
-.modal-enter { animation: fadeIn 0.2s ease-out; }
+.modal-enter {
+  animation: fadeIn 0.2s ease-out;
+}
 
 @keyframes overlayIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
-.overlay-enter { animation: overlayIn 0.15s ease-out; }
+.overlay-enter {
+  animation: overlayIn 0.15s ease-out;
+}
