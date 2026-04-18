@@ -15,9 +15,9 @@
   --cream-subtle:   #6f6c60;
 
   /* Gold — primary accent */
-  --gold:           #e7ba61;
-  --gold-strong:    #f0c778;
-  --gold-soft:      rgba(231, 186, 97, 0.18);
+  --gold:           #cfa868;
+  --gold-strong:    #dcb678;
+  --gold-soft:      rgba(207, 168, 104, 0.18);
 
   /* State */
   --success:        #3fb950;
