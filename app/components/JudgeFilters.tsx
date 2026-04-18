@@ -53,7 +53,7 @@ function ChipButton({
 }) {
   const cls = active
     ? "bg-gold text-cream border-gold"
-    : "bg-border text-cream-muted border-border-strong hover:bg-cream/5";
+    : "bg-paper-elevated text-ink-muted border-paper-border hover:bg-paper";
   return (
     <button
       onClick={onClick}
@@ -67,7 +67,7 @@ function ChipButton({
 function FilterRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="text-cream-muted min-w-[80px] shrink-0 text-xs">{label}</span>
+      <span className="text-ink-muted min-w-[80px] shrink-0 text-xs">{label}</span>
       {children}
     </div>
   );
@@ -173,12 +173,12 @@ export default function JudgeFilters({ filters, onChange, judges }: Props) {
             placeholder="Buscar por nombre, tribunal, provincia, fuero..."
             value={filters.search}
             onChange={(e) => onChange({ search: e.target.value })}
-            className="bg-ink-elevated border-border-strong text-cream focus:border-gold placeholder:text-cream-muted w-full rounded-lg border py-2.5 pl-9 pr-4 text-sm outline-none transition-colors focus:outline-none"
+            className="bg-paper border-paper-border text-ink focus:border-gold placeholder:text-ink-subtle w-full rounded-lg border py-2.5 pl-9 pr-4 text-sm outline-none transition-colors focus:outline-none"
           />
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-cream-muted text-xs font-medium">Ordenar:</span>
+          <span className="text-ink-muted text-xs font-medium">Ordenar:</span>
           {SORT_OPTIONS.map(({ key, label }) => (
             <ChipButton
               key={key}
@@ -198,11 +198,9 @@ export default function JudgeFilters({ filters, onChange, judges }: Props) {
       </div>
 
       {/* Filtros avanzados */}
-      <div className="bg-ink border-border rounded-lg border p-3">
+      <div className="bg-paper border-paper-border rounded-lg border p-3">
         <div className="mb-2 flex items-center justify-between">
-          <span className="text-cream-muted text-xs font-bold uppercase tracking-wider">
-            Filtros
-          </span>
+          <span className="text-ink-muted text-xs font-bold uppercase tracking-wider">Filtros</span>
           {hasActiveFilters && (
             <button onClick={clearAll} className="text-danger text-xs hover:underline">
               Limpiar filtros

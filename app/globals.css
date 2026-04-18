@@ -9,12 +9,21 @@
   --border:         #3a4878;
   --border-strong:  #4d5a8a;
 
-  /* Cream typography */
+  /* Cream typography (on ink/navy backgrounds) */
   --cream:          #f4f2e6;
   --cream-muted:    #a8a496;
   --cream-subtle:   #6f6c60;
 
-  /* Gold — primary accent (replaces royal) */
+  /* Paper surfaces (cream body context) */
+  --paper:          #ffffff;       /* cards/panels on cream body */
+  --paper-elevated: #faf8ee;       /* nested/inset on paper */
+  --paper-border:   #d4d1c2;       /* subtle border on cream */
+
+  /* Ink-on-cream text colors (dark text on light body) */
+  --ink-muted:      #5a6380;
+  --ink-subtle:     #8590a8;
+
+  /* Gold — primary accent */
   --gold:           #c18a38;
   --gold-strong:    #d79d48;
   --gold-soft:      rgba(193, 138, 56, 0.18);
@@ -41,6 +50,13 @@
   --color-cream-muted:   var(--cream-muted);
   --color-cream-subtle:  var(--cream-subtle);
 
+  --color-paper:          var(--paper);
+  --color-paper-elevated: var(--paper-elevated);
+  --color-paper-border:   var(--paper-border);
+
+  --color-ink-muted:     var(--ink-muted);
+  --color-ink-subtle:    var(--ink-subtle);
+
   --color-gold:          var(--gold);
   --color-gold-strong:   var(--gold-strong);
   --color-gold-soft:     var(--gold-soft);
@@ -64,8 +80,8 @@ body {
 }
 
 body {
-  background-color: var(--ink);
-  color: var(--cream);
+  background-color: var(--cream);
+  color: var(--ink);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 

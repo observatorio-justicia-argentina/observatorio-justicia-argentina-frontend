@@ -483,13 +483,13 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
           {/* ── Casos ──────────────────────────────────────────────────────── */}
           <section className="mb-6">
             <div className="mb-4 flex items-center gap-2">
-              <h2 className="text-base font-bold" style={{ color: "#f4f2e6" }}>
+              <h2 className="font-serif text-xl font-bold" style={{ color: "#232d4f" }}>
                 Casos registrados
               </h2>
               {paginated && (
                 <span
-                  className="rounded-full px-2 py-0.5 text-xs font-semibold"
-                  style={{ backgroundColor: "#3a4878", color: "#a8a496" }}
+                  className="rounded-full border px-2 py-0.5 text-xs font-semibold"
+                  style={{ backgroundColor: "#ffffff", color: "#5a6380", borderColor: "#d4d1c2" }}
                 >
                   {paginated.total}
                 </span>
@@ -616,7 +616,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
           {/* ── Documentación pública ──────────────────────────────────────── */}
           {archivos.length > 0 && (
             <section>
-              <h2 className="mb-4 text-base font-bold" style={{ color: "#f4f2e6" }}>
+              <h2 className="mb-4 font-serif text-xl font-bold" style={{ color: "#232d4f" }}>
                 Documentación pública
               </h2>
               <div className="space-y-2">

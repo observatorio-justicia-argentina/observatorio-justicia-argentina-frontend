@@ -42,7 +42,7 @@ function PrincipleChip({ icon, label }: { icon: string; label: string }) {
 
 export default function Hero() {
   return (
-    <section className="border-border w-full border-b">
+    <section className="bg-ink border-border w-full border-b">
       {/* Top gradient hairline */}
       <div
         className="h-[2px]"

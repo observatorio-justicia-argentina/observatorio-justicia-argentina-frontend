@@ -121,8 +121,8 @@ export default function HomePage() {
 
         {/* Section header */}
         <div className="mb-5 flex flex-wrap items-center gap-3">
-          <h2 className="text-cream font-serif text-2xl font-bold">Jueces</h2>
-          <span className="bg-border text-cream-muted rounded-full px-2 py-0.5 text-xs font-semibold">
+          <h2 className="text-ink font-serif text-2xl font-bold">Jueces</h2>
+          <span className="bg-paper text-ink-muted border-paper-border rounded-full border px-2 py-0.5 text-xs font-semibold">
             {judges.length}
           </span>
 
@@ -163,7 +163,7 @@ export default function HomePage() {
         )}
 
         {!loading && !error && (
-          <p className="text-cream-muted mb-4 text-xs">
+          <p className="text-ink-muted mb-4 text-xs">
             Mostrando {filtered.length} de {judges.length} jueces
             {activeProvince && ` en ${activeProvince}`}
           </p>
@@ -208,8 +208,8 @@ export default function HomePage() {
         )}
 
         {/* Footer */}
-        <footer className="border-border mt-16 border-t pt-8 text-center">
-          <p className="text-cream-muted text-xs leading-relaxed">
+        <footer className="border-paper-border mt-16 border-t pt-8 text-center">
+          <p className="text-ink-muted text-xs leading-relaxed">
             Observatorio Judicial Argentino es un proyecto de código abierto, estadístico y sin
             sesgo político. No tiene fines de vigilancia ni de castigo. Los datos provienen de
             registros públicos del poder judicial argentino.
