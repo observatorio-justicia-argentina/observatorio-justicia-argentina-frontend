@@ -1,3 +1,7 @@
+"use client";
+
+import { useRef } from "react";
+
 const STEPS = [
   {
     num: "I",
@@ -23,20 +27,50 @@ function StepCard({ num, text }: { num: string; text: string }) {
 }
 
 export default function Hero() {
+  const colorEscudoRef = useRef<HTMLImageElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const el = colorEscudoRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty("--spot-x", `${e.clientX - rect.left}px`);
+    el.style.setProperty("--spot-y", `${e.clientY - rect.top}px`);
+  };
+
+  const handleMouseLeave = () => {
+    const el = colorEscudoRef.current;
+    if (!el) return;
+    // Reset spotlight off-canvas so no color shows when cursor leaves
+    el.style.setProperty("--spot-x", "-400px");
+    el.style.setProperty("--spot-y", "-400px");
+  };
+
   return (
-    <section className="relative w-full overflow-hidden">
+    <section
+      className="relative w-full overflow-hidden"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
       {/* Top hairline — subtle gold */}
       <div className="bg-gold/40 relative z-10 h-[1px]" />
 
-      {/* Escudo Nacional Argentino — halftone watermark on the right */}
+      {/* Escudo Nacional Argentino — grayscale halftone base + color spotlight overlay */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
+        {/* Base: grayscale halftone, always visible */}
         <img
           src="/coat-of-arms.svg"
           alt=""
           className="halftone-mask absolute -right-16 top-1/2 h-[110%] w-auto -translate-y-1/2 opacity-[0.42] [filter:grayscale(1)_contrast(1.4)_brightness(1.05)] sm:-right-8"
         />
+        {/* Overlay: full color, revealed by spotlight circle tracking the cursor */}
+        <img
+          ref={colorEscudoRef}
+          src="/coat-of-arms.svg"
+          alt=""
+          className="escudo-spot absolute -right-16 top-1/2 h-[110%] w-auto -translate-y-1/2 opacity-80 sm:-right-8"
+        />
         {/* Dark fade from left to right so the escudo bleeds into the ink on the text side */}
-        <div className="from-ink via-ink/95 absolute inset-0 bg-gradient-to-r to-transparent" />
+        <div className="from-ink via-ink/90 absolute inset-0 bg-gradient-to-r to-transparent" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">

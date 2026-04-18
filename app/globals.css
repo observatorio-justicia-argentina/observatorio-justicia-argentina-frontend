@@ -177,6 +177,24 @@ body::before {
   -webkit-mask-repeat: repeat;
 }
 
+/* Escudo spotlight — a circular soft mask that follows the cursor, revealing the image
+   in full color inside the spotlight while the rest stays transparent. CSS vars --spot-x
+   and --spot-y are updated from mousemove on the image element. */
+.escudo-spot {
+  mask-image: radial-gradient(
+    circle 220px at var(--spot-x, -200px) var(--spot-y, -200px),
+    black 0%,
+    black 25%,
+    transparent 75%
+  );
+  -webkit-mask-image: radial-gradient(
+    circle 220px at var(--spot-x, -200px) var(--spot-y, -200px),
+    black 0%,
+    black 25%,
+    transparent 75%
+  );
+}
+
 /* Modal / overlay reveal */
 @keyframes fadeIn {
   from {
