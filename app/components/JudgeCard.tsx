@@ -261,10 +261,12 @@ export default function JudgeCard(judge: Judge) {
                 <div className="flex flex-col gap-2">
                   <InfoRow label="Domicilio laboral" value={workAddress} />
                   <InfoRow label="Horario de atención" value={workHours} />
-                  <InfoRow
-                    label="Remuneración bruta"
-                    value={`${formatARS(salary.grossMonthlyARS)} / mes — ${salary.category} (${salary.acordada}, ${salary.lastUpdated})`}
-                  />
+                  {salary && (
+                    <InfoRow
+                      label="Remuneración bruta"
+                      value={`${formatARS(salary.grossMonthlyARS)} / mes — ${salary.category} (${salary.acordada}, desde ${salary.validFrom})`}
+                    />
+                  )}
                   <InfoRow label="Fecha de designación" value={appointmentDate} />
                   <InfoRow label="Organismo designante" value={appointmentBody} />
                   <InfoRow label="Antigüedad en el cargo" value={`${yearsOnBench} años`} />
