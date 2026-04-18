@@ -251,14 +251,8 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
       {/* Loading skeleton */}
       {loadingJudge && (
         <div className="space-y-4">
-          <div
-            className="h-40 animate-pulse rounded-xl border"
-            style={{ backgroundColor: "#181f38", borderColor: "#242b48" }}
-          />
-          <div
-            className="h-64 animate-pulse rounded-xl border"
-            style={{ backgroundColor: "#181f38", borderColor: "#242b48" }}
-          />
+          <div className="shimmer-bg h-40 rounded-xl border" style={{ borderColor: "#242b48" }} />
+          <div className="shimmer-bg h-64 rounded-xl border" style={{ borderColor: "#242b48" }} />
         </div>
       )}
 
@@ -274,6 +268,12 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
               style={{ borderBottom: "1px solid #242b48" }}
             >
               <div className="min-w-0">
+                <p
+                  className="mb-2 text-xs font-semibold uppercase tracking-[0.28em]"
+                  style={{ color: "#d0a04a" }}
+                >
+                  Perfil Judicial
+                </p>
                 <div className="flex items-center gap-2">
                   <h1
                     className="font-serif text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl"
@@ -482,6 +482,12 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
 
           {/* ── Casos ──────────────────────────────────────────────────────── */}
           <section className="mb-6">
+            <p
+              className="mb-2 text-xs font-semibold uppercase tracking-[0.28em]"
+              style={{ color: "#d0a04a" }}
+            >
+              Expedientes
+            </p>
             <div className="mb-4 flex items-center gap-2">
               <h2
                 className="font-serif text-2xl font-bold tracking-tight sm:text-3xl"
@@ -501,8 +507,8 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
 
             {loadingCasos ? (
               <div
-                className="h-40 animate-pulse rounded-xl border"
-                style={{ backgroundColor: "#181f38", borderColor: "#242b48" }}
+                className="shimmer-bg h-40 rounded-xl border"
+                style={{ borderColor: "#242b48" }}
               />
             ) : !paginated || paginated.data.length === 0 ? (
               <div
@@ -619,6 +625,12 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
           {/* ── Documentación pública ──────────────────────────────────────── */}
           {archivos.length > 0 && (
             <section>
+              <p
+                className="mb-2 text-xs font-semibold uppercase tracking-[0.28em]"
+                style={{ color: "#d0a04a" }}
+              >
+                Archivo
+              </p>
               <h2
                 className="mb-4 font-serif text-2xl font-bold tracking-tight sm:text-3xl"
                 style={{ color: "#f4f2e6" }}

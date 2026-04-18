@@ -136,6 +136,9 @@ export default function JurisdictionStats({
   return (
     <section className="mx-auto w-full max-w-7xl px-4 pb-4 pt-8 sm:px-6 lg:px-8">
       {/* Header */}
+      <p className="text-gold mb-2 text-xs font-semibold uppercase tracking-[0.28em]">
+        Geografía Judicial
+      </p>
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <h2 className="text-cream font-serif text-3xl font-bold tracking-tight sm:text-4xl">
           Estadísticas por Jurisdicción

@@ -118,6 +118,37 @@ body::before {
   animation: solRotate 120s linear infinite;
 }
 
+/* Gold shimmer for loading skeletons */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-bg {
+  background-image: linear-gradient(
+    90deg,
+    var(--ink-elevated) 0%,
+    rgba(208, 160, 74, 0.1) 50%,
+    var(--ink-elevated) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Halftone dot mask — tiny dots tile across the masked element, giving a stippled print feel */
+.halftone-mask {
+  mask-image: radial-gradient(circle, black 42%, transparent 43%);
+  -webkit-mask-image: radial-gradient(circle, black 42%, transparent 43%);
+  mask-size: 4px 4px;
+  -webkit-mask-size: 4px 4px;
+  mask-repeat: repeat;
+  -webkit-mask-repeat: repeat;
+}
+
 /* Modal / overlay reveal */
 @keyframes fadeIn {
   from {

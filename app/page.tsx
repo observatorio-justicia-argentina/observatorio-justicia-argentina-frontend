@@ -98,6 +98,16 @@ export default function HomePage() {
       {/* Hero */}
       <Hero />
 
+      {/* Fleurón — gazette-style section divider between pitch and data */}
+      <div
+        aria-hidden
+        className="mx-auto flex max-w-7xl items-center gap-4 px-4 pt-10 sm:px-6 lg:px-8"
+      >
+        <div className="bg-gold/25 h-px flex-1" />
+        <span className="text-gold/70 font-serif text-2xl leading-none">§</span>
+        <div className="bg-gold/25 h-px flex-1" />
+      </div>
+
       {/* Jurisdiction hierarchy */}
       {hierarchy && (
         <JurisdictionStats
@@ -120,6 +130,9 @@ export default function HomePage() {
         )}
 
         {/* Section header */}
+        <p className="text-gold mb-2 text-xs font-semibold uppercase tracking-[0.28em]">
+          Registros
+        </p>
         <div className="mb-5 flex flex-wrap items-center gap-3">
           <h2 className="text-cream font-serif text-3xl font-bold tracking-tight sm:text-4xl">
             Jueces
@@ -175,10 +188,7 @@ export default function HomePage() {
         {loading && (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="bg-ink-elevated border-border h-52 animate-pulse rounded-xl border"
-              />
+              <div key={i} className="shimmer-bg border-border h-52 rounded-xl border" />
             ))}
           </div>
         )}
