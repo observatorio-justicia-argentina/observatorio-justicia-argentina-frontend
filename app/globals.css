@@ -91,11 +91,13 @@ body {
 }
 
 body {
-  /* Cinematic dark gradient — ink-elevated at top fading to near-black at bottom */
+  /* Cinematic dark gradient — flipped 180°: darker at top continuing through the
+     page, lifting back to ink with a soft light pool at the bottom. Removes the
+     "top-light resets" illusion below the § divider. */
   background-color: var(--ink);
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(54, 62, 94, 0.45), transparent 70%),
-    linear-gradient(180deg, var(--ink) 0%, #070a18 100%);
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(54, 62, 94, 0.45), transparent 70%),
+    linear-gradient(0deg, var(--ink) 0%, #070a18 100%);
   color: var(--cream);
   font-family: var(--font-instrument-sans), Arial, Helvetica, sans-serif;
 }
