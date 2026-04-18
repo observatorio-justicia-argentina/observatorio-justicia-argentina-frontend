@@ -95,11 +95,14 @@ function isFormValid(f: FormData): boolean {
 
 // ── Componentes auxiliares ───────────────────────────────────────────────────
 
+const INPUT_CLASSES =
+  "bg-ink border-border-strong text-cream focus:border-royal w-full rounded-lg border px-3 py-2 text-sm outline-none transition-colors focus:outline-none placeholder:text-cream-muted";
+
 function Label({ children, required }: { children: React.ReactNode; required?: boolean }) {
   return (
-    <label className="mb-1 block text-xs font-semibold" style={{ color: "#7d8590" }}>
+    <label className="text-cream-muted mb-1 block text-xs font-semibold">
       {children}
-      {required && <span style={{ color: "#f85149" }}> *</span>}
+      {required && <span className="text-danger"> *</span>}
     </label>
   );
 }
@@ -121,14 +124,7 @@ function Input({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full rounded-lg border px-3 py-2 text-sm outline-none transition-colors"
-      style={{
-        backgroundColor: "#0d1117",
-        borderColor: "#30363d",
-        color: "#e6edf3",
-      }}
-      onFocus={(e) => (e.currentTarget.style.borderColor = "#74ACDF")}
-      onBlur={(e) => (e.currentTarget.style.borderColor = "#30363d")}
+      className={INPUT_CLASSES}
     />
   );
 }
@@ -148,18 +144,13 @@ function Select({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full rounded-lg border px-3 py-2 text-sm outline-none"
-      style={{
-        backgroundColor: "#0d1117",
-        borderColor: "#30363d",
-        color: value ? "#e6edf3" : "#7d8590",
-      }}
+      className={`${INPUT_CLASSES} ${value ? "text-cream" : "text-cream-muted"}`}
     >
       <option value="" disabled>
         {placeholder ?? "Seleccionar..."}
       </option>
       {options.map((o) => (
-        <option key={o} value={o} style={{ color: "#e6edf3" }}>
+        <option key={o} value={o} className="text-cream">
           {o}
         </option>
       ))}
@@ -169,7 +160,7 @@ function Select({
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="mb-3 flex items-center gap-2 text-sm font-bold" style={{ color: "#e6edf3" }}>
+    <h3 className="text-cream mb-3 flex items-center gap-2 font-serif text-base font-bold">
       {children}
     </h3>
   );
@@ -251,34 +242,28 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
     minute: "2-digit",
   });
 
+  const submitBtnCls = valid
+    ? "bg-royal text-cream hover:bg-royal-strong cursor-pointer"
+    : "bg-border text-cream-subtle cursor-not-allowed";
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 sm:p-8"
       style={{ backgroundColor: "rgba(0,0,0,0.75)" }}
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div
-        className="relative my-4 w-full max-w-2xl rounded-2xl border shadow-2xl"
-        style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
-      >
+      <div className="bg-ink-elevated border-border relative my-4 w-full max-w-2xl rounded-2xl border shadow-2xl">
         {/* ── Header ── */}
-        <div
-          className="flex items-center justify-between px-6 py-4"
-          style={{ borderBottom: "1px solid #21262d" }}
-        >
+        <div className="border-border flex items-center justify-between border-b px-6 py-4">
           <div>
-            <h2 className="text-base font-bold" style={{ color: "#e6edf3" }}>
-              Cargar información de juez
-            </h2>
-            <p className="mt-0.5 text-xs" style={{ color: "#7d8590" }}>
-              Todos los campos marcados con <span style={{ color: "#f85149" }}>*</span> son
-              obligatorios
+            <h2 className="text-cream font-serif text-lg font-bold">Cargar información de juez</h2>
+            <p className="text-cream-muted mt-0.5 text-xs">
+              Todos los campos marcados con <span className="text-danger">*</span> son obligatorios
             </p>
           </div>
           <button
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-white/5"
-            style={{ color: "#7d8590" }}
+            className="text-cream-muted hover:bg-cream/5 flex h-8 w-8 items-center justify-center rounded-lg transition-colors"
             aria-label="Cerrar"
           >
             ✕
@@ -288,99 +273,59 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
         {submitted ? (
           // ── Estado de éxito ──
           <div className="flex flex-col items-center gap-4 px-6 py-12 text-center">
-            <div
-              className="flex h-16 w-16 items-center justify-center rounded-full text-3xl"
-              style={{ backgroundColor: "#3fb95020", border: "2px solid #3fb950" }}
-            >
+            <div className="bg-success-soft border-success flex h-16 w-16 items-center justify-center rounded-full border-2 text-3xl">
               ✓
             </div>
-            <h3 className="text-lg font-bold" style={{ color: "#3fb950" }}>
-              Informe recibido
-            </h3>
-            <p className="text-sm" style={{ color: "#7d8590" }}>
+            <h3 className="text-success font-serif text-lg font-bold">Informe recibido</h3>
+            <p className="text-cream-muted text-sm">
               El informe fue registrado bajo el número de confirmación:
             </p>
-            <span
-              className="rounded-lg px-4 py-2 font-mono text-sm font-bold"
-              style={{
-                backgroundColor: "#0d1117",
-                color: "#74ACDF",
-                border: "1px solid #74ACDF40",
-              }}
-            >
+            <span className="bg-ink text-royal border-royal/40 rounded-lg border px-4 py-2 font-mono text-sm font-bold">
               {confirmationId}
             </span>
-            <div
-              className="mt-2 w-full rounded-lg p-4 text-left text-xs"
-              style={{ backgroundColor: "#0d1117", border: "1px solid #21262d" }}
-            >
-              <p style={{ color: "#7d8590" }}>Responsable del informe:</p>
-              <p className="mt-1 font-semibold" style={{ color: "#e6edf3" }}>
+            <div className="bg-ink border-border mt-2 w-full rounded-lg border p-4 text-left text-xs">
+              <p className="text-cream-muted">Responsable del informe:</p>
+              <p className="text-cream mt-1 font-semibold">
                 {currentUser.nombre} — {currentUser.email}
               </p>
-              <p className="mt-1" style={{ color: "#7d8590" }}>
-                Registrado el {submitTimestamp}
-              </p>
+              <p className="text-cream-muted mt-1">Registrado el {submitTimestamp}</p>
             </div>
-            <p className="mt-2 text-xs leading-relaxed" style={{ color: "#7d8590" }}>
+            <p className="text-cream-muted mt-2 text-xs leading-relaxed">
               Este registro queda asociado a tu identidad. Cualquier dato falso o tendencioso puede
               generar responsabilidad civil y penal.
             </p>
             <button
               onClick={onClose}
-              className="mt-2 rounded-lg px-6 py-2 text-sm font-semibold transition-colors"
-              style={{ backgroundColor: "#74ACDF", color: "#0d1117" }}
+              className="bg-royal text-cream hover:bg-royal-strong mt-2 rounded-lg px-6 py-2 text-sm font-semibold transition-colors"
             >
               Cerrar
             </button>
           </div>
         ) : (
-          <div className="divide-y" style={{ borderColor: "#21262d" }}>
+          <div className="divide-border divide-y">
             {/* ── 1. Responsable del informe (locked) ── */}
             <section className="px-6 py-5">
               <SectionTitle>
-                <span
-                  className="rounded px-1.5 py-0.5 text-xs"
-                  style={{
-                    backgroundColor: "#3fb95020",
-                    color: "#3fb950",
-                    border: "1px solid #3fb95040",
-                  }}
-                >
+                <span className="bg-success-soft text-success border-success/40 rounded border px-1.5 py-0.5 text-xs font-normal">
                   Sesión activa
                 </span>
                 Responsable del informe
               </SectionTitle>
-              <div
-                className="flex items-center gap-4 rounded-xl p-4"
-                style={{ backgroundColor: "#0d1117", border: "1px solid #21262d" }}
-              >
-                <div
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold"
-                  style={{
-                    backgroundColor: "#74ACDF20",
-                    color: "#74ACDF",
-                    border: "1px solid #74ACDF40",
-                  }}
-                >
+              <div className="bg-ink border-border flex items-center gap-4 rounded-xl border p-4">
+                <div className="bg-royal-soft text-royal border-royal/40 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-sm font-bold">
                   AE
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-semibold" style={{ color: "#e6edf3" }}>
-                    {currentUser.nombre}
-                  </p>
-                  <p className="text-xs" style={{ color: "#7d8590" }}>
+                  <p className="text-cream text-sm font-semibold">{currentUser.nombre}</p>
+                  <p className="text-cream-muted text-xs">
                     {currentUser.email} · ID: {currentUser.id}
                   </p>
                 </div>
-                <span
-                  className="shrink-0 rounded px-2 py-0.5 text-xs"
-                  style={{ backgroundColor: "#21262d", color: "#7d8590" }}
-                >
+                <span className="bg-border text-cream-muted shrink-0 rounded px-2 py-0.5 text-xs">
                   Solo lectura
                 </span>
               </div>
-              <p className="mt-2 text-xs leading-relaxed" style={{ color: "#7d8590" }}>
+              <p className="text-cream-muted mt-2 text-xs leading-relaxed">
                 Al enviar este informe asumís responsabilidad civil por la veracidad de los datos.
                 Tu identidad queda registrada junto al informe.
               </p>
@@ -439,17 +384,13 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
               <div className="mb-3 flex items-center justify-between">
                 <SectionTitle>
                   Casos
-                  <span
-                    className="rounded-full px-2 py-0.5 text-xs font-normal"
-                    style={{ backgroundColor: "#21262d", color: "#7d8590" }}
-                  >
+                  <span className="bg-border text-cream-muted rounded-full px-2 py-0.5 text-xs font-normal">
                     {form.casos.length}
                   </span>
                 </SectionTitle>
                 <button
                   onClick={addCaso}
-                  className="flex items-center gap-1 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-white/5"
-                  style={{ borderColor: "#74ACDF40", color: "#74ACDF" }}
+                  className="border-royal/40 text-royal hover:bg-royal-soft flex items-center gap-1 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors"
                 >
                   + Agregar caso
                 </button>
@@ -457,20 +398,15 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
 
               <div className="flex flex-col gap-3">
                 {form.casos.map((caso, idx) => (
-                  <div
-                    key={caso.id}
-                    className="rounded-xl p-4"
-                    style={{ backgroundColor: "#0d1117", border: "1px solid #21262d" }}
-                  >
+                  <div key={caso.id} className="bg-ink border-border rounded-xl border p-4">
                     <div className="mb-3 flex items-center justify-between">
-                      <span className="text-xs font-semibold" style={{ color: "#7d8590" }}>
+                      <span className="text-cream-muted text-xs font-semibold">
                         Caso #{idx + 1}
                       </span>
                       {form.casos.length > 1 && (
                         <button
                           onClick={() => removeCaso(caso.id)}
-                          className="text-xs transition-colors hover:text-red-400"
-                          style={{ color: "#7d8590" }}
+                          className="text-cream-muted hover:text-danger text-xs transition-colors"
                           aria-label="Eliminar caso"
                         >
                           ✕ Eliminar
@@ -524,11 +460,9 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
 
               {/* Drop zone */}
               <div
-                className="relative flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed py-8 transition-colors"
-                style={{
-                  borderColor: dragging ? "#74ACDF" : "#30363d",
-                  backgroundColor: dragging ? "#74ACDF08" : "transparent",
-                }}
+                className={`relative flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed py-8 transition-colors ${
+                  dragging ? "border-royal bg-royal-soft" : "border-border-strong"
+                }`}
                 onClick={() => fileInputRef.current?.click()}
                 onDragOver={(e) => {
                   e.preventDefault();
@@ -542,8 +476,7 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
                 }}
               >
                 <svg
-                  className="h-8 w-8"
-                  style={{ color: "#7d8590" }}
+                  className="text-cream-muted h-8 w-8"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -555,12 +488,10 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
                     d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.338-2.32A4.5 4.5 0 0 1 17.25 19.5H6.75Z"
                   />
                 </svg>
-                <p className="text-sm font-medium" style={{ color: "#e6edf3" }}>
+                <p className="text-cream text-sm font-medium">
                   Arrastrá o hacé clic para subir PDFs
                 </p>
-                <p className="text-xs" style={{ color: "#7d8590" }}>
-                  Solo archivos .pdf · Podés subir varios
-                </p>
+                <p className="text-cream-muted text-xs">Solo archivos .pdf · Podés subir varios</p>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -577,22 +508,18 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
                   {form.archivos.map((f) => (
                     <li
                       key={f.name}
-                      className="flex items-center justify-between rounded-lg px-3 py-2"
-                      style={{ backgroundColor: "#0d1117", border: "1px solid #21262d" }}
+                      className="bg-ink border-border flex items-center justify-between rounded-lg border px-3 py-2"
                     >
                       <div className="flex min-w-0 items-center gap-2">
-                        <span style={{ color: "#f85149" }}>📄</span>
-                        <span className="truncate text-xs font-medium" style={{ color: "#e6edf3" }}>
-                          {f.name}
-                        </span>
-                        <span className="shrink-0 text-xs" style={{ color: "#7d8590" }}>
+                        <span className="text-danger">📄</span>
+                        <span className="text-cream truncate text-xs font-medium">{f.name}</span>
+                        <span className="text-cream-muted shrink-0 text-xs">
                           {(f.size / 1024).toFixed(0)} KB
                         </span>
                       </div>
                       <button
                         onClick={() => removeFile(f.name)}
-                        className="shrink-0 ml-2 text-xs hover:text-red-400"
-                        style={{ color: "#7d8590" }}
+                        className="text-cream-muted hover:text-danger ml-2 shrink-0 text-xs"
                         aria-label="Quitar archivo"
                       >
                         ✕
@@ -611,44 +538,28 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
                 onChange={(e) => set("observaciones", e.target.value)}
                 rows={3}
                 placeholder="Contexto adicional, fuentes, aclaraciones..."
-                className="w-full rounded-lg border px-3 py-2 text-sm outline-none resize-none"
-                style={{
-                  backgroundColor: "#0d1117",
-                  borderColor: "#30363d",
-                  color: "#e6edf3",
-                }}
-                onFocus={(e) => (e.currentTarget.style.borderColor = "#74ACDF")}
-                onBlur={(e) => (e.currentTarget.style.borderColor = "#30363d")}
+                className={`${INPUT_CLASSES} resize-none`}
               />
             </section>
 
             {/* ── Footer ── */}
             <div className="flex flex-col gap-3 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
-              <p
-                className="text-xs leading-relaxed"
-                style={{ color: "#7d8590", maxWidth: "340px" }}
-              >
+              <p className="text-cream-muted max-w-[340px] text-xs leading-relaxed">
                 Al enviar confirmás que los datos son verídicos. La carga queda vinculada a{" "}
-                <strong style={{ color: "#e6edf3" }}>{currentUser.nombre}</strong> (
-                {currentUser.email}) con responsabilidad civil.
+                <strong className="text-cream">{currentUser.nombre}</strong> ({currentUser.email})
+                con responsabilidad civil.
               </p>
               <div className="flex shrink-0 gap-2">
                 <button
                   onClick={onClose}
-                  className="rounded-lg border px-4 py-2 text-sm font-medium transition-colors hover:bg-white/5"
-                  style={{ borderColor: "#30363d", color: "#7d8590" }}
+                  className="border-border-strong text-cream-muted hover:bg-cream/5 rounded-lg border px-4 py-2 text-sm font-medium transition-colors"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={handleSubmit}
                   disabled={!valid}
-                  className="rounded-lg px-5 py-2 text-sm font-semibold transition-all"
-                  style={{
-                    backgroundColor: valid ? "#74ACDF" : "#21262d",
-                    color: valid ? "#0d1117" : "#4d5561",
-                    cursor: valid ? "pointer" : "not-allowed",
-                  }}
+                  className={`rounded-lg px-5 py-2 text-sm font-semibold transition-colors ${submitBtnCls}`}
                 >
                   Enviar informe
                 </button>
