@@ -51,18 +51,25 @@ function ChipButton({
   onClick: () => void;
   children: React.ReactNode;
 }) {
+  const cls = active
+    ? "bg-royal text-cream border-royal"
+    : "bg-border text-cream-muted border-border-strong hover:bg-cream/5";
   return (
     <button
       onClick={onClick}
-      className="cursor-pointer rounded-md px-2.5 py-1 text-xs font-medium transition-colors"
-      style={{
-        backgroundColor: active ? "#74ACDF" : "#21262d",
-        color: active ? "#0d1117" : "#8b949e",
-        border: "1px solid " + (active ? "#74ACDF" : "#30363d"),
-      }}
+      className={`cursor-pointer rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${cls}`}
     >
       {children}
     </button>
+  );
+}
+
+function FilterRow({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="text-cream-muted min-w-[80px] shrink-0 text-xs">{label}</span>
+      {children}
+    </div>
   );
 }
 
@@ -145,12 +152,11 @@ export default function JudgeFilters({ filters, onChange, judges }: Props) {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Búsqueda */}
+      {/* Búsqueda + Ordenar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative flex-1 sm:max-w-sm">
           <svg
-            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2"
-            style={{ color: "#74ACDF" }}
+            className="text-royal pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -167,16 +173,12 @@ export default function JudgeFilters({ filters, onChange, judges }: Props) {
             placeholder="Buscar por nombre, tribunal, provincia, fuero..."
             value={filters.search}
             onChange={(e) => onChange({ search: e.target.value })}
-            className="w-full rounded-lg border py-2.5 pl-9 pr-4 text-sm outline-none"
-            style={{ borderColor: "#30363d", backgroundColor: "#161b22", color: "#e6edf3" }}
+            className="bg-ink-elevated border-border-strong text-cream focus:border-royal placeholder:text-cream-muted w-full rounded-lg border py-2.5 pl-9 pr-4 text-sm outline-none transition-colors focus:outline-none"
           />
         </div>
 
-        {/* Ordenar */}
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-medium" style={{ color: "#7d8590" }}>
-            Ordenar:
-          </span>
+          <span className="text-cream-muted text-xs font-medium">Ordenar:</span>
           {SORT_OPTIONS.map(({ key, label }) => (
             <ChipButton
               key={key}
@@ -196,32 +198,21 @@ export default function JudgeFilters({ filters, onChange, judges }: Props) {
       </div>
 
       {/* Filtros avanzados */}
-      <div
-        className="rounded-lg border p-3"
-        style={{ backgroundColor: "#0d1117", borderColor: "#21262d" }}
-      >
+      <div className="bg-ink border-border rounded-lg border p-3">
         <div className="mb-2 flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider" style={{ color: "#7d8590" }}>
+          <span className="text-cream-muted text-xs font-bold uppercase tracking-wider">
             Filtros
           </span>
           {hasActiveFilters && (
-            <button
-              onClick={clearAll}
-              className="text-xs hover:underline"
-              style={{ color: "#f85149" }}
-            >
+            <button onClick={clearAll} className="text-danger text-xs hover:underline">
               Limpiar filtros
             </button>
           )}
         </div>
 
         <div className="flex flex-col gap-3">
-          {/* Fuero */}
           {fueros.length > 0 && (
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="shrink-0 text-xs" style={{ color: "#7d8590", minWidth: "80px" }}>
-                Fuero:
-              </span>
+            <FilterRow label="Fuero:">
               {fueros.map((f) => (
                 <ChipButton
                   key={f}
@@ -231,15 +222,11 @@ export default function JudgeFilters({ filters, onChange, judges }: Props) {
                   {f}
                 </ChipButton>
               ))}
-            </div>
+            </FilterRow>
           )}
 
-          {/* Instancia */}
           {instances.length > 0 && (
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="shrink-0 text-xs" style={{ color: "#7d8590", minWidth: "80px" }}>
-                Instancia:
-              </span>
+            <FilterRow label="Instancia:">
               {instances.map((inst) => (
                 <ChipButton
                   key={inst}
@@ -251,15 +238,11 @@ export default function JudgeFilters({ filters, onChange, judges }: Props) {
                   {inst}
                 </ChipButton>
               ))}
-            </div>
+            </FilterRow>
           )}
 
-          {/* Alcance */}
           {scopes.length > 0 && (
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="shrink-0 text-xs" style={{ color: "#7d8590", minWidth: "80px" }}>
-                Alcance:
-              </span>
+            <FilterRow label="Alcance:">
               {scopes.map((s) => (
                 <ChipButton
                   key={s}
@@ -269,14 +252,10 @@ export default function JudgeFilters({ filters, onChange, judges }: Props) {
                   {s}
                 </ChipButton>
               ))}
-            </div>
+            </FilterRow>
           )}
 
-          {/* Escala salarial */}
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="shrink-0 text-xs" style={{ color: "#7d8590", minWidth: "80px" }}>
-              Salario:
-            </span>
+          <FilterRow label="Salario:">
             {(Object.keys(SALARY_BAND_LABELS) as SalaryBand[]).map((band) => (
               <ChipButton
                 key={band}
@@ -290,13 +269,9 @@ export default function JudgeFilters({ filters, onChange, judges }: Props) {
                 {SALARY_BAND_LABELS[band]}
               </ChipButton>
             ))}
-          </div>
+          </FilterRow>
 
-          {/* Antigüedad */}
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="shrink-0 text-xs" style={{ color: "#7d8590", minWidth: "80px" }}>
-              Antigüedad:
-            </span>
+          <FilterRow label="Antigüedad:">
             {(Object.keys(YEARS_BAND_LABELS) as YearsBand[]).map((band) => (
               <ChipButton
                 key={band}
@@ -310,7 +285,7 @@ export default function JudgeFilters({ filters, onChange, judges }: Props) {
                 {YEARS_BAND_LABELS[band]}
               </ChipButton>
             ))}
-          </div>
+          </FilterRow>
         </div>
       </div>
     </div>
