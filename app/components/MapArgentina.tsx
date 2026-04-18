@@ -258,7 +258,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
   }, {});
 
   function getFill(province: string): string {
-    if (activeProvince === province) return "#c18a38";
+    if (activeProvince === province) return "#e7ba61";
     const count = judgesByProvince[province] ?? 0;
     if (count === 0) return "#1a2340";
     if (count <= 2) return "#242b48";
@@ -363,13 +363,13 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
         {/* Ícono mapa */}
         <div
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md"
-          style={{ backgroundColor: "#c18a3815", border: "1px solid #c18a3830" }}
+          style={{ backgroundColor: "#e7ba6115", border: "1px solid #e7ba6130" }}
         >
           <svg
             viewBox="0 0 20 20"
             fill="none"
             className="h-4 w-4"
-            style={{ color: "#c18a38" }}
+            style={{ color: "#e7ba61" }}
             stroke="currentColor"
             strokeWidth={1.5}
           >
@@ -390,9 +390,9 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
               <span
                 className="rounded-full px-2 py-0.5 text-xs font-medium"
                 style={{
-                  backgroundColor: "#c18a3815",
-                  color: "#c18a38",
-                  border: "1px solid #c18a3830",
+                  backgroundColor: "#e7ba6115",
+                  color: "#e7ba61",
+                  border: "1px solid #e7ba6130",
                 }}
               >
                 {activeProvince ?? "Argentina"}
@@ -473,7 +473,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
               {[
                 { bg: "#1c2128", label: "Sin datos", border: "1px solid #363e5e" },
                 { bg: "#1f3a5f", label: "1–2 jueces" },
-                { bg: "#c18a38", label: "Seleccionada" },
+                { bg: "#e7ba61", label: "Seleccionada" },
               ].map(({ bg, label, border }) => (
                 <div key={label} className="flex items-center gap-1.5">
                   <span className="h-3 w-4 rounded" style={{ backgroundColor: bg, border }} />
@@ -552,7 +552,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                       width={96}
                       height={105}
                       fill="none"
-                      stroke="#c18a38"
+                      stroke="#e7ba61"
                       strokeWidth={6}
                       strokeDasharray="18 8"
                       style={{ pointerEvents: "none" }}
@@ -564,7 +564,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                       y1={4237}
                       x2={INSET_POS.x}
                       y2={INSET_POS.y + 80}
-                      stroke="#c18a3830"
+                      stroke="#e7ba6130"
                       strokeWidth={5}
                       strokeDasharray="16 10"
                       style={{ pointerEvents: "none" }}
@@ -574,7 +574,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                       y1={4290}
                       x2={INSET_POS.x}
                       y2={INSET_POS.y + INSET_POS.h - 80}
-                      stroke="#c18a3830"
+                      stroke="#e7ba6130"
                       strokeWidth={5}
                       strokeDasharray="16 10"
                       style={{ pointerEvents: "none" }}
@@ -588,7 +588,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                       height={INSET_POS.h}
                       rx={24}
                       fill="#0f1529"
-                      stroke="#c18a3860"
+                      stroke="#e7ba6160"
                       strokeWidth={7}
                     />
 
@@ -639,7 +639,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                       height={INSET_POS.h}
                       rx={24}
                       fill="none"
-                      stroke="#c18a3860"
+                      stroke="#e7ba6160"
                       strokeWidth={7}
                       style={{ pointerEvents: "none" }}
                     />
@@ -673,15 +673,15 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {depts.map((dept) => {
-                      const color = isBsAs ? DEPTO_COLORS[dept] : "#c18a38";
+                      const color = isBsAs ? DEPTO_COLORS[dept] : "#e7ba61";
                       return (
                         <span
                           key={dept}
                           className="flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium"
                           style={{
-                            backgroundColor: isBsAs ? `${color}20` : "#c18a3815",
-                            color: isBsAs ? color : "#c18a38",
-                            border: `1px solid ${isBsAs ? `${color}60` : "#c18a3830"}`,
+                            backgroundColor: isBsAs ? `${color}20` : "#e7ba6115",
+                            color: isBsAs ? color : "#e7ba61",
+                            border: `1px solid ${isBsAs ? `${color}60` : "#e7ba6130"}`,
                           }}
                         >
                           {isBsAs && (
