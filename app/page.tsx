@@ -121,61 +121,28 @@ export default function HomePage() {
 
         {/* Section header */}
         <div className="mb-5 flex flex-wrap items-center gap-3">
-          <h2 className="text-lg font-bold" style={{ color: "#e6edf3" }}>
-            Jueces
-          </h2>
-          <span
-            className="rounded-full px-2 py-0.5 text-xs font-semibold"
-            style={{ backgroundColor: "#21262d", color: "#7d8590" }}
-          >
+          <h2 className="text-cream font-serif text-2xl font-bold">Jueces</h2>
+          <span className="bg-border text-cream-muted rounded-full px-2 py-0.5 text-xs font-semibold">
             {judges.length}
           </span>
 
           {loading && (
-            <span
-              className="ml-1 rounded-full px-2.5 py-0.5 text-xs font-medium"
-              style={{
-                backgroundColor: "#74ACDF15",
-                color: "#74ACDF",
-                border: "1px solid #74ACDF30",
-              }}
-            >
+            <span className="bg-royal-soft text-royal border-royal/30 ml-1 rounded-full border px-2.5 py-0.5 text-xs font-medium">
               Cargando...
             </span>
           )}
           {!loading && error && (
-            <span
-              className="ml-1 rounded-full px-2.5 py-0.5 text-xs font-medium"
-              style={{
-                backgroundColor: "#f8514920",
-                color: "#f85149",
-                border: "1px solid #f8514930",
-              }}
-            >
+            <span className="bg-danger-soft text-danger border-danger/30 ml-1 rounded-full border px-2.5 py-0.5 text-xs font-medium">
               Sin conexión al backend
             </span>
           )}
           {!loading && !error && (
-            <span
-              className="ml-1 rounded-full px-2.5 py-0.5 text-xs font-medium"
-              style={{
-                backgroundColor: "#3fb95015",
-                color: "#3fb950",
-                border: "1px solid #3fb95030",
-              }}
-            >
+            <span className="bg-success-soft text-success border-success/30 ml-1 rounded-full border px-2.5 py-0.5 text-xs font-medium">
               Datos del backend
             </span>
           )}
           {activeProvince && (
-            <span
-              className="ml-1 rounded-full px-2.5 py-0.5 text-xs font-medium"
-              style={{
-                backgroundColor: "#74ACDF20",
-                color: "#74ACDF",
-                border: "1px solid #74ACDF50",
-              }}
-            >
+            <span className="bg-royal-soft text-royal border-royal/50 ml-1 rounded-full border px-2.5 py-0.5 text-xs font-medium">
               Provincia: {activeProvince}
             </span>
           )}
@@ -183,14 +150,7 @@ export default function HomePage() {
 
         {/* Error banner */}
         {error && (
-          <div
-            className="mb-5 rounded-lg border px-4 py-3 text-sm"
-            style={{
-              backgroundColor: "#f8514910",
-              borderColor: "#f85149",
-              color: "#f85149",
-            }}
-          >
+          <div className="bg-danger-soft border-danger text-danger mb-5 rounded-lg border px-4 py-3 text-sm">
             {error}
           </div>
         )}
@@ -203,7 +163,7 @@ export default function HomePage() {
         )}
 
         {!loading && !error && (
-          <p className="mb-4 text-xs" style={{ color: "#7d8590" }}>
+          <p className="text-cream-muted mb-4 text-xs">
             Mostrando {filtered.length} de {judges.length} jueces
             {activeProvince && ` en ${activeProvince}`}
           </p>
@@ -215,8 +175,7 @@ export default function HomePage() {
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="h-52 animate-pulse rounded-xl border"
-                style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
+                className="bg-ink-elevated border-border h-52 animate-pulse rounded-xl border"
               />
             ))}
           </div>
@@ -229,7 +188,7 @@ export default function HomePage() {
               <Link
                 key={judge.id}
                 href={`/juez/${judge.slug}`}
-                className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#74ACDF] rounded-xl"
+                className="focus-visible:ring-royal block rounded-xl focus:outline-none focus-visible:ring-2"
               >
                 <JudgeCard {...judge} />
               </Link>
@@ -238,14 +197,9 @@ export default function HomePage() {
         )}
 
         {!loading && !error && filtered.length === 0 && (
-          <div
-            className="flex flex-col items-center justify-center rounded-xl border py-16"
-            style={{ borderColor: "#21262d", backgroundColor: "#161b22" }}
-          >
-            <p className="font-medium" style={{ color: "#e6edf3" }}>
-              No se encontraron jueces
-            </p>
-            <p className="mt-1 text-sm" style={{ color: "#7d8590" }}>
+          <div className="bg-ink-elevated border-border flex flex-col items-center justify-center rounded-xl border py-16">
+            <p className="text-cream font-medium">No se encontraron jueces</p>
+            <p className="text-cream-muted mt-1 text-sm">
               {hasAnyFilter
                 ? "Probá ajustando los filtros o hacé click en el mapa para cambiar la provincia"
                 : "No hay jueces disponibles"}
@@ -254,8 +208,8 @@ export default function HomePage() {
         )}
 
         {/* Footer */}
-        <footer className="mt-16 border-t pt-8 text-center" style={{ borderColor: "#21262d" }}>
-          <p className="text-xs leading-relaxed" style={{ color: "#7d8590" }}>
+        <footer className="border-border mt-16 border-t pt-8 text-center">
+          <p className="text-cream-muted text-xs leading-relaxed">
             Observatorio Judicial Argentino es un proyecto de código abierto, estadístico y sin
             sesgo político. No tiene fines de vigilancia ni de castigo. Los datos provienen de
             registros públicos del poder judicial argentino.
@@ -264,8 +218,7 @@ export default function HomePage() {
             href="https://github.com/observatorio-justicia-argentina/observatorio-justicia-argentina-frontend"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-2 inline-block text-xs hover:underline"
-            style={{ color: "#74ACDF" }}
+            className="text-royal mt-2 inline-block text-xs hover:underline"
           >
             Ver código fuente en GitHub
           </a>
