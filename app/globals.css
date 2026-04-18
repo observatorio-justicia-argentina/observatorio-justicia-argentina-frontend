@@ -5,7 +5,6 @@
   /* Navy surfaces (darker than Ministry chrome, full dark-mode context) */
   --ink:            #0f1529;
   --ink-elevated:   #181f38;
-  --ink-raised:     #242b48;
   --border:         #242b48;
   --border-strong:  #363e5e;
 
@@ -33,7 +32,6 @@
 @theme inline {
   --color-ink:           var(--ink);
   --color-ink-elevated:  var(--ink-elevated);
-  --color-ink-raised:    var(--ink-raised);
   --color-border:        var(--border);
   --color-border-strong: var(--border-strong);
 
