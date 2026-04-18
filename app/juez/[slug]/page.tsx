@@ -24,7 +24,7 @@ const MOCK_PAGINATED: PaginatedResult<Caso> = {
       decisionDate: "2024-03-15",
       decisionType: "Libertad cautelar",
       outcome: "fta",
-      observaciones: "El imputado no se presentó a la audiencia fijada para el 20/04/2024.",
+      outcomeDetail: "El imputado no se presentó a la audiencia fijada para el 20/04/2024.",
     },
     {
       id: "mock-2",
@@ -32,7 +32,7 @@ const MOCK_PAGINATED: PaginatedResult<Caso> = {
       decisionDate: "2024-06-02",
       decisionType: "Excarcelación",
       outcome: "newArrest",
-      observaciones: "Detenido nuevamente el 14/07/2024 por robo agravado.",
+      outcomeDetail: "Detenido nuevamente el 14/07/2024 por robo agravado.",
     },
     {
       id: "mock-3",
@@ -40,7 +40,7 @@ const MOCK_PAGINATED: PaginatedResult<Caso> = {
       decisionDate: "2023-11-20",
       decisionType: "Prisión preventiva atenuada",
       outcome: "revoked",
-      observaciones: "La Cámara revocó la medida por incumplimiento de condiciones.",
+      outcomeDetail: "La Cámara revocó la medida por incumplimiento de condiciones.",
     },
     {
       id: "mock-4",
@@ -558,9 +558,9 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                             </td>
                             <td className="px-4 py-3">
                               <ResultadoBadge resultado={caso.outcome} />
-                              {caso.observaciones && (
+                              {caso.outcomeDetail && (
                                 <p className="mt-1 text-xs" style={{ color: "#7d8590" }}>
-                                  {caso.observaciones}
+                                  {caso.outcomeDetail}
                                 </p>
                               )}
                             </td>
