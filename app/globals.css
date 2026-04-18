@@ -63,11 +63,14 @@ body {
 }
 
 body {
-  /* Subtle top-down vignette adds "light from above" depth over the flat ink */
+  /* Layered atmosphere: dot halftone grid + top-light vignette + bottom shadow */
   background-color: var(--ink);
   background-image:
+    radial-gradient(circle, rgba(244, 242, 230, 0.04) 1px, transparent 1.2px),
     radial-gradient(ellipse 90% 60% at 50% 0%, rgba(54, 62, 94, 0.35), transparent 65%),
     radial-gradient(ellipse 100% 80% at 50% 120%, rgba(8, 12, 28, 0.8), transparent 60%);
+  background-size: 14px 14px, 100% 100%, 100% 100%;
+  background-position: 0 0, 0 0, 0 0;
   background-attachment: fixed;
   color: var(--cream);
   font-family: var(--font-instrument-sans), Arial, Helvetica, sans-serif;

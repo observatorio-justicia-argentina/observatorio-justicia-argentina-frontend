@@ -25,34 +25,31 @@ const PRINCIPLES: {
   { Icon: SearchIcon, label: "Datos reales" },
 ];
 
-// ── Sol de Mayo watermark ─────────────────────────────────────────────────────
-// Simplified: 16 alternating-length rays radiating from a concentric double circle.
-// Renders at very low opacity as an atmospheric mark behind the headline.
+// ── Sol de Mayo halftone ──────────────────────────────────────────────────────
+// Stippled concentric rings — reads as an engraved sun, dots grow denser toward the core.
 
-function SolDeMayo({ className }: { className?: string }) {
-  const rays = Array.from({ length: 16 }, (_, i) => i);
+function SolHalftone({ className }: { className?: string }) {
+  const dots: { x: number; y: number; r: number; key: string }[] = [];
+  for (let ring = 1; ring <= 12; ring++) {
+    const radius = ring * 9; // 9, 18, ..., 108
+    const dotsInRing = Math.max(6, ring * 6);
+    const dotSize = Math.max(0.9, 2.6 - ring * 0.12);
+    for (let d = 0; d < dotsInRing; d++) {
+      const angle = (d / dotsInRing) * 2 * Math.PI;
+      dots.push({
+        x: radius * Math.cos(angle),
+        y: radius * Math.sin(angle),
+        r: dotSize,
+        key: `${ring}-${d}`,
+      });
+    }
+  }
   return (
-    <svg viewBox="-100 -100 200 200" className={className} aria-hidden>
-      {rays.map((i) => {
-        const angle = (i * 22.5 * Math.PI) / 180;
-        const length = i % 2 === 0 ? 88 : 66;
-        const x = length * Math.cos(angle);
-        const y = length * Math.sin(angle);
-        return (
-          <line
-            key={i}
-            x1={0}
-            y1={0}
-            x2={x}
-            y2={y}
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-          />
-        );
-      })}
-      <circle r="26" fill="none" stroke="currentColor" strokeWidth="2" />
-      <circle r="14" fill="none" stroke="currentColor" strokeWidth="1" />
+    <svg viewBox="-130 -130 260 260" className={className} aria-hidden>
+      <circle r="3.5" fill="currentColor" />
+      {dots.map(({ x, y, r, key }) => (
+        <circle key={key} cx={x} cy={y} r={r} fill="currentColor" />
+      ))}
     </svg>
   );
 }
@@ -87,12 +84,12 @@ export default function Hero() {
       {/* Top hairline — subtle gold */}
       <div className="bg-gold/40 relative z-10 h-[1px]" />
 
-      {/* Sol de Mayo watermark — extremely low opacity, slow rotation */}
+      {/* Sol de Mayo halftone — stippled engraving, slow rotation */}
       <div
         aria-hidden
-        className="text-gold pointer-events-none absolute inset-0 flex items-center justify-center"
+        className="text-cream pointer-events-none absolute inset-0 flex items-center justify-center"
       >
-        <SolDeMayo className="sol-rotate h-[120%] w-auto max-w-none opacity-[0.055]" />
+        <SolHalftone className="sol-rotate h-[140%] w-auto max-w-none opacity-[0.09]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
