@@ -1,5 +1,3 @@
-import { ChartIcon, FolderIcon, ScaleIcon, SearchIcon } from "./icons";
-
 const STEPS = [
   {
     num: "I",
@@ -15,65 +13,11 @@ const STEPS = [
   },
 ];
 
-const PRINCIPLES: {
-  Icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
-  label: string;
-}[] = [
-  { Icon: FolderIcon, label: "Código abierto" },
-  { Icon: ChartIcon, label: "Estadístico" },
-  { Icon: ScaleIcon, label: "Sin sesgo político" },
-  { Icon: SearchIcon, label: "Datos reales" },
-];
-
-// ── Sol de Mayo halftone ──────────────────────────────────────────────────────
-// Stippled concentric rings — reads as an engraved sun, dots grow denser toward the core.
-
-function SolHalftone({ className }: { className?: string }) {
-  const dots: { x: number; y: number; r: number; key: string }[] = [];
-  for (let ring = 1; ring <= 12; ring++) {
-    const radius = ring * 9; // 9, 18, ..., 108
-    const dotsInRing = Math.max(6, ring * 6);
-    const dotSize = Math.max(0.9, 2.6 - ring * 0.12);
-    for (let d = 0; d < dotsInRing; d++) {
-      const angle = (d / dotsInRing) * 2 * Math.PI;
-      dots.push({
-        x: radius * Math.cos(angle),
-        y: radius * Math.sin(angle),
-        r: dotSize,
-        key: `${ring}-${d}`,
-      });
-    }
-  }
-  return (
-    <svg viewBox="-130 -130 260 260" className={className} aria-hidden>
-      <circle r="3.5" fill="currentColor" />
-      {dots.map(({ x, y, r, key }) => (
-        <circle key={key} cx={x} cy={y} r={r} fill="currentColor" />
-      ))}
-    </svg>
-  );
-}
-
 function StepCard({ num, text }: { num: string; text: string }) {
   return (
     <div className="border-border bg-ink-elevated rounded-xl border p-6 shadow-md shadow-black/30">
       <span className="text-gold mb-3 block font-serif text-5xl leading-none">{num}</span>
       <p className="text-cream-muted text-sm leading-relaxed">{text}</p>
-    </div>
-  );
-}
-
-function PrincipleChip({
-  Icon,
-  label,
-}: {
-  Icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
-  label: string;
-}) {
-  return (
-    <div className="border-border bg-ink-elevated text-cream-muted flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium">
-      <Icon className="text-gold h-3.5 w-3.5" aria-hidden />
-      {label}
     </div>
   );
 }
@@ -84,12 +28,15 @@ export default function Hero() {
       {/* Top hairline — subtle gold */}
       <div className="bg-gold/40 relative z-10 h-[1px]" />
 
-      {/* Sol de Mayo halftone — stippled engraving, slow rotation */}
-      <div
-        aria-hidden
-        className="text-cream pointer-events-none absolute inset-0 flex items-center justify-center"
-      >
-        <SolHalftone className="sol-rotate h-[140%] w-auto max-w-none opacity-[0.09]" />
+      {/* Escudo Nacional Argentino — halftone watermark on the right */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <img
+          src="/coat-of-arms.svg"
+          alt=""
+          className="absolute -right-24 top-1/2 h-[140%] w-auto -translate-y-1/2 opacity-[0.18] [filter:grayscale(1)_contrast(1.15)_brightness(0.95)] sm:-right-12"
+        />
+        {/* Dark fade from left to right so the escudo bleeds into the ink on the text side */}
+        <div className="from-ink via-ink/95 absolute inset-0 bg-gradient-to-r to-transparent" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
@@ -99,7 +46,7 @@ export default function Hero() {
         </p>
 
         {/* Headline — editorial serif display */}
-        <h1 className="reveal reveal-delay-2 text-cream text-center font-serif text-5xl leading-[1.02] tracking-tight sm:text-left sm:text-6xl lg:text-7xl xl:text-8xl">
+        <h1 className="reveal reveal-delay-2 text-cream max-w-3xl text-center font-serif text-5xl leading-[1.02] tracking-tight sm:text-left sm:text-6xl lg:text-7xl xl:text-8xl">
           Conocé a tus jueces.
           <br />
           <span className="text-gold italic">Exigí rendición de cuentas.</span>
@@ -119,13 +66,6 @@ export default function Hero() {
         <div className="reveal reveal-delay-4 mt-14 grid gap-6 sm:grid-cols-3">
           {STEPS.map(({ num, text }) => (
             <StepCard key={num} num={num} text={text} />
-          ))}
-        </div>
-
-        {/* Principles row */}
-        <div className="reveal reveal-delay-5 mt-10 flex flex-wrap justify-center gap-3 sm:justify-start">
-          {PRINCIPLES.map(({ Icon, label }) => (
-            <PrincipleChip key={label} Icon={Icon} label={label} />
           ))}
         </div>
       </div>
