@@ -408,14 +408,14 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
 
         {/* Chevron */}
         <div
-          className="flex shrink-0 items-center gap-1.5 rounded-md border px-2 py-1"
-          style={{ borderColor: "#363e5e", color: "#a8a496" }}
+          className="flex shrink-0 items-center gap-2 text-sm font-medium"
+          style={{ color: "#a8a496" }}
         >
-          <span className="text-xs">{isOpen ? "Cerrar" : "Abrir"}</span>
+          <span>{isOpen ? "Cerrar" : "Abrir"}</span>
           <svg
             viewBox="0 0 20 20"
             fill="currentColor"
-            className="h-3.5 w-3.5 transition-transform duration-200"
+            className="h-5 w-5 transition-transform duration-200"
             style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
           >
             <path
