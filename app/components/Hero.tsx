@@ -80,7 +80,7 @@ export default function Hero() {
         </p>
 
         {/* Headline — editorial serif display */}
-        <h1 className="reveal reveal-delay-2 text-cream max-w-3xl text-center font-serif text-5xl leading-[1.02] tracking-tight sm:text-left sm:text-6xl lg:text-7xl xl:text-8xl">
+        <h1 className="reveal reveal-delay-2 text-cream max-w-3xl text-center font-serif text-5xl leading-[1.02] sm:text-left sm:text-6xl lg:text-7xl xl:text-8xl">
           Conocé a tus jueces.
           <br />
           <span className="text-gold italic">Exigí rendición de cuentas.</span>

@@ -277,7 +277,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                 </p>
                 <div className="flex flex-wrap items-center gap-3">
                   <h1
-                    className="font-serif text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl"
+                    className="font-serif text-3xl font-bold sm:text-4xl lg:text-5xl"
                     style={{ color: "#f4f2e6" }}
                   >
                     {judge.name}
@@ -471,7 +471,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
             </p>
             <div className="mb-4 flex items-center gap-2">
               <h2
-                className="font-serif text-2xl font-bold tracking-tight sm:text-3xl"
+                className="font-serif text-2xl font-bold sm:text-3xl"
                 style={{ color: "#f4f2e6" }}
               >
                 Casos registrados
@@ -613,7 +613,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                 Archivo
               </p>
               <h2
-                className="mb-4 font-serif text-2xl font-bold tracking-tight sm:text-3xl"
+                className="mb-4 font-serif text-2xl font-bold sm:text-3xl"
                 style={{ color: "#f4f2e6" }}
               >
                 Documentación pública

@@ -135,9 +135,7 @@ export default function HomePage() {
           Registros
         </p>
         <div className="mb-5 flex flex-wrap items-center gap-3">
-          <h2 className="text-cream font-serif text-3xl font-bold tracking-tight sm:text-4xl">
-            Jueces
-          </h2>
+          <h2 className="text-cream font-serif text-3xl font-bold sm:text-4xl">Jueces</h2>
           <Tag>{judges.length}</Tag>
           {loading && <Tag variant="gold">Cargando</Tag>}
           {!loading && error && <Tag variant="danger">Sin conexión</Tag>}

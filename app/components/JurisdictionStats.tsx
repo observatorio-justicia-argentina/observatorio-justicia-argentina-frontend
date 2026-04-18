@@ -141,7 +141,7 @@ export default function JurisdictionStats({
         Geografía Judicial
       </p>
       <div className="mb-4 flex flex-wrap items-center gap-3">
-        <h2 className="text-cream font-serif text-3xl font-bold tracking-tight sm:text-4xl">
+        <h2 className="text-cream font-serif text-3xl font-bold sm:text-4xl">
           Estadísticas por Jurisdicción
         </h2>
         <Tag>Argentina → Provincia → Depto. Judicial</Tag>
