@@ -28,7 +28,7 @@ const PRINCIPLES: {
 function StepCard({ num, text }: { num: string; text: string }) {
   return (
     <div className="border-border bg-ink-elevated rounded-xl border p-6 shadow-md shadow-black/30">
-      <span className="text-gold mb-3 block font-serif text-5xl font-black leading-none">
+      <span className="text-gold mb-3 block text-5xl font-black leading-none tracking-tight">
         {num}
       </span>
       <p className="text-cream-muted text-sm leading-relaxed">{text}</p>
