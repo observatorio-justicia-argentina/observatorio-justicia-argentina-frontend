@@ -42,12 +42,9 @@ function PrincipleChip({ icon, label }: { icon: string; label: string }) {
 
 export default function Hero() {
   return (
-    <section className="border-border w-full border-b">
-      {/* Top gradient hairline */}
-      <div
-        className="h-[2px]"
-        style={{ background: "linear-gradient(90deg, var(--gold) 0%, var(--gold) 100%)" }}
-      />
+    <section className="w-full">
+      {/* Top hairline — subtle gold */}
+      <div className="bg-gold/40 h-[1px]" />
 
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
         {/* Badge */}
@@ -88,6 +85,9 @@ export default function Hero() {
           ))}
         </div>
       </div>
+
+      {/* Bottom hairline — prominent gold to announce transition to content */}
+      <div className="bg-gold h-[2px]" />
     </section>
   );
 }
