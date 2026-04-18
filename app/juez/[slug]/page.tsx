@@ -82,31 +82,28 @@ function ResultadoBadge({ resultado }: { resultado: ResultadoCaso }) {
   return <Tag variant={RESULTADO_VARIANT[resultado]}>{RESULTADO_LABEL[resultado]}</Tag>;
 }
 
-function StatBox({ value, label, color }: { value: number; label: string; color: string }) {
+function StatBox({
+  value,
+  label,
+  valueClass,
+}: {
+  value: number;
+  label: string;
+  valueClass: string;
+}) {
   return (
-    <div
-      className="flex flex-col items-center rounded-lg px-4 py-3"
-      style={{ backgroundColor: "#0f1529" }}
-    >
-      <span className="text-2xl font-bold" style={{ color }}>
-        {value}
-      </span>
-      <span className="mt-0.5 text-center text-xs" style={{ color: "#a8a496" }}>
-        {label}
-      </span>
+    <div className="bg-ink flex flex-col items-center rounded-lg px-4 py-3">
+      <span className={`text-2xl font-bold ${valueClass}`}>{value}</span>
+      <span className="text-cream-muted mt-0.5 text-center text-xs">{label}</span>
     </div>
   );
 }
 
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex flex-col gap-0.5 py-2.5" style={{ borderBottom: "1px solid #242b48" }}>
-      <span className="text-xs font-medium uppercase tracking-wide" style={{ color: "#a8a496" }}>
-        {label}
-      </span>
-      <span className="text-sm" style={{ color: "#f4f2e6" }}>
-        {value}
-      </span>
+    <div className="border-border flex flex-col gap-0.5 border-b py-2.5">
+      <span className="text-cream-muted text-xs font-medium uppercase tracking-wide">{label}</span>
+      <span className="text-cream text-sm">{value}</span>
     </div>
   );
 }
@@ -125,6 +122,12 @@ function formatDate(iso: string) {
     month: "2-digit",
     year: "numeric",
   });
+}
+
+function rateClasses(rate: number): string {
+  if (rate > 20) return "bg-danger-soft text-danger border-danger/40";
+  if (rate > 10) return "bg-gold-soft text-gold border-gold/40";
+  return "bg-success-soft text-success border-success/40";
 }
 
 // ── Componente principal ──────────────────────────────────────────────────────
@@ -202,8 +205,6 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
         ).toFixed(1)
       : "0.0";
   const rate = parseFloat(failureRate);
-  const rateColor = rate > 20 ? "#f85149" : rate > 10 ? "#d0a04a" : "#3fb950";
-  const rateBg = rate > 20 ? "#f8514920" : rate > 10 ? "#d0a04a20" : "#3fb95020";
 
   const locationPath =
     judge &&
@@ -216,8 +217,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
       {/* Breadcrumb */}
       <Link
         href="/"
-        className="mb-6 inline-flex items-center gap-1.5 text-sm transition-colors hover:text-[#f4f2e6]"
-        style={{ color: "#d0a04a" }}
+        className="text-gold hover:text-cream mb-6 inline-flex items-center gap-1.5 text-sm transition-colors"
       >
         <svg
           className="h-4 w-4"
@@ -233,10 +233,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
 
       {/* Error */}
       {errorJudge && !loadingJudge && (
-        <div
-          className="rounded-lg border px-4 py-3 text-sm"
-          style={{ backgroundColor: "#f8514910", borderColor: "#f85149", color: "#f85149" }}
-        >
+        <div className="bg-danger-soft border-danger text-danger rounded-lg border px-4 py-3 text-sm">
           {errorJudge}
         </div>
       )}
@@ -244,54 +241,33 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
       {/* Loading skeleton */}
       {loadingJudge && (
         <div className="space-y-4">
-          <div className="shimmer-bg h-40 rounded-xl border" style={{ borderColor: "#242b48" }} />
-          <div className="shimmer-bg h-64 rounded-xl border" style={{ borderColor: "#242b48" }} />
+          <div className="shimmer-bg border-border h-40 rounded-xl border" />
+          <div className="shimmer-bg border-border h-64 rounded-xl border" />
         </div>
       )}
 
       {!loadingJudge && judge && (
         <>
           {/* ── Header ─────────────────────────────────────────────────────── */}
-          <article
-            className="mb-6 overflow-hidden rounded-xl border"
-            style={{ backgroundColor: "#181f38", borderColor: "#242b48" }}
-          >
-            <div
-              className="flex flex-wrap items-start justify-between gap-3 px-6 py-5"
-              style={{ borderBottom: "1px solid #242b48" }}
-            >
+          <article className="bg-ink-elevated border-border mb-6 overflow-hidden rounded-xl border">
+            <div className="border-border flex flex-wrap items-start justify-between gap-3 border-b px-6 py-5">
               <div className="min-w-0">
-                <p
-                  className="mb-2 text-xs font-semibold uppercase tracking-[0.28em]"
-                  style={{ color: "#d0a04a" }}
-                >
+                <p className="text-gold mb-2 text-xs font-semibold uppercase tracking-[0.28em]">
                   Perfil Judicial
                 </p>
                 <div className="flex flex-wrap items-center gap-3">
-                  <h1
-                    className="font-serif text-3xl font-bold sm:text-4xl lg:text-5xl"
-                    style={{ color: "#f4f2e6" }}
-                  >
+                  <h1 className="text-cream font-serif text-3xl font-bold sm:text-4xl lg:text-5xl">
                     {judge.name}
                   </h1>
                   {judge.isDemoData && <Tag variant="warning">Demo</Tag>}
                 </div>
-                <p className="mt-1 text-sm" style={{ color: "#d0a04a" }}>
-                  {judge.court}
-                </p>
-                <p className="mt-0.5 text-xs" style={{ color: "#a8a496" }}>
-                  {locationPath}
-                </p>
+                <p className="text-gold mt-1 text-sm">{judge.court}</p>
+                <p className="text-cream-muted mt-0.5 text-xs">{locationPath}</p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 <Tag variant="gold">{judge.location.province}</Tag>
                 <span
-                  className="rounded-sm border px-2.5 py-0.5 text-sm font-bold"
-                  style={{
-                    backgroundColor: rateBg,
-                    color: rateColor,
-                    borderColor: `${rateColor}80`,
-                  }}
+                  className={`rounded-sm border px-2.5 py-0.5 text-sm font-bold ${rateClasses(rate)}`}
                 >
                   {failureRate}% falla
                 </span>
@@ -300,22 +276,29 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
 
             {/* Stats */}
             <div className="grid grid-cols-2 gap-3 p-5 sm:grid-cols-4">
-              <StatBox value={judge.totalReleases} label="Libertades otorgadas" color="#f4f2e6" />
-              <StatBox value={judge.ftaCount} label="No compareció" color="#f4b942" />
-              <StatBox value={judge.newArrestCount} label="Nuevo arresto" color="#f85149" />
-              <StatBox value={judge.revokedCount} label="Medida revocada" color="#a371f7" />
+              <StatBox
+                value={judge.totalReleases}
+                label="Libertades otorgadas"
+                valueClass="text-cream"
+              />
+              <StatBox value={judge.ftaCount} label="No compareció" valueClass="text-warning" />
+              <StatBox
+                value={judge.newArrestCount}
+                label="Nuevo arresto"
+                valueClass="text-danger"
+              />
+              <StatBox
+                value={judge.revokedCount}
+                label="Medida revocada"
+                valueClass="text-violet"
+              />
             </div>
           </article>
 
           {/* ── Info del cargo ─────────────────────────────────────────────── */}
-          <section
-            className="mb-6 overflow-hidden rounded-xl border"
-            style={{ backgroundColor: "#181f38", borderColor: "#242b48" }}
-          >
-            <div className="px-5 py-3" style={{ borderBottom: "1px solid #242b48" }}>
-              <h2 className="text-sm font-semibold" style={{ color: "#f4f2e6" }}>
-                Datos del cargo
-              </h2>
+          <section className="bg-ink-elevated border-border mb-6 overflow-hidden rounded-xl border">
+            <div className="border-border border-b px-5 py-3">
+              <h2 className="text-cream text-sm font-semibold">Datos del cargo</h2>
             </div>
             <div className="grid gap-x-8 px-5 sm:grid-cols-2">
               <div>
@@ -343,18 +326,15 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
             </div>
             {/* Remuneración */}
             {judge.salary && (
-              <div className="mx-5 py-2.5" style={{ borderBottom: "1px solid #242b48" }}>
-                <span
-                  className="text-xs font-medium uppercase tracking-wide"
-                  style={{ color: "#a8a496" }}
-                >
+              <div className="border-border mx-5 border-b py-2.5">
+                <span className="text-cream-muted text-xs font-medium uppercase tracking-wide">
                   Remuneración bruta mensual
                 </span>
                 <div className="mt-1 flex flex-wrap items-baseline gap-2">
-                  <span className="text-lg font-bold" style={{ color: "#3fb950" }}>
+                  <span className="text-success text-lg font-bold">
                     {formatARS(judge.salary.grossMonthlyARS)}
                   </span>
-                  <span className="text-xs" style={{ color: "#a8a496" }}>
+                  <span className="text-cream-muted text-xs">
                     {judge.salary.category} — {judge.salary.acordada} ({judge.salary.lastUpdated})
                   </span>
                 </div>
@@ -363,42 +343,31 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
             {/* Bio */}
             {judge.publicBio && (
               <div className="px-5 py-3">
-                <span
-                  className="text-xs font-medium uppercase tracking-wide"
-                  style={{ color: "#a8a496" }}
-                >
+                <span className="text-cream-muted text-xs font-medium uppercase tracking-wide">
                   Biografía pública
                 </span>
-                <p className="mt-1 text-sm leading-relaxed" style={{ color: "#a8a496" }}>
-                  {judge.publicBio}
-                </p>
+                <p className="text-cream-muted mt-1 text-sm leading-relaxed">{judge.publicBio}</p>
               </div>
             )}
           </section>
 
           {/* ── Fuentes ────────────────────────────────────────────────────── */}
           {judge.sourceLinks && judge.sourceLinks.length > 0 && (
-            <section
-              className="mb-6 overflow-hidden rounded-xl border"
-              style={{ backgroundColor: "#181f38", borderColor: "#242b48" }}
-            >
-              <div className="px-5 py-3" style={{ borderBottom: "1px solid #242b48" }}>
-                <h2 className="text-sm font-semibold" style={{ color: "#f4f2e6" }}>
-                  Fuentes oficiales
-                </h2>
+            <section className="bg-ink-elevated border-border mb-6 overflow-hidden rounded-xl border">
+              <div className="border-border border-b px-5 py-3">
+                <h2 className="text-cream text-sm font-semibold">Fuentes oficiales</h2>
               </div>
-              <div className="divide-y" style={{ borderColor: "#242b48" }}>
+              <div className="divide-border divide-y">
                 {judge.sourceLinks.map((link, i) => (
                   <a
                     key={i}
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-start gap-3 px-5 py-3 transition-colors hover:bg-cream/5"
+                    className="hover:bg-cream/5 flex items-start gap-3 px-5 py-3 transition-colors"
                   >
                     <svg
-                      className="mt-0.5 h-4 w-4 shrink-0"
-                      style={{ color: "#d0a04a" }}
+                      className="text-gold mt-0.5 h-4 w-4 shrink-0"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -411,12 +380,8 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                       />
                     </svg>
                     <div>
-                      <p className="text-sm font-medium" style={{ color: "#d0a04a" }}>
-                        {link.label}
-                      </p>
-                      <p className="text-xs" style={{ color: "#a8a496" }}>
-                        {link.description}
-                      </p>
+                      <p className="text-gold text-sm font-medium">{link.label}</p>
+                      <p className="text-cream-muted text-xs">{link.description}</p>
                     </div>
                   </a>
                 ))}
@@ -426,10 +391,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
 
           {/* ── Mock data notice ────────────────────────────────────────────── */}
           {usingMockData && (
-            <div
-              className="mb-5 flex items-start gap-3 rounded-lg border px-4 py-3 text-sm"
-              style={{ backgroundColor: "#f4b94210", borderColor: "#f4b94240", color: "#f4b942" }}
-            >
+            <div className="bg-warning-soft border-warning/40 text-warning mb-5 flex items-start gap-3 rounded-lg border px-4 py-3 text-sm">
               <svg
                 className="mt-0.5 h-4 w-4 shrink-0"
                 fill="none"
@@ -445,9 +407,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
               </svg>
               <span>
                 <strong>Vista previa con datos de ejemplo.</strong> El endpoint{" "}
-                <code className="rounded px-1 text-xs" style={{ backgroundColor: "#242b48" }}>
-                  GET /api/judges/:id/casos
-                </code>{" "}
+                <code className="bg-border rounded px-1 text-xs">GET /api/judges/:id/casos</code>{" "}
                 aún no está disponible. Los casos mostrados son ficticios.
               </span>
             </div>
@@ -455,64 +415,37 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
 
           {/* ── Casos ──────────────────────────────────────────────────────── */}
           <section className="mb-6">
-            <p
-              className="mb-2 text-xs font-semibold uppercase tracking-[0.28em]"
-              style={{ color: "#d0a04a" }}
-            >
+            <p className="text-gold mb-2 text-xs font-semibold uppercase tracking-[0.28em]">
               Expedientes
             </p>
             <div className="mb-4 flex items-center gap-2">
-              <h2
-                className="font-serif text-2xl font-bold sm:text-3xl"
-                style={{ color: "#f4f2e6" }}
-              >
+              <h2 className="text-cream font-serif text-2xl font-bold sm:text-3xl">
                 Casos registrados
               </h2>
-              {paginated && (
-                <span
-                  className="rounded-full px-2 py-0.5 text-xs font-semibold"
-                  style={{ backgroundColor: "#242b48", color: "#a8a496" }}
-                >
-                  {paginated.total}
-                </span>
-              )}
+              {paginated && <Tag>{paginated.total}</Tag>}
             </div>
 
             {loadingCasos ? (
-              <div
-                className="shimmer-bg h-40 rounded-xl border"
-                style={{ borderColor: "#242b48" }}
-              />
+              <div className="shimmer-bg border-border h-40 rounded-xl border" />
             ) : !paginated || paginated.data.length === 0 ? (
-              <div
-                className="flex flex-col items-center justify-center rounded-xl border py-12"
-                style={{ borderColor: "#242b48", backgroundColor: "#181f38" }}
-              >
-                <p className="font-medium" style={{ color: "#f4f2e6" }}>
-                  Sin casos registrados
-                </p>
-                <p className="mt-1 text-sm" style={{ color: "#a8a496" }}>
+              <div className="bg-ink-elevated border-border flex flex-col items-center justify-center rounded-xl border py-12">
+                <p className="text-cream font-medium">Sin casos registrados</p>
+                <p className="text-cream-muted mt-1 text-sm">
                   Aún no se han cargado expedientes para este juez.
                 </p>
               </div>
             ) : (
               <>
-                <div
-                  className="overflow-hidden rounded-xl border"
-                  style={{ borderColor: "#242b48" }}
-                >
+                <div className="border-border overflow-hidden rounded-xl border">
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
-                        <tr
-                          style={{ backgroundColor: "#181f38", borderBottom: "1px solid #242b48" }}
-                        >
+                        <tr className="bg-ink-elevated border-border border-b">
                           {["Expediente", "Fecha resolución", "Tipo de medida", "Resultado"].map(
                             (col) => (
                               <th
                                 key={col}
-                                className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide"
-                                style={{ color: "#a8a496" }}
+                                className="text-cream-muted px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide"
                               >
                                 {col}
                               </th>
@@ -524,27 +457,19 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                         {paginated.data.map((caso, i) => (
                           <tr
                             key={caso.id}
-                            style={{
-                              backgroundColor: i % 2 === 0 ? "#0f1529" : "#181f38",
-                              borderBottom: "1px solid #242b48",
-                            }}
+                            className={`border-border border-b ${i % 2 === 0 ? "bg-ink" : "bg-ink-elevated"}`}
                           >
-                            <td
-                              className="px-4 py-3 font-mono text-xs"
-                              style={{ color: "#d0a04a" }}
-                            >
+                            <td className="text-gold px-4 py-3 font-mono text-xs">
                               {caso.nroExpediente}
                             </td>
-                            <td className="px-4 py-3" style={{ color: "#f4f2e6" }}>
+                            <td className="text-cream px-4 py-3">
                               {formatDate(caso.fechaResolucion)}
                             </td>
-                            <td className="px-4 py-3" style={{ color: "#a8a496" }}>
-                              {caso.tipoMedida}
-                            </td>
+                            <td className="text-cream-muted px-4 py-3">{caso.tipoMedida}</td>
                             <td className="px-4 py-3">
                               <ResultadoBadge resultado={caso.resultado} />
                               {caso.observaciones && (
-                                <p className="mt-1 text-xs" style={{ color: "#a8a496" }}>
+                                <p className="text-cream-muted mt-1 text-xs">
                                   {caso.observaciones}
                                 </p>
                               )}
@@ -559,7 +484,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                 {/* Paginación */}
                 {paginated.totalPages > 1 && (
                   <div className="mt-4 flex items-center justify-between">
-                    <span className="text-xs" style={{ color: "#a8a496" }}>
+                    <span className="text-cream-muted text-xs">
                       Página {paginated.page} de {paginated.totalPages} — {paginated.total} casos en
                       total
                     </span>
@@ -567,24 +492,14 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                       <button
                         onClick={() => setPage((p) => p - 1)}
                         disabled={paginated.page === 1}
-                        className="rounded-md px-3 py-1.5 text-xs font-medium transition-colors disabled:opacity-40"
-                        style={{
-                          backgroundColor: "#242b48",
-                          color: "#f4f2e6",
-                          border: "1px solid #363e5e",
-                        }}
+                        className="bg-border text-cream border-border-strong hover:bg-cream/5 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors disabled:opacity-40"
                       >
                         ← Anterior
                       </button>
                       <button
                         onClick={() => setPage((p) => p + 1)}
                         disabled={paginated.page === paginated.totalPages}
-                        className="rounded-md px-3 py-1.5 text-xs font-medium transition-colors disabled:opacity-40"
-                        style={{
-                          backgroundColor: "#242b48",
-                          color: "#f4f2e6",
-                          border: "1px solid #363e5e",
-                        }}
+                        className="bg-border text-cream border-border-strong hover:bg-cream/5 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors disabled:opacity-40"
                       >
                         Siguiente →
                       </button>
@@ -598,16 +513,10 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
           {/* ── Documentación pública ──────────────────────────────────────── */}
           {archivos.length > 0 && (
             <section>
-              <p
-                className="mb-2 text-xs font-semibold uppercase tracking-[0.28em]"
-                style={{ color: "#d0a04a" }}
-              >
+              <p className="text-gold mb-2 text-xs font-semibold uppercase tracking-[0.28em]">
                 Archivo
               </p>
-              <h2
-                className="mb-4 font-serif text-2xl font-bold sm:text-3xl"
-                style={{ color: "#f4f2e6" }}
-              >
+              <h2 className="text-cream mb-4 font-serif text-2xl font-bold sm:text-3xl">
                 Documentación pública
               </h2>
               <div className="space-y-2">
@@ -617,13 +526,11 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                     href={archivo.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between rounded-lg border px-4 py-3 transition-colors hover:border-[#d0a04a]/40"
-                    style={{ backgroundColor: "#181f38", borderColor: "#242b48" }}
+                    className="bg-ink-elevated border-border hover:border-gold/40 flex items-center justify-between rounded-lg border px-4 py-3 transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <svg
-                        className="h-5 w-5 shrink-0"
-                        style={{ color: "#f85149" }}
+                        className="text-danger h-5 w-5 shrink-0"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -635,17 +542,14 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                           d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
                         />
                       </svg>
-                      <span className="text-sm" style={{ color: "#f4f2e6" }}>
-                        {archivo.nombre}
-                      </span>
+                      <span className="text-cream text-sm">{archivo.nombre}</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-xs" style={{ color: "#a8a496" }}>
+                      <span className="text-cream-muted text-xs">
                         {formatDate(archivo.fechaCarga)}
                       </span>
                       <svg
-                        className="h-4 w-4"
-                        style={{ color: "#d0a04a" }}
+                        className="text-gold h-4 w-4"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
