@@ -91,13 +91,9 @@ body {
 }
 
 body {
-  /* Cinematic dark gradient — flipped 180°: darker at top continuing through the
-     page, lifting back to ink with a soft light pool at the bottom. Removes the
-     "top-light resets" illusion below the § divider. */
+  /* Solid ink — uniform dark background lets the layered ink-elevated cards be
+     the only visual rhythm on the page, no gradient banding or alternation. */
   background-color: var(--ink);
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(54, 62, 94, 0.45), transparent 70%),
-    linear-gradient(0deg, var(--ink) 0%, #070a18 100%);
   color: var(--cream);
   font-family: var(--font-instrument-sans), Arial, Helvetica, sans-serif;
 }
