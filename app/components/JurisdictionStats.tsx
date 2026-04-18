@@ -127,7 +127,9 @@ export default function JurisdictionStats({
     <section className="mx-auto w-full max-w-7xl px-4 pb-4 pt-8 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="mb-4 flex flex-wrap items-center gap-3">
-        <h2 className="text-cream font-serif text-2xl font-bold">Estadísticas por Jurisdicción</h2>
+        <h2 className="text-cream font-serif text-3xl font-bold tracking-tight sm:text-4xl">
+          Estadísticas por Jurisdicción
+        </h2>
         <span className="bg-border text-cream-muted rounded-full px-2 py-0.5 text-xs font-semibold">
           Argentina → Provincia → Depto. Judicial
         </span>

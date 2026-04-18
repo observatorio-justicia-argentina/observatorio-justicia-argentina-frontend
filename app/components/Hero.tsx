@@ -28,7 +28,7 @@ const PRINCIPLES: {
 function StepCard({ num, text }: { num: string; text: string }) {
   return (
     <div className="border-border bg-ink-elevated rounded-xl border p-6 shadow-md shadow-black/30">
-      <span className="text-gold mb-3 block font-serif text-4xl font-black leading-none">
+      <span className="text-gold mb-3 block font-serif text-5xl font-black leading-none">
         {num}
       </span>
       <p className="text-cream-muted text-sm leading-relaxed">{text}</p>
@@ -66,7 +66,7 @@ export default function Hero() {
         </div>
 
         {/* Headline — serif display */}
-        <h1 className="text-cream text-center font-serif text-4xl leading-[1.05] tracking-tight sm:text-left sm:text-5xl lg:text-6xl xl:text-7xl">
+        <h1 className="text-cream text-center font-serif text-5xl leading-[1.02] tracking-tight sm:text-left sm:text-6xl lg:text-7xl xl:text-8xl">
           Conocé a tus jueces.
           <br />
           <span className="text-gold font-black italic">Exigí rendición de cuentas.</span>

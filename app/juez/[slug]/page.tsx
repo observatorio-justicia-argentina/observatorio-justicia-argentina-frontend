@@ -276,7 +276,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <h1
-                    className="font-serif text-2xl font-bold sm:text-3xl"
+                    className="font-serif text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl"
                     style={{ color: "#f4f2e6" }}
                   >
                     {judge.name}
@@ -483,7 +483,10 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
           {/* ── Casos ──────────────────────────────────────────────────────── */}
           <section className="mb-6">
             <div className="mb-4 flex items-center gap-2">
-              <h2 className="font-serif text-xl font-bold" style={{ color: "#f4f2e6" }}>
+              <h2
+                className="font-serif text-2xl font-bold tracking-tight sm:text-3xl"
+                style={{ color: "#f4f2e6" }}
+              >
                 Casos registrados
               </h2>
               {paginated && (
@@ -616,7 +619,10 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
           {/* ── Documentación pública ──────────────────────────────────────── */}
           {archivos.length > 0 && (
             <section>
-              <h2 className="mb-4 font-serif text-xl font-bold" style={{ color: "#f4f2e6" }}>
+              <h2
+                className="mb-4 font-serif text-2xl font-bold tracking-tight sm:text-3xl"
+                style={{ color: "#f4f2e6" }}
+              >
                 Documentación pública
               </h2>
               <div className="space-y-2">

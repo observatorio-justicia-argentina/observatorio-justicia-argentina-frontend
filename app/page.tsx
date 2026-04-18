@@ -121,7 +121,9 @@ export default function HomePage() {
 
         {/* Section header */}
         <div className="mb-5 flex flex-wrap items-center gap-3">
-          <h2 className="text-cream font-serif text-2xl font-bold">Jueces</h2>
+          <h2 className="text-cream font-serif text-3xl font-bold tracking-tight sm:text-4xl">
+            Jueces
+          </h2>
           <span className="bg-border text-cream-muted rounded-full px-2 py-0.5 text-xs font-semibold">
             {judges.length}
           </span>
