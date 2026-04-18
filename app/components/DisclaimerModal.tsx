@@ -38,7 +38,7 @@ export default function DisclaimerModal({ forceOpen, onClose }: DisclaimerModalP
         {/* Top gradient hairline */}
         <div
           className="h-[3px]"
-          style={{ background: "linear-gradient(90deg, var(--royal) 0%, var(--gold) 100%)" }}
+          style={{ background: "linear-gradient(90deg, var(--gold) 0%, var(--gold) 100%)" }}
         />
 
         {/* Header */}
@@ -72,7 +72,7 @@ export default function DisclaimerModal({ forceOpen, onClose }: DisclaimerModalP
         <div className="border-border flex justify-end gap-3 border-t px-6 py-4">
           <button
             onClick={handleClose}
-            className="bg-royal text-cream hover:bg-royal-strong cursor-pointer rounded-lg px-6 py-2.5 text-sm font-semibold transition-colors"
+            className="bg-gold text-cream hover:bg-gold-strong cursor-pointer rounded-lg px-6 py-2.5 text-sm font-semibold transition-colors"
           >
             Entendido, continuar
           </button>

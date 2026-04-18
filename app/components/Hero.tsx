@@ -46,7 +46,7 @@ export default function Hero() {
       {/* Top gradient hairline */}
       <div
         className="h-[2px]"
-        style={{ background: "linear-gradient(90deg, var(--royal) 0%, var(--gold) 100%)" }}
+        style={{ background: "linear-gradient(90deg, var(--gold) 0%, var(--gold) 100%)" }}
       />
 
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
@@ -61,8 +61,7 @@ export default function Hero() {
         <h1 className="text-cream text-center font-serif text-4xl leading-[1.05] tracking-tight sm:text-left sm:text-5xl lg:text-6xl xl:text-7xl">
           Conocé a tus jueces.
           <br />
-          <span className="text-royal font-black italic">Exigí rendición</span>{" "}
-          <span className="text-gold font-black italic">de cuentas.</span>
+          <span className="text-gold font-black italic">Exigí rendición de cuentas.</span>
         </h1>
 
         {/* Subheadline */}

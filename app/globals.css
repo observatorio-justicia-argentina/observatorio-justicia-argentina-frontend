@@ -1,25 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  /* === Brand palette: dark formal === */
-  /* Midnight surfaces */
-  --ink:            #040f28;
-  --ink-elevated:   #0a1836;
-  --ink-raised:     #142145;
-  --border:         #1c2a52;
-  --border-strong:  #2a3b6e;
+  /* === Brand palette: Ministry navy + cream + gold === */
+  /* Ministry navy surfaces */
+  --ink:            #232d4f;  /* base — azul oficial del Ministerio de Justicia */
+  --ink-elevated:   #2e3a63;  /* panels, cards */
+  --ink-raised:     #3a4878;  /* nav hover, inputs */
+  --border:         #3a4878;
+  --border-strong:  #4d5a8a;
 
   /* Cream typography */
   --cream:          #f4f2e6;
   --cream-muted:    #a8a496;
   --cream-subtle:   #6f6c60;
 
-  /* Royal blue — primary */
-  --royal:          #0944b1;
-  --royal-strong:   #0b52d4;
-  --royal-soft:     rgba(9, 68, 177, 0.18);
-
-  /* Gold — accent */
+  /* Gold — primary accent (replaces royal) */
   --gold:           #c18a38;
   --gold-strong:    #d79d48;
   --gold-soft:      rgba(193, 138, 56, 0.18);
@@ -45,10 +40,6 @@
   --color-cream:         var(--cream);
   --color-cream-muted:   var(--cream-muted);
   --color-cream-subtle:  var(--cream-subtle);
-
-  --color-royal:         var(--royal);
-  --color-royal-strong:  var(--royal-strong);
-  --color-royal-soft:    var(--royal-soft);
 
   --color-gold:          var(--gold);
   --color-gold-strong:   var(--gold-strong);

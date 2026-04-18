@@ -52,7 +52,7 @@ function ChipButton({
   children: React.ReactNode;
 }) {
   const cls = active
-    ? "bg-royal text-cream border-royal"
+    ? "bg-gold text-cream border-gold"
     : "bg-border text-cream-muted border-border-strong hover:bg-cream/5";
   return (
     <button
@@ -156,7 +156,7 @@ export default function JudgeFilters({ filters, onChange, judges }: Props) {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative flex-1 sm:max-w-sm">
           <svg
-            className="text-royal pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2"
+            className="text-gold pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -173,7 +173,7 @@ export default function JudgeFilters({ filters, onChange, judges }: Props) {
             placeholder="Buscar por nombre, tribunal, provincia, fuero..."
             value={filters.search}
             onChange={(e) => onChange({ search: e.target.value })}
-            className="bg-ink-elevated border-border-strong text-cream focus:border-royal placeholder:text-cream-muted w-full rounded-lg border py-2.5 pl-9 pr-4 text-sm outline-none transition-colors focus:outline-none"
+            className="bg-ink-elevated border-border-strong text-cream focus:border-gold placeholder:text-cream-muted w-full rounded-lg border py-2.5 pl-9 pr-4 text-sm outline-none transition-colors focus:outline-none"
           />
         </div>
 

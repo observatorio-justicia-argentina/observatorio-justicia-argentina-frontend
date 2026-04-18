@@ -127,7 +127,7 @@ export default function HomePage() {
           </span>
 
           {loading && (
-            <span className="bg-royal-soft text-royal border-royal/30 ml-1 rounded-full border px-2.5 py-0.5 text-xs font-medium">
+            <span className="bg-gold-soft text-gold border-gold/30 ml-1 rounded-full border px-2.5 py-0.5 text-xs font-medium">
               Cargando...
             </span>
           )}
@@ -142,7 +142,7 @@ export default function HomePage() {
             </span>
           )}
           {activeProvince && (
-            <span className="bg-royal-soft text-royal border-royal/50 ml-1 rounded-full border px-2.5 py-0.5 text-xs font-medium">
+            <span className="bg-gold-soft text-gold border-gold/50 ml-1 rounded-full border px-2.5 py-0.5 text-xs font-medium">
               Provincia: {activeProvince}
             </span>
           )}
@@ -188,7 +188,7 @@ export default function HomePage() {
               <Link
                 key={judge.id}
                 href={`/juez/${judge.slug}`}
-                className="focus-visible:ring-royal block rounded-xl focus:outline-none focus-visible:ring-2"
+                className="focus-visible:ring-gold block rounded-xl focus:outline-none focus-visible:ring-2"
               >
                 <JudgeCard {...judge} />
               </Link>
@@ -218,7 +218,7 @@ export default function HomePage() {
             href="https://github.com/observatorio-justicia-argentina/observatorio-justicia-argentina-frontend"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-royal mt-2 inline-block text-xs hover:underline"
+            className="text-gold mt-2 inline-block text-xs hover:underline"
           >
             Ver código fuente en GitHub
           </a>

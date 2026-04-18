@@ -76,7 +76,7 @@ function CaseRow({ c }: { c: JudgeCase }) {
     <div className="bg-ink border-border rounded-lg border p-3">
       <div className="mb-1.5 flex flex-wrap items-start justify-between gap-2">
         <div>
-          <span className="text-royal font-mono text-xs font-semibold">Exp. {c.expediente}</span>
+          <span className="text-gold font-mono text-xs font-semibold">Exp. {c.expediente}</span>
           <span className="text-cream-muted ml-2 text-xs">{c.decisionDate}</span>
         </div>
         <span className={`rounded-full border px-2 py-0.5 text-xs font-medium ${cfg.pillCls}`}>
@@ -155,7 +155,7 @@ export default function JudgeCard(judge: Judge) {
   ];
 
   return (
-    <article className="bg-ink-elevated border-border hover:border-royal/40 overflow-hidden rounded-xl border transition-all hover:shadow-lg hover:shadow-black/30">
+    <article className="bg-ink-elevated border-border hover:border-gold/40 overflow-hidden rounded-xl border transition-all hover:shadow-lg hover:shadow-black/30">
       {/* ── Header ── */}
       <div className="border-border flex items-start justify-between gap-3 border-b px-5 py-4">
         <div className="min-w-0 flex-1">
@@ -167,9 +167,9 @@ export default function JudgeCard(judge: Judge) {
               </span>
             )}
           </div>
-          <p className="text-royal mt-0.5 text-xs">{court}</p>
+          <p className="text-gold mt-0.5 text-xs">{court}</p>
         </div>
-        <span className="bg-royal-soft text-royal border-royal/30 mt-0.5 shrink-0 rounded-full border px-2.5 py-0.5 text-xs font-medium">
+        <span className="bg-gold-soft text-gold border-gold/30 mt-0.5 shrink-0 rounded-full border px-2.5 py-0.5 text-xs font-medium">
           {location.province}
         </span>
       </div>
@@ -219,7 +219,7 @@ export default function JudgeCard(judge: Judge) {
       {/* ── Toggle detalle ── */}
       <button
         onClick={() => setExpanded((v) => !v)}
-        className="text-royal hover:bg-cream/5 flex w-full items-center justify-between px-5 py-3 text-xs font-medium transition-colors"
+        className="text-gold hover:bg-cream/5 flex w-full items-center justify-between px-5 py-3 text-xs font-medium transition-colors"
       >
         <span>{expanded ? "Ocultar detalle" : "Ver detalle completo"}</span>
         <span>{expanded ? "▲" : "▼"}</span>
@@ -236,7 +236,7 @@ export default function JudgeCard(judge: Judge) {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex-1 border-b-2 bg-transparent py-2.5 text-xs font-medium transition-colors ${
                   activeTab === tab.id
-                    ? "text-royal border-royal"
+                    ? "text-gold border-gold"
                     : "text-cream-muted border-transparent"
                 }`}
               >
@@ -309,7 +309,7 @@ export default function JudgeCard(judge: Judge) {
                   <div className="flex flex-col gap-2">
                     {education.map((e, i) => (
                       <div key={i} className="flex items-start gap-2">
-                        <span className="text-royal mt-0.5 text-xs">{e.year}</span>
+                        <span className="text-gold mt-0.5 text-xs">{e.year}</span>
                         <div>
                           <p className="text-cream text-xs font-medium">{e.degree}</p>
                           <p className="text-cream-muted text-xs">{e.institution}</p>
@@ -346,7 +346,7 @@ export default function JudgeCard(judge: Judge) {
                     {notableDecisions.map((d, i) => (
                       <div key={i} className="bg-ink border-border rounded-lg border p-3">
                         <div className="mb-1 flex items-center gap-2">
-                          <span className="text-royal text-xs font-bold">{d.year}</span>
+                          <span className="text-gold text-xs font-bold">{d.year}</span>
                           {d.article && (
                             <span className="text-cream-muted font-mono text-xs">{d.article}</span>
                           )}
@@ -384,7 +384,7 @@ export default function JudgeCard(judge: Judge) {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-royal text-xs font-medium hover:underline"
+                      className="text-gold text-xs font-medium hover:underline"
                     >
                       ↗ {link.label}
                     </a>

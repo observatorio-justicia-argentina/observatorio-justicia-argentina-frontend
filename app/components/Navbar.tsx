@@ -57,7 +57,7 @@ export default function Navbar() {
             {user && (
               <button
                 onClick={handleSubmitClick}
-                className="bg-royal text-cream hover:bg-royal-strong cursor-pointer rounded-md px-3 py-1.5 text-xs font-semibold transition-colors"
+                className="bg-gold text-cream hover:bg-gold-strong cursor-pointer rounded-md px-3 py-1.5 text-xs font-semibold transition-colors"
               >
                 + Cargar informe
               </button>
@@ -93,7 +93,7 @@ export default function Navbar() {
                   onClick={() => setUserMenuOpen((v) => !v)}
                   className="border-border-strong text-cream hover:bg-cream/5 flex items-center gap-2 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition-colors"
                 >
-                  <span className="bg-royal-soft text-royal border-royal/40 flex h-6 w-6 items-center justify-center rounded-full border text-xs font-bold">
+                  <span className="bg-gold-soft text-gold border-gold/40 flex h-6 w-6 items-center justify-center rounded-full border text-xs font-bold">
                     <UserInitials nombre={user.nombre} />
                   </span>
                   <span className="max-w-30 truncate">{user.nombre.split(" ")[0]}</span>
@@ -112,7 +112,7 @@ export default function Navbar() {
                         handleSubmitClick();
                         setUserMenuOpen(false);
                       }}
-                      className="text-royal hover:bg-cream/5 w-full px-4 py-2 text-left text-xs"
+                      className="text-gold hover:bg-cream/5 w-full px-4 py-2 text-left text-xs"
                     >
                       + Cargar informe
                     </button>
@@ -131,7 +131,7 @@ export default function Navbar() {
             ) : (
               <button
                 onClick={() => setAuthOpen(true)}
-                className="border-royal text-royal hover:bg-royal/10 cursor-pointer rounded-md border px-3 py-1.5 text-xs font-semibold transition-colors"
+                className="border-gold text-gold hover:bg-gold/10 cursor-pointer rounded-md border px-3 py-1.5 text-xs font-semibold transition-colors"
               >
                 Iniciar sesión
               </button>
@@ -183,7 +183,7 @@ export default function Navbar() {
                   handleSubmitClick();
                   setMenuOpen(false);
                 }}
-                className="bg-royal-soft text-royal border-royal/30 cursor-pointer rounded-md border px-3 py-2 text-left text-sm font-semibold"
+                className="bg-gold-soft text-gold border-gold/30 cursor-pointer rounded-md border px-3 py-2 text-left text-sm font-semibold"
               >
                 + Cargar informe {!user && "(requiere sesión)"}
               </button>
@@ -217,7 +217,7 @@ export default function Navbar() {
                     setAuthOpen(true);
                     setMenuOpen(false);
                   }}
-                  className="border-royal text-royal cursor-pointer rounded-md border px-3 py-2 text-left text-sm font-semibold"
+                  className="border-gold text-gold cursor-pointer rounded-md border px-3 py-2 text-left text-sm font-semibold"
                 >
                   Iniciar sesión
                 </button>

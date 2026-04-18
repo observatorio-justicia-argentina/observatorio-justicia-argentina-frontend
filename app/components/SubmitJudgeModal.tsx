@@ -96,7 +96,7 @@ function isFormValid(f: FormData): boolean {
 // ── Componentes auxiliares ───────────────────────────────────────────────────
 
 const INPUT_CLASSES =
-  "bg-ink border-border-strong text-cream focus:border-royal w-full rounded-lg border px-3 py-2 text-sm outline-none transition-colors focus:outline-none placeholder:text-cream-muted";
+  "bg-ink border-border-strong text-cream focus:border-gold w-full rounded-lg border px-3 py-2 text-sm outline-none transition-colors focus:outline-none placeholder:text-cream-muted";
 
 function Label({ children, required }: { children: React.ReactNode; required?: boolean }) {
   return (
@@ -243,7 +243,7 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
   });
 
   const submitBtnCls = valid
-    ? "bg-royal text-cream hover:bg-royal-strong cursor-pointer"
+    ? "bg-gold text-cream hover:bg-gold-strong cursor-pointer"
     : "bg-border text-cream-subtle cursor-not-allowed";
 
   return (
@@ -280,7 +280,7 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
             <p className="text-cream-muted text-sm">
               El informe fue registrado bajo el número de confirmación:
             </p>
-            <span className="bg-ink text-royal border-royal/40 rounded-lg border px-4 py-2 font-mono text-sm font-bold">
+            <span className="bg-ink text-gold border-gold/40 rounded-lg border px-4 py-2 font-mono text-sm font-bold">
               {confirmationId}
             </span>
             <div className="bg-ink border-border mt-2 w-full rounded-lg border p-4 text-left text-xs">
@@ -296,7 +296,7 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
             </p>
             <button
               onClick={onClose}
-              className="bg-royal text-cream hover:bg-royal-strong mt-2 rounded-lg px-6 py-2 text-sm font-semibold transition-colors"
+              className="bg-gold text-cream hover:bg-gold-strong mt-2 rounded-lg px-6 py-2 text-sm font-semibold transition-colors"
             >
               Cerrar
             </button>
@@ -312,7 +312,7 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
                 Responsable del informe
               </SectionTitle>
               <div className="bg-ink border-border flex items-center gap-4 rounded-xl border p-4">
-                <div className="bg-royal-soft text-royal border-royal/40 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-sm font-bold">
+                <div className="bg-gold-soft text-gold border-gold/40 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-sm font-bold">
                   AE
                 </div>
                 <div className="min-w-0 flex-1">
@@ -390,7 +390,7 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
                 </SectionTitle>
                 <button
                   onClick={addCaso}
-                  className="border-royal/40 text-royal hover:bg-royal-soft flex items-center gap-1 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors"
+                  className="border-gold/40 text-gold hover:bg-gold-soft flex items-center gap-1 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors"
                 >
                   + Agregar caso
                 </button>
@@ -461,7 +461,7 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
               {/* Drop zone */}
               <div
                 className={`relative flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed py-8 transition-colors ${
-                  dragging ? "border-royal bg-royal-soft" : "border-border-strong"
+                  dragging ? "border-gold bg-gold-soft" : "border-border-strong"
                 }`}
                 onClick={() => fileInputRef.current?.click()}
                 onDragOver={(e) => {

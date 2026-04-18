@@ -34,10 +34,10 @@ function Stat({
 }: {
   value: string | number;
   label: string;
-  accent?: "royal" | "gold";
+  accent?: "gold" | "gold";
 }) {
   const valueClass =
-    accent === "gold" ? "text-gold" : accent === "royal" ? "text-royal" : "text-cream";
+    accent === "gold" ? "text-gold" : accent === "gold" ? "text-gold" : "text-cream";
   return (
     <div className="flex flex-col items-center">
       <span className={`font-serif text-xl font-bold sm:text-2xl ${valueClass}`}>{value}</span>

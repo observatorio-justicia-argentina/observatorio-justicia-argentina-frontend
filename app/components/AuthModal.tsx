@@ -29,7 +29,7 @@ function Label({ children, required }: { children: React.ReactNode; required?: b
 }
 
 const INPUT_CLASSES =
-  "bg-ink border-border-strong text-cream focus:border-royal w-full rounded-lg border px-3 py-2 text-sm outline-none transition-colors focus:outline-none placeholder:text-cream-muted";
+  "bg-ink border-border-strong text-cream focus:border-gold w-full rounded-lg border px-3 py-2 text-sm outline-none transition-colors focus:outline-none placeholder:text-cream-muted";
 
 function Field({
   label,
@@ -145,7 +145,7 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
 
   const submitBtnCls = loading
     ? "bg-border text-cream-subtle cursor-not-allowed"
-    : "bg-royal text-cream hover:bg-royal-strong cursor-pointer";
+    : "bg-gold text-cream hover:bg-gold-strong cursor-pointer";
 
   return (
     <div
@@ -178,7 +178,7 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
                 setError(null);
               }}
               className={`flex-1 border-b-2 bg-transparent py-3 text-sm font-medium transition-colors ${
-                tab === t ? "text-royal border-royal" : "text-cream-muted border-transparent"
+                tab === t ? "text-gold border-gold" : "text-cream-muted border-transparent"
               }`}
             >
               {t === "login" ? "Iniciar sesión" : "Crear cuenta"}
@@ -228,7 +228,7 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
                     setTab("register");
                     setError(null);
                   }}
-                  className="text-royal hover:underline"
+                  className="text-gold hover:underline"
                 >
                   Registrate
                 </button>
@@ -335,7 +335,7 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
                     setTab("login");
                     setError(null);
                   }}
-                  className="text-royal hover:underline"
+                  className="text-gold hover:underline"
                 >
                   Iniciá sesión
                 </button>

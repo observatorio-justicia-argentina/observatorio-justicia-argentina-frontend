@@ -43,7 +43,7 @@ function NodeRow({ node, onFilterClick, activeProvince }: NodeRowProps) {
     <div>
       <div
         className={`flex items-center gap-2 rounded-lg border px-3 py-2 transition-colors ${
-          isActiveFilter ? "bg-royal-soft border-royal/30" : "border-transparent"
+          isActiveFilter ? "bg-gold-soft border-gold/30" : "border-transparent"
         }`}
         style={{ marginLeft: `${indent * 20}px` }}
       >
@@ -51,7 +51,7 @@ function NodeRow({ node, onFilterClick, activeProvince }: NodeRowProps) {
         <button
           onClick={() => hasChildren && setOpen((o) => !o)}
           className={`flex h-5 w-5 shrink-0 items-center justify-center rounded text-xs ${
-            hasChildren ? "text-royal cursor-pointer" : "text-border-strong cursor-default"
+            hasChildren ? "text-gold cursor-pointer" : "text-border-strong cursor-default"
           }`}
           aria-label={open ? "Colapsar" : "Expandir"}
         >
@@ -84,8 +84,8 @@ function NodeRow({ node, onFilterClick, activeProvince }: NodeRowProps) {
             onClick={() => onFilterClick(isActiveFilter ? null : node.name)}
             className={`shrink-0 rounded border px-2 py-0.5 text-xs font-medium transition-colors ${
               isActiveFilter
-                ? "bg-royal text-cream border-royal"
-                : "bg-border text-royal border-royal/40 hover:bg-royal-soft"
+                ? "bg-gold text-cream border-gold"
+                : "bg-border text-gold border-gold/40 hover:bg-gold-soft"
             }`}
           >
             {isActiveFilter ? "✕ Filtro activo" : "Filtrar"}
@@ -166,7 +166,7 @@ export default function JurisdictionStats({
         />
       </div>
 
-      <p className={`text-royal mt-2 text-xs ${activeProvince ? "visible" : "invisible"}`}>
+      <p className={`text-gold mt-2 text-xs ${activeProvince ? "visible" : "invisible"}`}>
         Mostrando jueces de <strong>{activeProvince ?? "—"}</strong>. Hacé clic en &ldquo;✕ Filtro
         activo&rdquo; para ver todos.
       </p>
