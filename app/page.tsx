@@ -98,16 +98,6 @@ export default function HomePage() {
       {/* Hero */}
       <Hero />
 
-      {/* Fleurón — gazette-style section divider between pitch and data */}
-      <div
-        aria-hidden
-        className="mx-auto flex max-w-7xl items-center gap-4 px-4 pt-10 sm:px-6 lg:px-8"
-      >
-        <div className="bg-gold/25 h-px flex-1" />
-        <span className="text-gold/70 font-serif text-2xl leading-none">§</span>
-        <div className="bg-gold/25 h-px flex-1" />
-      </div>
-
       {/* Jurisdiction hierarchy */}
       {hierarchy && (
         <JurisdictionStats
@@ -116,6 +106,16 @@ export default function HomePage() {
           activeProvince={activeProvince}
         />
       )}
+
+      {/* Fleurón — gazette-style section divider between jurisdiction hierarchy and the map */}
+      <div
+        aria-hidden
+        className="mx-auto flex max-w-7xl items-center gap-4 px-4 pt-8 sm:px-6 lg:px-8"
+      >
+        <div className="bg-gold/25 h-px flex-1" />
+        <span className="text-gold/70 font-serif text-2xl leading-none">§</span>
+        <div className="bg-gold/25 h-px flex-1" />
+      </div>
 
       <main id="jueces" className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         {/* Mapa interactivo */}
