@@ -167,12 +167,12 @@ body::before {
   animation: shimmer 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-/* Halftone dot mask — tiny dots tile across the masked element, giving a stippled print feel */
+/* Halftone grain — fine mask with mostly-solid dots, barely perceptible scan texture */
 .halftone-mask {
-  mask-image: radial-gradient(circle, black 42%, transparent 43%);
-  -webkit-mask-image: radial-gradient(circle, black 42%, transparent 43%);
-  mask-size: 4px 4px;
-  -webkit-mask-size: 4px 4px;
+  mask-image: radial-gradient(circle, black 88%, transparent 91%);
+  -webkit-mask-image: radial-gradient(circle, black 88%, transparent 91%);
+  mask-size: 2px 2px;
+  -webkit-mask-size: 2px 2px;
   mask-repeat: repeat;
   -webkit-mask-repeat: repeat;
 }
