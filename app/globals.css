@@ -31,6 +31,8 @@
   --danger-soft:    rgba(248, 81, 73, 0.15);
   --warning:        #f4b942;
   --warning-soft:   rgba(244, 185, 66, 0.15);
+  --violet:         #a371f7;
+  --violet-soft:    rgba(163, 113, 247, 0.15);
 }
 
 @theme inline {
@@ -58,6 +60,8 @@
   --color-danger-soft:   var(--danger-soft);
   --color-warning:       var(--warning);
   --color-warning-soft:  var(--warning-soft);
+  --color-violet:        var(--violet);
+  --color-violet-soft:   var(--violet-soft);
 
   --font-sans:  var(--font-geist-sans);
   --font-serif: var(--font-fraunces);
