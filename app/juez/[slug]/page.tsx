@@ -12,7 +12,7 @@ import {
   PaginatedResult,
   ResultadoCaso,
 } from "../../lib/api";
-import { Tag } from "../../components/Tag";
+import { Tag, type TagVariant } from "../../components/Tag";
 
 // ── Mock data ─────────────────────────────────────────────────────────────────
 // Fallback cuando el backend no tiene los endpoints aún.
@@ -71,23 +71,15 @@ const RESULTADO_LABEL: Record<ResultadoCaso, string> = {
   pendiente: "Pendiente",
 };
 
-const RESULTADO_COLOR: Record<ResultadoCaso, { bg: string; text: string; border: string }> = {
-  fta: { bg: "#f4b94220", text: "#f4b942", border: "#f4b94240" },
-  nuevo_arresto: { bg: "#f8514920", text: "#f85149", border: "#f8514940" },
-  revocada: { bg: "#a371f720", text: "#a371f7", border: "#a371f740" },
-  pendiente: { bg: "#a8a49620", text: "#a8a496", border: "#a8a49640" },
+const RESULTADO_VARIANT: Record<ResultadoCaso, TagVariant> = {
+  fta: "warning",
+  nuevo_arresto: "danger",
+  revocada: "violet",
+  pendiente: "neutral",
 };
 
 function ResultadoBadge({ resultado }: { resultado: ResultadoCaso }) {
-  const c = RESULTADO_COLOR[resultado];
-  return (
-    <span
-      className="rounded-full px-2.5 py-0.5 text-xs font-medium"
-      style={{ backgroundColor: c.bg, color: c.text, border: `1px solid ${c.border}` }}
-    >
-      {RESULTADO_LABEL[resultado]}
-    </span>
-  );
+  return <Tag variant={RESULTADO_VARIANT[resultado]}>{RESULTADO_LABEL[resultado]}</Tag>;
 }
 
 function StatBox({ value, label, color }: { value: number; label: string; color: string }) {
