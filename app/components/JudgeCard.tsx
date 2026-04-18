@@ -155,7 +155,7 @@ export default function JudgeCard(judge: Judge) {
   ];
 
   return (
-    <article className="bg-ink-elevated border-border hover:border-gold/40 overflow-hidden rounded-xl border transition-all hover:shadow-lg hover:shadow-black/30">
+    <article className="bg-ink-elevated border-border hover:border-gold/40 overflow-hidden rounded-xl border shadow-lg shadow-black/40 transition-all hover:shadow-xl hover:shadow-black/60">
       {/* ── Header ── */}
       <div className="border-border flex items-start justify-between gap-3 border-b px-5 py-4">
         <div className="min-w-0 flex-1">

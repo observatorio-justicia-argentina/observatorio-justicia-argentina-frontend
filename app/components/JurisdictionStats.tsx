@@ -134,7 +134,7 @@ export default function JurisdictionStats({
       </div>
 
       {/* Summary row for the country */}
-      <div className="bg-ink-elevated border-border mb-4 grid grid-cols-2 gap-3 rounded-xl border p-4 sm:grid-cols-4">
+      <div className="bg-ink-elevated border-border mb-4 grid grid-cols-2 gap-3 rounded-xl border p-4 shadow-md shadow-black/30 sm:grid-cols-4">
         <SummaryCell label="Total de jueces" value={String(hierarchy.totalJudges)} />
         <SummaryCell
           label="Libertades otorgadas"
@@ -158,7 +158,7 @@ export default function JurisdictionStats({
       </div>
 
       {/* Tree */}
-      <div className="bg-ink-elevated border-border rounded-xl border p-4">
+      <div className="bg-ink-elevated border-border rounded-xl border p-4 shadow-md shadow-black/30">
         <NodeRow
           node={hierarchy}
           onFilterClick={onProvinceFilter}

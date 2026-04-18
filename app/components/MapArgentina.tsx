@@ -348,7 +348,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
 
   return (
     <section
-      className="rounded-xl border overflow-hidden"
+      className="overflow-hidden rounded-xl border shadow-md shadow-black/30"
       style={{ backgroundColor: "#181f38", borderColor: "#242b48" }}
     >
       {/* Toggle header */}
