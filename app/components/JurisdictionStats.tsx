@@ -135,7 +135,7 @@ export default function JurisdictionStats({
   activeProvince,
 }: JurisdictionStatsProps) {
   return (
-    <section className="mx-auto w-full max-w-7xl px-4 pb-4 pt-8 sm:px-6 lg:px-8">
+    <section className="mx-auto w-full max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
       {/* Header */}
       <p className="text-gold mb-2 text-xs font-semibold uppercase tracking-[0.28em]">
         Geografía Judicial
@@ -180,10 +180,12 @@ export default function JurisdictionStats({
         />
       </div>
 
-      <p className={`text-gold mt-2 text-xs ${activeProvince ? "visible" : "invisible"}`}>
-        Mostrando jueces de <strong>{activeProvince ?? "—"}</strong>. Hacé clic en &ldquo;✕ Filtro
-        activo&rdquo; para ver todos.
-      </p>
+      {activeProvince && (
+        <p className="text-gold mt-2 text-xs">
+          Mostrando jueces de <strong>{activeProvince}</strong>. Hacé clic en &ldquo;✕ Filtro
+          activo&rdquo; para ver todos.
+        </p>
+      )}
     </section>
   );
 }
