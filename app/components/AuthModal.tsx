@@ -3,6 +3,7 @@
 import { useState, FormEvent } from "react";
 import { useAuth } from "../context/AuthContext";
 import { RegisterData } from "../lib/auth-api";
+import { XIcon } from "./icons";
 
 const ROLES = [
   "Periodista",
@@ -21,12 +22,15 @@ type Tab = "login" | "register";
 
 function Label({ children, required }: { children: React.ReactNode; required?: boolean }) {
   return (
-    <label className="mb-1 block text-xs font-semibold" style={{ color: "#7d8590" }}>
+    <label className="text-cream-muted mb-1 block text-xs font-semibold">
       {children}
-      {required && <span style={{ color: "#f85149" }}> *</span>}
+      {required && <span className="text-danger"> *</span>}
     </label>
   );
 }
+
+const INPUT_CLASSES =
+  "bg-ink border-border-strong text-cream focus:border-gold w-full rounded-lg border px-3 py-2 text-sm outline-none transition-colors focus:outline-none placeholder:text-cream-muted";
 
 function Field({
   label,
@@ -55,10 +59,7 @@ function Field({
         placeholder={placeholder}
         required={required}
         autoComplete={autoComplete}
-        className="w-full rounded-lg border px-3 py-2 text-sm outline-none transition-colors"
-        style={{ backgroundColor: "#0d1117", borderColor: "#30363d", color: "#e6edf3" }}
-        onFocus={(e) => (e.currentTarget.style.borderColor = "#74ACDF")}
-        onBlur={(e) => (e.currentTarget.style.borderColor = "#30363d")}
+        className={INPUT_CLASSES}
       />
     </div>
   );
@@ -66,10 +67,7 @@ function Field({
 
 function ErrorBanner({ message }: { message: string }) {
   return (
-    <div
-      className="rounded-lg border px-4 py-2.5 text-sm"
-      style={{ backgroundColor: "#f8514910", borderColor: "#f85149", color: "#f85149" }}
-    >
+    <div className="bg-danger-soft border-danger text-danger rounded-lg border px-4 py-2.5 text-sm">
       {message}
     </div>
   );
@@ -88,11 +86,9 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Login fields
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
-  // Register fields
   const [reg, setReg] = useState<RegisterData & { confirmPassword: string }>({
     nombre: "",
     email: "",
@@ -104,8 +100,6 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
   });
 
   const setR = (k: keyof typeof reg) => (v: string) => setReg((prev) => ({ ...prev, [k]: v }));
-
-  // ── Login submit ──
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
@@ -120,8 +114,6 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
       setLoading(false);
     }
   };
-
-  // ── Register submit ──
 
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
@@ -152,36 +144,33 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
     }
   };
 
+  const submitBtnCls = loading
+    ? "bg-border text-cream-subtle cursor-not-allowed"
+    : "bg-gold text-cream hover:bg-gold-strong cursor-pointer";
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ backgroundColor: "rgba(0,0,0,0.75)" }}
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div
-        className="w-full max-w-md rounded-2xl border shadow-2xl"
-        style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
-      >
+      <div className="bg-ink-elevated border-border w-full max-w-md rounded-2xl border shadow-2xl">
         {/* Header */}
-        <div
-          className="flex items-center justify-between px-6 py-4"
-          style={{ borderBottom: "1px solid #21262d" }}
-        >
-          <h2 className="text-base font-bold" style={{ color: "#e6edf3" }}>
+        <div className="border-border flex items-center justify-between border-b px-6 py-4">
+          <h2 className="text-cream font-serif text-lg font-bold">
             {tab === "login" ? "Iniciar sesión" : "Crear cuenta"}
           </h2>
           <button
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-white/5"
-            style={{ color: "#7d8590" }}
+            className="text-cream-muted hover:bg-cream/5 flex h-8 w-8 items-center justify-center rounded-lg"
             aria-label="Cerrar"
           >
-            ✕
+            <XIcon className="h-4 w-4" aria-hidden />
           </button>
         </div>
 
         {/* Tabs */}
-        <div className="flex" style={{ borderBottom: "1px solid #21262d" }}>
+        <div className="border-border flex border-b">
           {(["login", "register"] as Tab[]).map((t) => (
             <button
               key={t}
@@ -189,12 +178,9 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
                 setTab(t);
                 setError(null);
               }}
-              className="flex-1 py-3 text-sm font-medium transition-colors"
-              style={{
-                color: tab === t ? "#74ACDF" : "#7d8590",
-                borderBottom: tab === t ? "2px solid #74ACDF" : "2px solid transparent",
-                backgroundColor: "transparent",
-              }}
+              className={`flex-1 border-b-2 bg-transparent py-3 text-sm font-medium transition-colors ${
+                tab === t ? "text-gold border-gold" : "text-cream-muted border-transparent"
+              }`}
             >
               {t === "login" ? "Iniciar sesión" : "Crear cuenta"}
             </button>
@@ -208,7 +194,6 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
             </div>
           )}
 
-          {/* ── Login form ── */}
           {tab === "login" && (
             <form onSubmit={handleLogin} className="flex flex-col gap-4">
               <Field
@@ -232,16 +217,11 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-1 w-full rounded-lg py-2.5 text-sm font-semibold transition-all"
-                style={{
-                  backgroundColor: loading ? "#21262d" : "#74ACDF",
-                  color: loading ? "#4d5561" : "#0d1117",
-                  cursor: loading ? "not-allowed" : "pointer",
-                }}
+                className={`mt-1 w-full rounded-lg py-2.5 text-sm font-semibold transition-colors ${submitBtnCls}`}
               >
                 {loading ? "Ingresando..." : "Ingresar"}
               </button>
-              <p className="text-center text-xs" style={{ color: "#7d8590" }}>
+              <p className="text-cream-muted text-center text-xs">
                 ¿No tenés cuenta?{" "}
                 <button
                   type="button"
@@ -249,8 +229,7 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
                     setTab("register");
                     setError(null);
                   }}
-                  className="hover:underline"
-                  style={{ color: "#74ACDF" }}
+                  className="text-gold hover:underline"
                 >
                   Registrate
                 </button>
@@ -258,7 +237,6 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
             </form>
           )}
 
-          {/* ── Register form ── */}
           {tab === "register" && (
             <form onSubmit={handleRegister} className="flex flex-col gap-3">
               <Field
@@ -305,18 +283,13 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
                   value={reg.rol}
                   onChange={(e) => setR("rol")(e.target.value)}
                   required
-                  className="w-full rounded-lg border px-3 py-2 text-sm outline-none"
-                  style={{
-                    backgroundColor: "#0d1117",
-                    borderColor: "#30363d",
-                    color: reg.rol ? "#e6edf3" : "#7d8590",
-                  }}
+                  className={`${INPUT_CLASSES} ${reg.rol ? "text-cream" : "text-cream-muted"}`}
                 >
                   <option value="" disabled>
                     Seleccioná tu rol...
                   </option>
                   {ROLES.map((r) => (
-                    <option key={r} value={r} style={{ color: "#e6edf3" }}>
+                    <option key={r} value={r} className="text-cream">
                       {r}
                     </option>
                   ))}
@@ -342,7 +315,7 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
                 autoComplete="new-password"
               />
 
-              <p className="text-xs leading-relaxed" style={{ color: "#7d8590" }}>
+              <p className="text-cream-muted text-xs leading-relaxed">
                 Al registrarte aceptás que tu nombre, email y DNI quedan vinculados a cualquier
                 informe que cargues. Esto es parte de la trazabilidad civil del sistema.
               </p>
@@ -350,17 +323,12 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-lg py-2.5 text-sm font-semibold transition-all"
-                style={{
-                  backgroundColor: loading ? "#21262d" : "#74ACDF",
-                  color: loading ? "#4d5561" : "#0d1117",
-                  cursor: loading ? "not-allowed" : "pointer",
-                }}
+                className={`w-full rounded-lg py-2.5 text-sm font-semibold transition-colors ${submitBtnCls}`}
               >
                 {loading ? "Creando cuenta..." : "Crear cuenta"}
               </button>
 
-              <p className="text-center text-xs" style={{ color: "#7d8590" }}>
+              <p className="text-cream-muted text-center text-xs">
                 ¿Ya tenés cuenta?{" "}
                 <button
                   type="button"
@@ -368,8 +336,7 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
                     setTab("login");
                     setError(null);
                   }}
-                  className="hover:underline"
-                  style={{ color: "#74ACDF" }}
+                  className="text-gold hover:underline"
                 >
                   Iniciá sesión
                 </button>

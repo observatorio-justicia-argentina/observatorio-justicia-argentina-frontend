@@ -1,49 +1,240 @@
 @import "tailwindcss";
 
 :root {
-  --bg:          #0d1117;
-  --surface:     #161b22;
-  --surface-2:   #1e2530;
-  --border:      #21262d;
-  --border-2:    #30363d;
-  --text:        #e6edf3;
-  --text-muted:  #7d8590;
-  --celeste:     #74ACDF;
-  --celeste-dim: #4a7aa8;
-  --gold:        #F4B942;
-  --gold-dim:    #b8892f;
+  /* === Brand palette: deep navy dark mode === */
+  /* Navy surfaces */
+  --ink:            #0f1529;
+  --ink-elevated:   #181f38;
+  --border:         #242b48;
+  --border-strong:  #363e5e;
+
+  /* Cream typography */
+  --cream:          #f4f2e6;
+  --cream-muted:    #a8a496;
+  --cream-subtle:   #6f6c60;
+
+  /* Gold — primary accent */
+  --gold:           #d0a04a;
+  --gold-strong:    #dfae5a;
+  --gold-soft:      rgba(208, 160, 74, 0.18);
+
+  /* State */
+  --success:        #3fb950;
+  --success-soft:   rgba(63, 185, 80, 0.15);
+  --danger:         #f85149;
+  --danger-soft:    rgba(248, 81, 73, 0.15);
+  --warning:        #f4b942;
+  --warning-soft:   rgba(244, 185, 66, 0.15);
+  --violet:         #a371f7;
+  --violet-soft:    rgba(163, 113, 247, 0.15);
 }
 
 @theme inline {
-  --color-bg:          var(--bg);
-  --color-surface:     var(--surface);
-  --color-surface-2:   var(--surface-2);
-  --color-border:      var(--border);
-  --color-text:        var(--text);
-  --color-text-muted:  var(--text-muted);
-  --color-celeste:     var(--celeste);
-  --color-gold:        var(--gold);
-  --font-sans: var(--font-geist-sans);
+  --color-ink:           var(--ink);
+  --color-ink-elevated:  var(--ink-elevated);
+  --color-border:        var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-cream:         var(--cream);
+  --color-cream-muted:   var(--cream-muted);
+  --color-cream-subtle:  var(--cream-subtle);
+
+  --color-gold:          var(--gold);
+  --color-gold-strong:   var(--gold-strong);
+  --color-gold-soft:     var(--gold-soft);
+
+  --color-success:       var(--success);
+  --color-success-soft:  var(--success-soft);
+  --color-danger:        var(--danger);
+  --color-danger-soft:   var(--danger-soft);
+  --color-warning:       var(--warning);
+  --color-warning-soft:  var(--warning-soft);
+  --color-violet:        var(--violet);
+  --color-violet-soft:   var(--violet-soft);
+
+  --font-sans:  var(--font-instrument-sans);
+  --font-serif: var(--font-instrument-serif);
+  --font-mono:  var(--font-ibm-plex-mono);
 }
 
-html, body {
+html {
+  /* Smooth anchor scroll + offset so sticky navbar doesn't overlap targets */
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+  /* Themed scrollbar — Firefox */
+  scrollbar-color: var(--border-strong) transparent;
+  scrollbar-width: thin;
+}
+
+html,
+body {
   min-height: 100%;
 }
 
-body {
-  background-color: var(--bg);
-  color: var(--text);
-  font-family: 'Geist', Arial, Helvetica, sans-serif;
+/* Themed scrollbar — WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--border-strong);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--gold);
+  background-clip: padding-box;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.97); }
-  to   { opacity: 1; transform: scale(1); }
+body {
+  /* Solid ink — uniform dark background lets the layered ink-elevated cards be
+     the only visual rhythm on the page, no gradient banding or alternation. */
+  background-color: var(--ink);
+  color: var(--cream);
+  font-family: var(--font-instrument-sans), Arial, Helvetica, sans-serif;
 }
-.modal-enter { animation: fadeIn 0.2s ease-out; }
+
+/* Staggered page-load reveal — CSS-only, cubic-bezier eased */
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  animation: revealUp 700ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.reveal-delay-1 { animation-delay: 80ms; }
+.reveal-delay-2 { animation-delay: 200ms; }
+.reveal-delay-3 { animation-delay: 320ms; }
+.reveal-delay-4 { animation-delay: 460ms; }
+.reveal-delay-5 { animation-delay: 600ms; }
+
+/* Gold shimmer for loading skeletons */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-bg {
+  background-image: linear-gradient(
+    90deg,
+    var(--ink-elevated) 0%,
+    rgba(208, 160, 74, 0.1) 50%,
+    var(--ink-elevated) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Halftone grain — medium scan texture, readable at normal viewing without retro dot-punch */
+.halftone-mask {
+  mask-image: radial-gradient(circle, black 76%, transparent 78%);
+  -webkit-mask-image: radial-gradient(circle, black 76%, transparent 78%);
+  mask-size: 3px 3px;
+  -webkit-mask-size: 3px 3px;
+  mask-repeat: repeat;
+  -webkit-mask-repeat: repeat;
+}
+
+/* Registered custom properties — enable CSS transitions on --spot-x / --spot-y */
+@property --spot-x {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: -400px;
+}
+@property --spot-y {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: -400px;
+}
+
+/* Escudo spotlight — multi-stop soft radial mask tracks the cursor with a 150ms trail.
+   The mask uses alpha values for a smooth feathered edge instead of a hard cutoff. */
+.escudo-spot {
+  transition:
+    --spot-x 150ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    --spot-y 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  mask-image: radial-gradient(
+    circle 320px at var(--spot-x) var(--spot-y),
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.9) 30%,
+    rgba(0, 0, 0, 0.5) 60%,
+    rgba(0, 0, 0, 0.15) 85%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    circle 320px at var(--spot-x) var(--spot-y),
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.9) 30%,
+    rgba(0, 0, 0, 0.5) 60%,
+    rgba(0, 0, 0, 0.15) 85%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+/* Gold halo that tracks the same cursor position, soft-light blended so it
+   reads as warm illumination behind the spotlight rather than a highlight on top. */
+.escudo-halo {
+  transition:
+    --spot-x 150ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    --spot-y 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  background: radial-gradient(
+    circle 380px at var(--spot-x) var(--spot-y),
+    rgba(208, 160, 74, 0.22) 0%,
+    rgba(208, 160, 74, 0.08) 40%,
+    transparent 75%
+  );
+  mix-blend-mode: soft-light;
+}
+
+/* Modal / overlay reveal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.modal-enter {
+  animation: fadeIn 0.2s ease-out;
+}
 
 @keyframes overlayIn {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
-.overlay-enter { animation: overlayIn 0.15s ease-out; }
+.overlay-enter {
+  animation: overlayIn 0.15s ease-out;
+}
+
+/* Respect users who prefer reduced motion — WCAG 2.1 AA. Kills revealUp cascade,
+   shimmer, escudo-spot/halo tweens, smooth scroll, and modal enter. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
