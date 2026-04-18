@@ -3,11 +3,11 @@
 :root {
   /* === Brand palette: deep navy dark mode === */
   /* Navy surfaces (darker than Ministry chrome, full dark-mode context) */
-  --ink:            #131a33;
-  --ink-elevated:   #1d2442;
-  --ink-raised:     #2a3252;
-  --border:         #2a3252;
-  --border-strong:  #3d466a;
+  --ink:            #0f1529;
+  --ink-elevated:   #181f38;
+  --ink-raised:     #242b48;
+  --border:         #242b48;
+  --border-strong:  #363e5e;
 
   /* Cream typography */
   --cream:          #f4f2e6;
