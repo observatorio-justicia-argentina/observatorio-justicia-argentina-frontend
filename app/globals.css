@@ -1,27 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  /* === Brand palette: Ministry navy + cream + gold === */
-  /* Ministry navy surfaces */
-  --ink:            #232d4f;  /* base — azul oficial del Ministerio de Justicia */
-  --ink-elevated:   #2e3a63;  /* panels, cards */
-  --ink-raised:     #3a4878;  /* nav hover, inputs */
-  --border:         #3a4878;
-  --border-strong:  #4d5a8a;
+  /* === Brand palette: deep navy dark mode === */
+  /* Navy surfaces (darker than Ministry chrome, full dark-mode context) */
+  --ink:            #131a33;
+  --ink-elevated:   #1d2442;
+  --ink-raised:     #2a3252;
+  --border:         #2a3252;
+  --border-strong:  #3d466a;
 
-  /* Cream typography (on ink/navy backgrounds) */
+  /* Cream typography */
   --cream:          #f4f2e6;
   --cream-muted:    #a8a496;
   --cream-subtle:   #6f6c60;
-
-  /* Paper surfaces (cream body context) */
-  --paper:          #ffffff;       /* cards/panels on cream body */
-  --paper-elevated: #faf8ee;       /* nested/inset on paper */
-  --paper-border:   #d4d1c2;       /* subtle border on cream */
-
-  /* Ink-on-cream text colors (dark text on light body) */
-  --ink-muted:      #5a6380;
-  --ink-subtle:     #8590a8;
 
   /* Gold — primary accent */
   --gold:           #c18a38;
@@ -50,13 +41,6 @@
   --color-cream-muted:   var(--cream-muted);
   --color-cream-subtle:  var(--cream-subtle);
 
-  --color-paper:          var(--paper);
-  --color-paper-elevated: var(--paper-elevated);
-  --color-paper-border:   var(--paper-border);
-
-  --color-ink-muted:     var(--ink-muted);
-  --color-ink-subtle:    var(--ink-subtle);
-
   --color-gold:          var(--gold);
   --color-gold-strong:   var(--gold-strong);
   --color-gold-soft:     var(--gold-soft);
@@ -80,8 +64,8 @@ body {
 }
 
 body {
-  background-color: var(--cream);
-  color: var(--ink);
+  background-color: var(--ink);
+  color: var(--cream);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
