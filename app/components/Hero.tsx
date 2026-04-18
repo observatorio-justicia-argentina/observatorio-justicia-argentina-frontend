@@ -33,7 +33,7 @@ export default function Hero() {
         <img
           src="/coat-of-arms.svg"
           alt=""
-          className="absolute -right-24 top-1/2 h-[140%] w-auto -translate-y-1/2 opacity-[0.18] [filter:grayscale(1)_contrast(1.15)_brightness(0.95)] sm:-right-12"
+          className="absolute -right-16 top-1/2 h-[110%] w-auto -translate-y-1/2 opacity-[0.26] [filter:grayscale(1)_contrast(1.15)_brightness(0.95)] sm:-right-8"
         />
         {/* Dark fade from left to right so the escudo bleeds into the ink on the text side */}
         <div className="from-ink via-ink/95 absolute inset-0 bg-gradient-to-r to-transparent" />
