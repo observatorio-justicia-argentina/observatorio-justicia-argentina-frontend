@@ -5,15 +5,10 @@ import { JurisdictionNode } from "../lib/api";
 
 // ── Helpers de color ─────────────────────────────────────────────────────────
 
-function rateColor(rate: number) {
-  if (rate > 20) return "#f85149";
-  if (rate > 10) return "#F4B942";
-  return "#3fb950";
-}
-function rateBg(rate: number) {
-  if (rate > 20) return "#f8514920";
-  if (rate > 10) return "#F4B94220";
-  return "#3fb95020";
+function rateClasses(rate: number): string {
+  if (rate > 20) return "bg-danger-soft text-danger border-danger/40";
+  if (rate > 10) return "bg-warning-soft text-warning border-warning/40";
+  return "bg-success-soft text-success border-success/40";
 }
 
 const LEVEL_LABELS: Record<JurisdictionNode["level"], string> = {
@@ -47,52 +42,38 @@ function NodeRow({ node, onFilterClick, activeProvince }: NodeRowProps) {
   return (
     <div>
       <div
-        className="flex items-center gap-2 rounded-lg px-3 py-2 transition-colors"
-        style={{
-          marginLeft: `${indent * 20}px`,
-          backgroundColor: isActiveFilter ? "#74ACDF10" : "transparent",
-          border: isActiveFilter ? "1px solid #74ACDF30" : "1px solid transparent",
-        }}
+        className={`flex items-center gap-2 rounded-lg border px-3 py-2 transition-colors ${
+          isActiveFilter ? "bg-royal-soft border-royal/30" : "border-transparent"
+        }`}
+        style={{ marginLeft: `${indent * 20}px` }}
       >
         {/* Expand/collapse toggle */}
         <button
           onClick={() => hasChildren && setOpen((o) => !o)}
-          className="flex h-5 w-5 shrink-0 items-center justify-center rounded text-xs"
-          style={{
-            color: hasChildren ? "#74ACDF" : "#30363d",
-            cursor: hasChildren ? "pointer" : "default",
-          }}
+          className={`flex h-5 w-5 shrink-0 items-center justify-center rounded text-xs ${
+            hasChildren ? "text-royal cursor-pointer" : "text-border-strong cursor-default"
+          }`}
           aria-label={open ? "Colapsar" : "Expandir"}
         >
           {hasChildren ? (open ? "▼" : "▶") : "·"}
         </button>
 
         {/* Level badge */}
-        <span
-          className="shrink-0 rounded px-1.5 py-0.5 text-xs font-medium"
-          style={{ backgroundColor: "#21262d", color: "#7d8590" }}
-        >
+        <span className="bg-border text-cream-muted shrink-0 rounded px-1.5 py-0.5 text-xs font-medium">
           {LEVEL_LABELS[node.level]}
         </span>
 
         {/* Name */}
-        <span className="flex-1 text-sm font-semibold truncate" style={{ color: "#e6edf3" }}>
-          {node.name}
-        </span>
+        <span className="text-cream flex-1 truncate text-sm font-semibold">{node.name}</span>
 
         {/* Judge count */}
-        <span className="shrink-0 text-xs" style={{ color: "#7d8590" }}>
+        <span className="text-cream-muted shrink-0 text-xs">
           {node.totalJudges} {node.totalJudges === 1 ? "juez" : "jueces"}
         </span>
 
         {/* Failure rate */}
         <span
-          className="shrink-0 rounded-full px-2 py-0.5 text-xs font-bold"
-          style={{
-            backgroundColor: rateBg(rate),
-            color: rateColor(rate),
-            border: `1px solid ${rateColor(rate)}40`,
-          }}
+          className={`shrink-0 rounded-full border px-2 py-0.5 text-xs font-bold ${rateClasses(rate)}`}
         >
           {rate.toFixed(1)}%
         </span>
@@ -101,12 +82,11 @@ function NodeRow({ node, onFilterClick, activeProvince }: NodeRowProps) {
         {node.level === "province" && (
           <button
             onClick={() => onFilterClick(isActiveFilter ? null : node.name)}
-            className="shrink-0 rounded px-2 py-0.5 text-xs font-medium transition-colors"
-            style={{
-              backgroundColor: isActiveFilter ? "#74ACDF" : "#21262d",
-              color: isActiveFilter ? "#0d1117" : "#74ACDF",
-              border: "1px solid " + (isActiveFilter ? "#74ACDF" : "#74ACDF40"),
-            }}
+            className={`shrink-0 rounded border px-2 py-0.5 text-xs font-medium transition-colors ${
+              isActiveFilter
+                ? "bg-royal text-cream border-royal"
+                : "bg-border text-royal border-royal/40 hover:bg-royal-soft"
+            }`}
           >
             {isActiveFilter ? "✕ Filtro activo" : "Filtrar"}
           </button>
@@ -146,23 +126,15 @@ export default function JurisdictionStats({
   return (
     <section className="mx-auto w-full max-w-7xl px-4 pb-4 pt-8 sm:px-6 lg:px-8">
       {/* Header */}
-      <div className="mb-4 flex items-center gap-3">
-        <h2 className="text-lg font-bold" style={{ color: "#e6edf3" }}>
-          Estadísticas por Jurisdicción
-        </h2>
-        <span
-          className="rounded-full px-2 py-0.5 text-xs font-semibold"
-          style={{ backgroundColor: "#21262d", color: "#7d8590" }}
-        >
+      <div className="mb-4 flex flex-wrap items-center gap-3">
+        <h2 className="text-cream font-serif text-2xl font-bold">Estadísticas por Jurisdicción</h2>
+        <span className="bg-border text-cream-muted rounded-full px-2 py-0.5 text-xs font-semibold">
           Argentina → Provincia → Depto. Judicial
         </span>
       </div>
 
       {/* Summary row for the country */}
-      <div
-        className="mb-4 grid grid-cols-2 gap-3 rounded-xl border p-4 sm:grid-cols-4"
-        style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
-      >
+      <div className="bg-ink-elevated border-border mb-4 grid grid-cols-2 gap-3 rounded-xl border p-4 sm:grid-cols-4">
         <SummaryCell label="Total de jueces" value={String(hierarchy.totalJudges)} />
         <SummaryCell
           label="Libertades otorgadas"
@@ -176,16 +148,17 @@ export default function JurisdictionStats({
           label="Tasa de falla país"
           value={`${hierarchy.failureRate.toFixed(1)}%`}
           accent={
-            hierarchy.failureRate > 20 ? "red" : hierarchy.failureRate > 10 ? "gold" : "green"
+            hierarchy.failureRate > 20
+              ? "danger"
+              : hierarchy.failureRate > 10
+                ? "warning"
+                : "success"
           }
         />
       </div>
 
       {/* Tree */}
-      <div
-        className="rounded-xl border p-4"
-        style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
-      >
+      <div className="bg-ink-elevated border-border rounded-xl border p-4">
         <NodeRow
           node={hierarchy}
           onFilterClick={onProvinceFilter}
@@ -193,10 +166,7 @@ export default function JurisdictionStats({
         />
       </div>
 
-      <p
-        className="mt-2 text-xs"
-        style={{ color: "#74ACDF", visibility: activeProvince ? "visible" : "hidden" }}
-      >
+      <p className={`text-royal mt-2 text-xs ${activeProvince ? "visible" : "invisible"}`}>
         Mostrando jueces de <strong>{activeProvince ?? "—"}</strong>. Hacé clic en &ldquo;✕ Filtro
         activo&rdquo; para ver todos.
       </p>
@@ -211,24 +181,20 @@ function SummaryCell({
 }: {
   label: string;
   value: string;
-  accent?: "red" | "gold" | "green";
+  accent?: "danger" | "warning" | "success";
 }) {
-  const color =
-    accent === "red"
-      ? "#f85149"
-      : accent === "gold"
-        ? "#F4B942"
-        : accent === "green"
-          ? "#3fb950"
-          : "#e6edf3";
+  const valueClass =
+    accent === "danger"
+      ? "text-danger"
+      : accent === "warning"
+        ? "text-warning"
+        : accent === "success"
+          ? "text-success"
+          : "text-cream";
   return (
     <div className="flex flex-col items-center">
-      <span className="text-xl font-bold sm:text-2xl" style={{ color }}>
-        {value}
-      </span>
-      <span className="text-center text-xs" style={{ color: "#7d8590" }}>
-        {label}
-      </span>
+      <span className={`font-serif text-xl font-bold sm:text-2xl ${valueClass}`}>{value}</span>
+      <span className="text-cream-muted text-center text-xs">{label}</span>
     </div>
   );
 }
