@@ -4,6 +4,7 @@ import { useState } from "react";
 import DisclaimerModal from "./DisclaimerModal";
 import SubmitJudgeModal from "./SubmitJudgeModal";
 import AuthModal from "./AuthModal";
+import { AlertIcon, ScaleIcon } from "./icons";
 import { useAuth } from "../context/AuthContext";
 
 function UserInitials({ nombre }: { nombre: string }) {
@@ -39,9 +40,7 @@ export default function Navbar() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           {/* Logo */}
           <div className="flex min-w-0 items-center gap-2.5">
-            <span className="text-xl sm:text-2xl" aria-hidden="true">
-              ⚖️
-            </span>
+            <ScaleIcon className="text-gold h-6 w-6 sm:h-7 sm:w-7" aria-hidden />
             <div className="min-w-0">
               <span className="text-cream block truncate font-serif text-sm font-bold leading-tight sm:text-base">
                 Observatorio Judicial Argentino
@@ -72,9 +71,10 @@ export default function Navbar() {
 
             <button
               onClick={() => setDisclaimerOpen(true)}
-              className="border-gold text-gold hover:bg-gold/10 cursor-pointer rounded-md border px-3 py-1.5 text-xs font-medium transition-colors"
+              className="border-gold text-gold hover:bg-gold/10 flex cursor-pointer items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors"
             >
-              ⚠ Aviso
+              <AlertIcon className="h-3.5 w-3.5" aria-hidden />
+              Aviso
             </button>
 
             <a
@@ -199,9 +199,10 @@ export default function Navbar() {
                   setDisclaimerOpen(true);
                   setMenuOpen(false);
                 }}
-                className="text-gold hover:bg-cream/5 cursor-pointer rounded-md px-3 py-2 text-left text-sm font-medium"
+                className="text-gold hover:bg-cream/5 flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-left text-sm font-medium"
               >
-                ⚠ Aviso sobre los datos
+                <AlertIcon className="h-4 w-4" aria-hidden />
+                Aviso sobre los datos
               </button>
               <a
                 href="https://github.com/observatorio-justicia-argentina/observatorio-justicia-argentina-frontend"

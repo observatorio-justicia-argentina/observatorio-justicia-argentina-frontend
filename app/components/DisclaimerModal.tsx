@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ScaleIcon } from "./icons";
 
 const DISCLAIMER_KEY = "oja-disclaimer-accepted";
 
@@ -43,9 +44,7 @@ export default function DisclaimerModal({ forceOpen, onClose }: DisclaimerModalP
 
         {/* Header */}
         <div className="border-border flex items-center gap-3 border-b px-6 py-4">
-          <span className="text-2xl" aria-hidden="true">
-            ⚖️
-          </span>
+          <ScaleIcon className="text-gold h-7 w-7" aria-hidden />
           <h2
             id="disclaimer-title"
             className="text-cream font-serif text-lg font-bold leading-tight"

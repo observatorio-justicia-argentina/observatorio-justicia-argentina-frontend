@@ -13,11 +13,16 @@ const STEPS = [
   },
 ];
 
-const PRINCIPLES = [
-  { icon: "📂", label: "Código abierto" },
-  { icon: "📊", label: "Estadístico" },
-  { icon: "⚖️", label: "Sin sesgo político" },
-  { icon: "🔍", label: "Datos reales" },
+import { ChartIcon, FolderIcon, ScaleIcon, SearchIcon } from "./icons";
+
+const PRINCIPLES: {
+  Icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
+  label: string;
+}[] = [
+  { Icon: FolderIcon, label: "Código abierto" },
+  { Icon: ChartIcon, label: "Estadístico" },
+  { Icon: ScaleIcon, label: "Sin sesgo político" },
+  { Icon: SearchIcon, label: "Datos reales" },
 ];
 
 function StepCard({ num, text }: { num: string; text: string }) {
@@ -31,10 +36,16 @@ function StepCard({ num, text }: { num: string; text: string }) {
   );
 }
 
-function PrincipleChip({ icon, label }: { icon: string; label: string }) {
+function PrincipleChip({
+  Icon,
+  label,
+}: {
+  Icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
+  label: string;
+}) {
   return (
-    <div className="border-border bg-ink-elevated text-cream-muted flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium">
-      <span aria-hidden="true">{icon}</span>
+    <div className="border-border bg-ink-elevated text-cream-muted flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium">
+      <Icon className="text-gold h-3.5 w-3.5" aria-hidden />
       {label}
     </div>
   );
@@ -80,8 +91,8 @@ export default function Hero() {
 
         {/* Principles row */}
         <div className="mt-10 flex flex-wrap justify-center gap-3 sm:justify-start">
-          {PRINCIPLES.map(({ icon, label }) => (
-            <PrincipleChip key={label} icon={icon} label={label} />
+          {PRINCIPLES.map(({ Icon, label }) => (
+            <PrincipleChip key={label} Icon={Icon} label={label} />
           ))}
         </div>
       </div>
