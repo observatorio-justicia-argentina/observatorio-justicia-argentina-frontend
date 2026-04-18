@@ -210,3 +210,25 @@ export function ChevronRightIcon({ className, ...rest }: IconProps) {
     </svg>
   );
 }
+
+/**
+ * Stylized silhouette of the Argentine continental mainland.
+ * Hand-simplified country outline — wide northern border, Misiones tip,
+ * Buenos Aires bulge, narrowing Patagonia, Tierra del Fuego point.
+ */
+export function ArgentinaIcon({ className, ...rest }: IconProps) {
+  return (
+    <svg
+      className={`${base} ${className ?? ""}`}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.4}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...rest}
+    >
+      <path d="M13.6 2.2 C 14.6 2.5, 15.6 3.2, 16.4 3.9 L 18.2 4.8 L 17.8 6 L 16.8 6.6 L 17 8 C 17.3 9, 17.8 10, 18 11.1 C 17.4 12.2, 16.2 12.9, 15 13.6 C 14 14.5, 13.4 15.6, 13.4 17 C 13.3 18.4, 13 19.8, 12.7 21.2 L 12.2 22.5 L 11.6 21.3 C 11.2 20, 10.8 18.6, 10.4 17.2 C 10 15.8, 9.7 14.4, 9.8 13 C 10 11.4, 10.2 9.8, 9.7 8.2 C 9.3 6.8, 9.4 5.4, 10.2 4.2 C 11 3.2, 12.2 2.5, 13.6 2.2 Z" />
+    </svg>
+  );
+}

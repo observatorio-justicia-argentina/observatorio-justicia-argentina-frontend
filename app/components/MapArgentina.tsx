@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Judge } from "../lib/api";
+import { ArgentinaIcon } from "./icons";
 
 const HC_MIN_X = -999;
 const HC_MAX_Y = 9851;
@@ -360,25 +361,12 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
         className="hover:bg-cream/5 flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors"
         style={{ borderBottom: isOpen ? "1px solid #242b48" : "none" }}
       >
-        {/* Ícono mapa */}
+        {/* Ícono mapa — silueta de Argentina */}
         <div
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md"
           style={{ backgroundColor: "#d0a04a15", border: "1px solid #d0a04a30" }}
         >
-          <svg
-            viewBox="0 0 20 20"
-            fill="none"
-            className="h-4 w-4"
-            style={{ color: "#d0a04a" }}
-            stroke="currentColor"
-            strokeWidth={1.5}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9 6.75V15m0-8.25c0 0-2.25-.75-4.5 0v8.25m4.5-8.25c0 0 2.25-.75 4.5 0v8.25M9 15c0 0-2.25.75-4.5 0M9 15c0 0 2.25.75 4.5 0M3 6.75A2.25 2.25 0 015.25 4.5h9.5A2.25 2.25 0 0117 6.75v6.5A2.25 2.25 0 0114.75 15.5h-9.5A2.25 2.25 0 013 13.25v-6.5z"
-            />
-          </svg>
+          <ArgentinaIcon className="text-gold h-5 w-5" aria-hidden />
         </div>
 
         <div className="flex-1 min-w-0">
