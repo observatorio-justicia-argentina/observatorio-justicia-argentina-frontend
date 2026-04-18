@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Geist } from "next/font/google";
+import { Geist, Libre_Caslon_Text } from "next/font/google";
 import "./globals.css";
 import DisclaimerBanner from "./components/DisclaimerBanner";
 import Navbar from "./components/Navbar";
@@ -11,10 +11,10 @@ const geistSans = Geist({
   display: "swap",
 });
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const libreCaslon = Libre_Caslon_Text({
+  variable: "--font-libre-caslon",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "900"],
+  weight: ["400", "700"],
   style: ["normal"],
   display: "swap",
 });
@@ -31,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${geistSans.variable} ${fraunces.variable} h-full antialiased`}>
+    <html lang="es" className={`${geistSans.variable} ${libreCaslon.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         <Providers>
           <Navbar />
