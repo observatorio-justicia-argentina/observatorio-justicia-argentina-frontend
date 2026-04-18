@@ -209,8 +209,8 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
         ).toFixed(1)
       : "0.0";
   const rate = parseFloat(failureRate);
-  const rateColor = rate > 20 ? "#f85149" : rate > 10 ? "#cfa868" : "#3fb950";
-  const rateBg = rate > 20 ? "#f8514920" : rate > 10 ? "#cfa86820" : "#3fb95020";
+  const rateColor = rate > 20 ? "#f85149" : rate > 10 ? "#d0a04a" : "#3fb950";
+  const rateBg = rate > 20 ? "#f8514920" : rate > 10 ? "#d0a04a20" : "#3fb95020";
 
   const locationPath =
     judge &&
@@ -224,7 +224,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
       <Link
         href="/"
         className="mb-6 inline-flex items-center gap-1.5 text-sm transition-colors hover:text-[#f4f2e6]"
-        style={{ color: "#cfa868" }}
+        style={{ color: "#d0a04a" }}
       >
         <svg
           className="h-4 w-4"
@@ -294,7 +294,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                     </span>
                   )}
                 </div>
-                <p className="mt-1 text-sm" style={{ color: "#cfa868" }}>
+                <p className="mt-1 text-sm" style={{ color: "#d0a04a" }}>
                   {judge.court}
                 </p>
                 <p className="mt-0.5 text-xs" style={{ color: "#a8a496" }}>
@@ -305,9 +305,9 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                 <span
                   className="rounded-full px-2.5 py-0.5 text-xs font-medium"
                   style={{
-                    backgroundColor: "#cfa86815",
-                    color: "#cfa868",
-                    border: "1px solid #cfa86830",
+                    backgroundColor: "#d0a04a15",
+                    color: "#d0a04a",
+                    border: "1px solid #d0a04a30",
                   }}
                 >
                   {judge.location.province}
@@ -425,7 +425,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                   >
                     <svg
                       className="mt-0.5 h-4 w-4 shrink-0"
-                      style={{ color: "#cfa868" }}
+                      style={{ color: "#d0a04a" }}
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -438,7 +438,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                       />
                     </svg>
                     <div>
-                      <p className="text-sm font-medium" style={{ color: "#cfa868" }}>
+                      <p className="text-sm font-medium" style={{ color: "#d0a04a" }}>
                         {link.label}
                       </p>
                       <p className="text-xs" style={{ color: "#a8a496" }}>
@@ -549,7 +549,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                           >
                             <td
                               className="px-4 py-3 font-mono text-xs"
-                              style={{ color: "#cfa868" }}
+                              style={{ color: "#d0a04a" }}
                             >
                               {caso.nroExpediente}
                             </td>
@@ -626,7 +626,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                     href={archivo.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between rounded-lg border px-4 py-3 transition-colors hover:border-[#cfa868]/40"
+                    className="flex items-center justify-between rounded-lg border px-4 py-3 transition-colors hover:border-[#d0a04a]/40"
                     style={{ backgroundColor: "#181f38", borderColor: "#242b48" }}
                   >
                     <div className="flex items-center gap-3">
@@ -654,7 +654,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                       </span>
                       <svg
                         className="h-4 w-4"
-                        style={{ color: "#cfa868" }}
+                        style={{ color: "#d0a04a" }}
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
