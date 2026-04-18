@@ -71,10 +71,10 @@ const RESULTADO_LABEL: Record<ResultadoCaso, string> = {
 };
 
 const RESULTADO_COLOR: Record<ResultadoCaso, { bg: string; text: string; border: string }> = {
-  fta: { bg: "#d2992220", text: "#d29922", border: "#d2992240" },
+  fta: { bg: "#f4b94220", text: "#f4b942", border: "#f4b94240" },
   nuevo_arresto: { bg: "#f8514920", text: "#f85149", border: "#f8514940" },
   revocada: { bg: "#a371f720", text: "#a371f7", border: "#a371f740" },
-  pendiente: { bg: "#74ACDF20", text: "#74ACDF", border: "#74ACDF40" },
+  pendiente: { bg: "#0944b120", text: "#0944b1", border: "#0944b140" },
 };
 
 function ResultadoBadge({ resultado }: { resultado: ResultadoCaso }) {
@@ -93,12 +93,12 @@ function StatBox({ value, label, color }: { value: number; label: string; color:
   return (
     <div
       className="flex flex-col items-center rounded-lg px-4 py-3"
-      style={{ backgroundColor: "#0d1117" }}
+      style={{ backgroundColor: "#040f28" }}
     >
       <span className="text-2xl font-bold" style={{ color }}>
         {value}
       </span>
-      <span className="mt-0.5 text-center text-xs" style={{ color: "#7d8590" }}>
+      <span className="mt-0.5 text-center text-xs" style={{ color: "#a8a496" }}>
         {label}
       </span>
     </div>
@@ -107,11 +107,11 @@ function StatBox({ value, label, color }: { value: number; label: string; color:
 
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex flex-col gap-0.5 py-2.5" style={{ borderBottom: "1px solid #21262d" }}>
-      <span className="text-xs font-medium uppercase tracking-wide" style={{ color: "#7d8590" }}>
+    <div className="flex flex-col gap-0.5 py-2.5" style={{ borderBottom: "1px solid #1c2a52" }}>
+      <span className="text-xs font-medium uppercase tracking-wide" style={{ color: "#a8a496" }}>
         {label}
       </span>
-      <span className="text-sm" style={{ color: "#e6edf3" }}>
+      <span className="text-sm" style={{ color: "#f4f2e6" }}>
         {value}
       </span>
     </div>
@@ -209,8 +209,8 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
         ).toFixed(1)
       : "0.0";
   const rate = parseFloat(failureRate);
-  const rateColor = rate > 20 ? "#f85149" : rate > 10 ? "#F4B942" : "#3fb950";
-  const rateBg = rate > 20 ? "#f8514920" : rate > 10 ? "#F4B94220" : "#3fb95020";
+  const rateColor = rate > 20 ? "#f85149" : rate > 10 ? "#c18a38" : "#3fb950";
+  const rateBg = rate > 20 ? "#f8514920" : rate > 10 ? "#c18a3820" : "#3fb95020";
 
   const locationPath =
     judge &&
@@ -223,8 +223,8 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
       {/* Breadcrumb */}
       <Link
         href="/"
-        className="mb-6 inline-flex items-center gap-1.5 text-sm transition-colors hover:text-[#e6edf3]"
-        style={{ color: "#74ACDF" }}
+        className="mb-6 inline-flex items-center gap-1.5 text-sm transition-colors hover:text-[#f4f2e6]"
+        style={{ color: "#0944b1" }}
       >
         <svg
           className="h-4 w-4"
@@ -253,11 +253,11 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
         <div className="space-y-4">
           <div
             className="h-40 animate-pulse rounded-xl border"
-            style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
+            style={{ backgroundColor: "#0a1836", borderColor: "#1c2a52" }}
           />
           <div
             className="h-64 animate-pulse rounded-xl border"
-            style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
+            style={{ backgroundColor: "#0a1836", borderColor: "#1c2a52" }}
           />
         </div>
       )}
@@ -267,34 +267,37 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
           {/* ── Header ─────────────────────────────────────────────────────── */}
           <article
             className="mb-6 overflow-hidden rounded-xl border"
-            style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
+            style={{ backgroundColor: "#0a1836", borderColor: "#1c2a52" }}
           >
             <div
               className="flex flex-wrap items-start justify-between gap-3 px-6 py-5"
-              style={{ borderBottom: "1px solid #21262d" }}
+              style={{ borderBottom: "1px solid #1c2a52" }}
             >
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
-                  <h1 className="text-xl font-bold" style={{ color: "#e6edf3" }}>
+                  <h1
+                    className="font-serif text-2xl font-bold sm:text-3xl"
+                    style={{ color: "#f4f2e6" }}
+                  >
                     {judge.name}
                   </h1>
                   {judge.isDemoData && (
                     <span
                       className="rounded-full px-2 py-0.5 text-xs"
                       style={{
-                        backgroundColor: "#d2992215",
-                        color: "#d29922",
-                        border: "1px solid #d2992230",
+                        backgroundColor: "#f4b94215",
+                        color: "#f4b942",
+                        border: "1px solid #f4b94230",
                       }}
                     >
                       Demo
                     </span>
                   )}
                 </div>
-                <p className="mt-1 text-sm" style={{ color: "#74ACDF" }}>
+                <p className="mt-1 text-sm" style={{ color: "#0944b1" }}>
                   {judge.court}
                 </p>
-                <p className="mt-0.5 text-xs" style={{ color: "#7d8590" }}>
+                <p className="mt-0.5 text-xs" style={{ color: "#a8a496" }}>
                   {locationPath}
                 </p>
               </div>
@@ -302,9 +305,9 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                 <span
                   className="rounded-full px-2.5 py-0.5 text-xs font-medium"
                   style={{
-                    backgroundColor: "#74ACDF15",
-                    color: "#74ACDF",
-                    border: "1px solid #74ACDF30",
+                    backgroundColor: "#0944b115",
+                    color: "#0944b1",
+                    border: "1px solid #0944b130",
                   }}
                 >
                   {judge.location.province}
@@ -324,8 +327,8 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
 
             {/* Stats */}
             <div className="grid grid-cols-2 gap-3 p-5 sm:grid-cols-4">
-              <StatBox value={judge.totalReleases} label="Libertades otorgadas" color="#e6edf3" />
-              <StatBox value={judge.ftaCount} label="No compareció" color="#d29922" />
+              <StatBox value={judge.totalReleases} label="Libertades otorgadas" color="#f4f2e6" />
+              <StatBox value={judge.ftaCount} label="No compareció" color="#f4b942" />
               <StatBox value={judge.newArrestCount} label="Nuevo arresto" color="#f85149" />
               <StatBox value={judge.revokedCount} label="Medida revocada" color="#a371f7" />
             </div>
@@ -334,10 +337,10 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
           {/* ── Info del cargo ─────────────────────────────────────────────── */}
           <section
             className="mb-6 overflow-hidden rounded-xl border"
-            style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
+            style={{ backgroundColor: "#0a1836", borderColor: "#1c2a52" }}
           >
-            <div className="px-5 py-3" style={{ borderBottom: "1px solid #21262d" }}>
-              <h2 className="text-sm font-semibold" style={{ color: "#e6edf3" }}>
+            <div className="px-5 py-3" style={{ borderBottom: "1px solid #1c2a52" }}>
+              <h2 className="text-sm font-semibold" style={{ color: "#f4f2e6" }}>
                 Datos del cargo
               </h2>
             </div>
@@ -367,10 +370,10 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
             </div>
             {/* Remuneración */}
             {judge.salary && (
-              <div className="mx-5 py-2.5" style={{ borderBottom: "1px solid #21262d" }}>
+              <div className="mx-5 py-2.5" style={{ borderBottom: "1px solid #1c2a52" }}>
                 <span
                   className="text-xs font-medium uppercase tracking-wide"
-                  style={{ color: "#7d8590" }}
+                  style={{ color: "#a8a496" }}
                 >
                   Remuneración bruta mensual
                 </span>
@@ -378,7 +381,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                   <span className="text-lg font-bold" style={{ color: "#3fb950" }}>
                     {formatARS(judge.salary.grossMonthlyARS)}
                   </span>
-                  <span className="text-xs" style={{ color: "#7d8590" }}>
+                  <span className="text-xs" style={{ color: "#a8a496" }}>
                     {judge.salary.category} — {judge.salary.acordada} ({judge.salary.lastUpdated})
                   </span>
                 </div>
@@ -389,11 +392,11 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
               <div className="px-5 py-3">
                 <span
                   className="text-xs font-medium uppercase tracking-wide"
-                  style={{ color: "#7d8590" }}
+                  style={{ color: "#a8a496" }}
                 >
                   Biografía pública
                 </span>
-                <p className="mt-1 text-sm leading-relaxed" style={{ color: "#8b949e" }}>
+                <p className="mt-1 text-sm leading-relaxed" style={{ color: "#a8a496" }}>
                   {judge.publicBio}
                 </p>
               </div>
@@ -404,25 +407,25 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
           {judge.sourceLinks && judge.sourceLinks.length > 0 && (
             <section
               className="mb-6 overflow-hidden rounded-xl border"
-              style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
+              style={{ backgroundColor: "#0a1836", borderColor: "#1c2a52" }}
             >
-              <div className="px-5 py-3" style={{ borderBottom: "1px solid #21262d" }}>
-                <h2 className="text-sm font-semibold" style={{ color: "#e6edf3" }}>
+              <div className="px-5 py-3" style={{ borderBottom: "1px solid #1c2a52" }}>
+                <h2 className="text-sm font-semibold" style={{ color: "#f4f2e6" }}>
                   Fuentes oficiales
                 </h2>
               </div>
-              <div className="divide-y" style={{ borderColor: "#21262d" }}>
+              <div className="divide-y" style={{ borderColor: "#1c2a52" }}>
                 {judge.sourceLinks.map((link, i) => (
                   <a
                     key={i}
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-start gap-3 px-5 py-3 transition-colors hover:bg-white/5"
+                    className="flex items-start gap-3 px-5 py-3 transition-colors hover:bg-cream/5"
                   >
                     <svg
                       className="mt-0.5 h-4 w-4 shrink-0"
-                      style={{ color: "#74ACDF" }}
+                      style={{ color: "#0944b1" }}
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -435,10 +438,10 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                       />
                     </svg>
                     <div>
-                      <p className="text-sm font-medium" style={{ color: "#74ACDF" }}>
+                      <p className="text-sm font-medium" style={{ color: "#0944b1" }}>
                         {link.label}
                       </p>
-                      <p className="text-xs" style={{ color: "#7d8590" }}>
+                      <p className="text-xs" style={{ color: "#a8a496" }}>
                         {link.description}
                       </p>
                     </div>
@@ -452,7 +455,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
           {usingMockData && (
             <div
               className="mb-5 flex items-start gap-3 rounded-lg border px-4 py-3 text-sm"
-              style={{ backgroundColor: "#d2992210", borderColor: "#d2992240", color: "#d29922" }}
+              style={{ backgroundColor: "#f4b94210", borderColor: "#f4b94240", color: "#f4b942" }}
             >
               <svg
                 className="mt-0.5 h-4 w-4 shrink-0"
@@ -469,7 +472,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
               </svg>
               <span>
                 <strong>Vista previa con datos de ejemplo.</strong> El endpoint{" "}
-                <code className="rounded px-1 text-xs" style={{ backgroundColor: "#21262d" }}>
+                <code className="rounded px-1 text-xs" style={{ backgroundColor: "#1c2a52" }}>
                   GET /api/judges/:id/casos
                 </code>{" "}
                 aún no está disponible. Los casos mostrados son ficticios.
@@ -480,13 +483,13 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
           {/* ── Casos ──────────────────────────────────────────────────────── */}
           <section className="mb-6">
             <div className="mb-4 flex items-center gap-2">
-              <h2 className="text-base font-bold" style={{ color: "#e6edf3" }}>
+              <h2 className="text-base font-bold" style={{ color: "#f4f2e6" }}>
                 Casos registrados
               </h2>
               {paginated && (
                 <span
                   className="rounded-full px-2 py-0.5 text-xs font-semibold"
-                  style={{ backgroundColor: "#21262d", color: "#7d8590" }}
+                  style={{ backgroundColor: "#1c2a52", color: "#a8a496" }}
                 >
                   {paginated.total}
                 </span>
@@ -496,17 +499,17 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
             {loadingCasos ? (
               <div
                 className="h-40 animate-pulse rounded-xl border"
-                style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
+                style={{ backgroundColor: "#0a1836", borderColor: "#1c2a52" }}
               />
             ) : !paginated || paginated.data.length === 0 ? (
               <div
                 className="flex flex-col items-center justify-center rounded-xl border py-12"
-                style={{ borderColor: "#21262d", backgroundColor: "#161b22" }}
+                style={{ borderColor: "#1c2a52", backgroundColor: "#0a1836" }}
               >
-                <p className="font-medium" style={{ color: "#e6edf3" }}>
+                <p className="font-medium" style={{ color: "#f4f2e6" }}>
                   Sin casos registrados
                 </p>
-                <p className="mt-1 text-sm" style={{ color: "#7d8590" }}>
+                <p className="mt-1 text-sm" style={{ color: "#a8a496" }}>
                   Aún no se han cargado expedientes para este juez.
                 </p>
               </div>
@@ -514,20 +517,20 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
               <>
                 <div
                   className="overflow-hidden rounded-xl border"
-                  style={{ borderColor: "#21262d" }}
+                  style={{ borderColor: "#1c2a52" }}
                 >
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
                         <tr
-                          style={{ backgroundColor: "#161b22", borderBottom: "1px solid #21262d" }}
+                          style={{ backgroundColor: "#0a1836", borderBottom: "1px solid #1c2a52" }}
                         >
                           {["Expediente", "Fecha resolución", "Tipo de medida", "Resultado"].map(
                             (col) => (
                               <th
                                 key={col}
                                 className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide"
-                                style={{ color: "#7d8590" }}
+                                style={{ color: "#a8a496" }}
                               >
                                 {col}
                               </th>
@@ -540,26 +543,26 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                           <tr
                             key={caso.id}
                             style={{
-                              backgroundColor: i % 2 === 0 ? "#0d1117" : "#161b22",
-                              borderBottom: "1px solid #21262d",
+                              backgroundColor: i % 2 === 0 ? "#040f28" : "#0a1836",
+                              borderBottom: "1px solid #1c2a52",
                             }}
                           >
                             <td
                               className="px-4 py-3 font-mono text-xs"
-                              style={{ color: "#74ACDF" }}
+                              style={{ color: "#0944b1" }}
                             >
                               {caso.nroExpediente}
                             </td>
-                            <td className="px-4 py-3" style={{ color: "#e6edf3" }}>
+                            <td className="px-4 py-3" style={{ color: "#f4f2e6" }}>
                               {formatDate(caso.fechaResolucion)}
                             </td>
-                            <td className="px-4 py-3" style={{ color: "#8b949e" }}>
+                            <td className="px-4 py-3" style={{ color: "#a8a496" }}>
                               {caso.tipoMedida}
                             </td>
                             <td className="px-4 py-3">
                               <ResultadoBadge resultado={caso.resultado} />
                               {caso.observaciones && (
-                                <p className="mt-1 text-xs" style={{ color: "#7d8590" }}>
+                                <p className="mt-1 text-xs" style={{ color: "#a8a496" }}>
                                   {caso.observaciones}
                                 </p>
                               )}
@@ -574,7 +577,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                 {/* Paginación */}
                 {paginated.totalPages > 1 && (
                   <div className="mt-4 flex items-center justify-between">
-                    <span className="text-xs" style={{ color: "#7d8590" }}>
+                    <span className="text-xs" style={{ color: "#a8a496" }}>
                       Página {paginated.page} de {paginated.totalPages} — {paginated.total} casos en
                       total
                     </span>
@@ -584,9 +587,9 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                         disabled={paginated.page === 1}
                         className="rounded-md px-3 py-1.5 text-xs font-medium transition-colors disabled:opacity-40"
                         style={{
-                          backgroundColor: "#21262d",
-                          color: "#e6edf3",
-                          border: "1px solid #30363d",
+                          backgroundColor: "#1c2a52",
+                          color: "#f4f2e6",
+                          border: "1px solid #2a3b6e",
                         }}
                       >
                         ← Anterior
@@ -596,9 +599,9 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                         disabled={paginated.page === paginated.totalPages}
                         className="rounded-md px-3 py-1.5 text-xs font-medium transition-colors disabled:opacity-40"
                         style={{
-                          backgroundColor: "#21262d",
-                          color: "#e6edf3",
-                          border: "1px solid #30363d",
+                          backgroundColor: "#1c2a52",
+                          color: "#f4f2e6",
+                          border: "1px solid #2a3b6e",
                         }}
                       >
                         Siguiente →
@@ -613,7 +616,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
           {/* ── Documentación pública ──────────────────────────────────────── */}
           {archivos.length > 0 && (
             <section>
-              <h2 className="mb-4 text-base font-bold" style={{ color: "#e6edf3" }}>
+              <h2 className="mb-4 text-base font-bold" style={{ color: "#f4f2e6" }}>
                 Documentación pública
               </h2>
               <div className="space-y-2">
@@ -623,8 +626,8 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                     href={archivo.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between rounded-lg border px-4 py-3 transition-colors hover:border-[#74ACDF]/40"
-                    style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
+                    className="flex items-center justify-between rounded-lg border px-4 py-3 transition-colors hover:border-[#0944b1]/40"
+                    style={{ backgroundColor: "#0a1836", borderColor: "#1c2a52" }}
                   >
                     <div className="flex items-center gap-3">
                       <svg
@@ -641,17 +644,17 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                           d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
                         />
                       </svg>
-                      <span className="text-sm" style={{ color: "#e6edf3" }}>
+                      <span className="text-sm" style={{ color: "#f4f2e6" }}>
                         {archivo.nombre}
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-xs" style={{ color: "#7d8590" }}>
+                      <span className="text-xs" style={{ color: "#a8a496" }}>
                         {formatDate(archivo.fechaCarga)}
                       </span>
                       <svg
                         className="h-4 w-4"
-                        style={{ color: "#74ACDF" }}
+                        style={{ color: "#0944b1" }}
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
