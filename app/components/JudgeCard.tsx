@@ -91,9 +91,7 @@ function CaseRow({ c }: { c: JudgeCase }) {
       <p className="text-cream-muted mt-1 text-xs">
         <strong className="text-cream">Resolución:</strong> {c.decisionType} — {c.legalBasis}
       </p>
-      {c.outcomeDetail && (
-        <p className={`mt-1 text-xs italic ${cfg.detailCls}`}>{c.outcomeDetail}</p>
-      )}
+      {c.outcomeDetail && <p className={`mt-1 text-xs ${cfg.detailCls}`}>{c.outcomeDetail}</p>}
     </div>
   );
 }
@@ -356,9 +354,7 @@ export default function JudgeCard(judge: Judge) {
                           )}
                         </div>
                         <p className="text-cream text-xs leading-relaxed">{d.description}</p>
-                        <p className="text-cream-muted mt-1 text-xs italic">
-                          Resultado: {d.outcome}
-                        </p>
+                        <p className="text-cream-muted mt-1 text-xs">Resultado: {d.outcome}</p>
                       </div>
                     ))}
                   </div>

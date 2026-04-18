@@ -69,7 +69,7 @@ export default function Hero() {
         <h1 className="text-cream text-center font-serif text-5xl leading-[1.02] tracking-tight sm:text-left sm:text-6xl lg:text-7xl xl:text-8xl">
           Conocé a tus jueces.
           <br />
-          <span className="text-gold font-black italic">Exigí rendición de cuentas.</span>
+          <span className="text-gold font-black">Exigí rendición de cuentas.</span>
         </h1>
 
         {/* Subheadline */}
