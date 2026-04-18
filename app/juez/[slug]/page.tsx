@@ -328,6 +328,206 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
             )}
           </section>
 
+          {/* ── Expediente Reputacional ─────────────────────────────────── */}
+          {(judge.appointmentDetail || (judge.associations && judge.associations.length > 0)) && (
+            <section
+              className="mb-6 overflow-hidden rounded-xl border"
+              style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
+            >
+              <div className="px-5 py-3" style={{ borderBottom: "1px solid #21262d" }}>
+                <h2 className="text-sm font-semibold" style={{ color: "#e6edf3" }}>
+                  Expediente reputacional
+                </h2>
+              </div>
+
+              {/* Origen de designación */}
+              {judge.appointmentDetail &&
+                (() => {
+                  const d = judge.appointmentDetail;
+                  const originConfig: Record<string, { label: string; color: string }> = {
+                    judicial: { label: "Carrera judicial pura", color: "#3fb950" },
+                    academic: { label: "Origen académico", color: "#74ACDF" },
+                    mixed: { label: "Trayectoria mixta", color: "#F4B942" },
+                    political: { label: "Designación política", color: "#f85149" },
+                  };
+                  const cfg = originConfig[d.politicalOrigin];
+                  return (
+                    <div className="px-5 py-4" style={{ borderBottom: "1px solid #21262d" }}>
+                      <p
+                        className="mb-3 text-xs font-bold uppercase tracking-wider"
+                        style={{ color: "#7d8590" }}
+                      >
+                        Origen de la designación
+                      </p>
+                      <span
+                        className="mb-3 inline-block rounded-full px-3 py-1 text-xs font-semibold"
+                        style={{
+                          backgroundColor: cfg.color + "20",
+                          color: cfg.color,
+                          border: `1px solid ${cfg.color}40`,
+                        }}
+                      >
+                        {cfg.label}
+                      </span>
+                      {d.politicalOriginDetail && (
+                        <p className="mt-2 text-xs leading-relaxed" style={{ color: "#8b949e" }}>
+                          {d.politicalOriginDetail}
+                        </p>
+                      )}
+
+                      {/* Concurso Magistratura */}
+                      {(d.magistraturaScore !== undefined || d.magistraturaRank !== undefined) && (
+                        <div className="mt-4 flex flex-wrap gap-3">
+                          {d.magistraturaCompetitionId && (
+                            <div
+                              className="flex-1 rounded-lg px-3 py-2"
+                              style={{ backgroundColor: "#0d1117", minWidth: "180px" }}
+                            >
+                              <p className="text-xs" style={{ color: "#7d8590" }}>
+                                Concurso
+                              </p>
+                              <p
+                                className="mt-0.5 text-xs font-medium"
+                                style={{ color: "#e6edf3" }}
+                              >
+                                {d.magistraturaSourceUrl ? (
+                                  <a
+                                    href={d.magistraturaSourceUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:underline"
+                                    style={{ color: "#74ACDF" }}
+                                  >
+                                    {d.magistraturaCompetitionId}
+                                  </a>
+                                ) : (
+                                  d.magistraturaCompetitionId
+                                )}
+                              </p>
+                            </div>
+                          )}
+                          {d.magistraturaScore !== undefined && (
+                            <div
+                              className="rounded-lg px-3 py-2"
+                              style={{ backgroundColor: "#0d1117" }}
+                            >
+                              <p className="text-xs" style={{ color: "#7d8590" }}>
+                                Puntaje
+                              </p>
+                              <p className="mt-0.5 text-sm font-bold" style={{ color: "#e6edf3" }}>
+                                {d.magistraturaScore.toFixed(1)}
+                              </p>
+                            </div>
+                          )}
+                          {d.magistraturaRank !== undefined && (
+                            <div
+                              className="rounded-lg px-3 py-2"
+                              style={{ backgroundColor: "#0d1117" }}
+                            >
+                              <p className="text-xs" style={{ color: "#7d8590" }}>
+                                Puesto en mérito
+                              </p>
+                              <p className="mt-0.5 text-sm font-bold" style={{ color: "#e6edf3" }}>
+                                #{d.magistraturaRank}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Senado */}
+                      {d.senateSession && (
+                        <div className="mt-4">
+                          <p className="mb-1.5 text-xs font-medium" style={{ color: "#7d8590" }}>
+                            Acuerdo del Senado
+                            {d.senateSession !==
+                              "N/A — designación provincial (acuerdo de la Legislatura de Buenos Aires)" && (
+                              <span className="ml-2 font-normal">{d.senateSession}</span>
+                            )}
+                            {d.senateSession.startsWith("N/A") && (
+                              <span className="ml-2 font-normal">{d.senateSession}</span>
+                            )}
+                          </p>
+                          {d.senateBackers && d.senateBackers.length > 0 && (
+                            <div className="flex flex-wrap gap-1.5">
+                              {d.senateBackers.map((backer, i) => (
+                                <span
+                                  key={i}
+                                  className="rounded px-2 py-0.5 text-xs"
+                                  style={{ backgroundColor: "#21262d", color: "#8b949e" }}
+                                >
+                                  {backer}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                          {d.senateRecordUrl && (
+                            <a
+                              href={d.senateRecordUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mt-2 inline-block text-xs hover:underline"
+                              style={{ color: "#74ACDF" }}
+                            >
+                              ↗ Ver versión taquigráfica
+                            </a>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
+
+              {/* Asociaciones */}
+              {judge.associations && judge.associations.length > 0 && (
+                <div className="px-5 py-4">
+                  <p
+                    className="mb-3 text-xs font-bold uppercase tracking-wider"
+                    style={{ color: "#7d8590" }}
+                  >
+                    Vínculos institucionales
+                  </p>
+                  <div className="flex flex-col gap-3">
+                    {judge.associations.map((assoc, i) => (
+                      <div key={i} className="flex items-start justify-between gap-3">
+                        <div>
+                          {assoc.sourceUrl ? (
+                            <a
+                              href={assoc.sourceUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm font-medium hover:underline"
+                              style={{ color: "#74ACDF" }}
+                            >
+                              {assoc.name}
+                            </a>
+                          ) : (
+                            <p className="text-sm font-medium" style={{ color: "#e6edf3" }}>
+                              {assoc.name}
+                            </p>
+                          )}
+                          {assoc.role && (
+                            <p className="text-xs" style={{ color: "#7d8590" }}>
+                              {assoc.role}
+                            </p>
+                          )}
+                        </div>
+                        {assoc.since && (
+                          <span
+                            className="shrink-0 rounded px-2 py-0.5 font-mono text-xs"
+                            style={{ backgroundColor: "#21262d", color: "#7d8590" }}
+                          >
+                            desde {assoc.since}
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </section>
+          )}
+
           {/* ── Fuentes ────────────────────────────────────────────────────── */}
           {judge.sourceLinks && judge.sourceLinks.length > 0 && (
             <section className="bg-ink-elevated border-border mb-6 overflow-hidden rounded-xl border">
