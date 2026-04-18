@@ -29,20 +29,30 @@ function StepCard({ num, text }: { num: string; text: string }) {
 export default function Hero() {
   const colorEscudoRef = useRef<HTMLImageElement>(null);
   const haloRef = useRef<HTMLDivElement>(null);
+  const coordsRef = useRef({ clientX: 0, clientY: 0 });
+  const rafPendingRef = useRef(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    const img = colorEscudoRef.current;
-    const halo = haloRef.current;
-    if (!img) return;
-    const rect = img.getBoundingClientRect();
-    const x = `${e.clientX - rect.left}px`;
-    const y = `${e.clientY - rect.top}px`;
-    img.style.setProperty("--spot-x", x);
-    img.style.setProperty("--spot-y", y);
-    if (halo) {
-      halo.style.setProperty("--spot-x", x);
-      halo.style.setProperty("--spot-y", y);
-    }
+    // Cache coordinates immediately (SyntheticEvent is pooled) and rAF-throttle the DOM writes.
+    coordsRef.current.clientX = e.clientX;
+    coordsRef.current.clientY = e.clientY;
+    if (rafPendingRef.current) return;
+    rafPendingRef.current = true;
+    requestAnimationFrame(() => {
+      rafPendingRef.current = false;
+      const img = colorEscudoRef.current;
+      const halo = haloRef.current;
+      if (!img) return;
+      const rect = img.getBoundingClientRect();
+      const x = `${coordsRef.current.clientX - rect.left}px`;
+      const y = `${coordsRef.current.clientY - rect.top}px`;
+      img.style.setProperty("--spot-x", x);
+      img.style.setProperty("--spot-y", y);
+      if (halo) {
+        halo.style.setProperty("--spot-x", x);
+        halo.style.setProperty("--spot-y", y);
+      }
+    });
   };
 
   const handleMouseLeave = () => {
@@ -73,6 +83,9 @@ export default function Hero() {
         <img
           src="/coat-of-arms.svg"
           alt=""
+          width={2480}
+          height={3507}
+          fetchPriority="high"
           className="halftone-mask absolute -right-16 top-1/2 h-[110%] w-auto -translate-y-1/2 opacity-[0.42] [filter:grayscale(1)_contrast(1.4)_brightness(1.05)] sm:-right-8"
         />
         {/* Overlay: full color, revealed by spotlight circle tracking the cursor */}
@@ -80,6 +93,8 @@ export default function Hero() {
           ref={colorEscudoRef}
           src="/coat-of-arms.svg"
           alt=""
+          width={2480}
+          height={3507}
           className="escudo-spot absolute -right-16 top-1/2 h-[110%] w-auto -translate-y-1/2 sm:-right-8"
         />
         {/* Gold halo behind the spotlight — soft-light blend for warm illumination */}

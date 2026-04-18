@@ -96,21 +96,8 @@ body {
   background-image:
     radial-gradient(ellipse 80% 50% at 50% 0%, rgba(54, 62, 94, 0.45), transparent 70%),
     linear-gradient(180deg, var(--ink) 0%, #070a18 100%);
-  background-attachment: fixed;
   color: var(--cream);
   font-family: var(--font-instrument-sans), Arial, Helvetica, sans-serif;
-}
-
-/* Fine grain noise overlay — imperceptible but removes banding */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1000;
-  opacity: 0.035;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* Staggered page-load reveal — CSS-only, cubic-bezier eased */
@@ -135,16 +122,6 @@ body::before {
 .reveal-delay-3 { animation-delay: 320ms; }
 .reveal-delay-4 { animation-delay: 460ms; }
 .reveal-delay-5 { animation-delay: 600ms; }
-
-/* Slow rotation for the Sol de Mayo watermark */
-@keyframes solRotate {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-.sol-rotate {
-  animation: solRotate 120s linear infinite;
-}
 
 /* Gold shimmer for loading skeletons */
 @keyframes shimmer {
@@ -252,7 +229,7 @@ body::before {
 }
 
 /* Respect users who prefer reduced motion — WCAG 2.1 AA. Kills revealUp cascade,
-   shimmer, sol-rotate, escudo-spot/halo tweens, smooth scroll, and modal enter. */
+   shimmer, escudo-spot/halo tweens, smooth scroll, and modal enter. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
