@@ -45,7 +45,7 @@ export default function JudgeCard(judge: Judge) {
     ? location.department
     : `${location.province} › ${location.department}`;
 
-  const salaryBand = getSalaryBand(salary.grossMonthlyARS);
+  const salaryBand = getSalaryBand(salary?.grossMonthlyARS ?? 0);
   const salaryBandColor =
     salaryBand === "alta" ? "#f85149" : salaryBand === "media" ? "#F4B942" : "#3fb950";
 

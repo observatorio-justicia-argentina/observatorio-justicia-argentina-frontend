@@ -23,7 +23,8 @@ export interface JudgeSalary {
   grossMonthlyARS: number;
   acordada: string;
   category: string;
-  lastUpdated: string;
+  validFrom: string;
+  validTo: string | null;
 }
 
 // ── Causas ───────────────────────────────────────────────────────────────────
@@ -91,7 +92,7 @@ export interface Judge {
   jurisdiction: JudgeJurisdiction;
   workAddress: string;
   workHours: string;
-  salary: JudgeSalary;
+  salary: JudgeSalary | null;
   appointmentDate: string;
   appointmentBody: string;
   yearsOnBench: number;
@@ -101,7 +102,7 @@ export interface Judge {
   revokedCount: number;
   totalFailures: number;
   failureRate: number;
-  cases: JudgeCase[];
+  cases?: JudgeCase[];
   sourceLinks: JudgeSourceLink[];
   // Opcionales — disponibles en perfiles completos
   publicBio?: string;
