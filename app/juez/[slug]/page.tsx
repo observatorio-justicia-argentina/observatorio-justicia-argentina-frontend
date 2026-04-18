@@ -379,7 +379,8 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                     {formatARS(judge.salary.grossMonthlyARS)}
                   </span>
                   <span className="text-xs" style={{ color: "#7d8590" }}>
-                    {judge.salary.category} — {judge.salary.acordada} ({judge.salary.lastUpdated})
+                    {judge.salary?.category} — {judge.salary?.acordada} (desde{" "}
+                    {judge.salary?.validFrom})
                   </span>
                 </div>
               </div>
