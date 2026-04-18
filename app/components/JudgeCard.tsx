@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Judge, JudgeCase, SALARY_BAND_LABELS, getSalaryBand } from "../lib/api";
 import { ChevronDownIcon, ExternalLinkIcon } from "./icons";
+import { Tag } from "./Tag";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -162,17 +163,13 @@ export default function JudgeCard(judge: Judge) {
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <h3 className="text-cream font-serif text-lg font-bold leading-tight">{name}</h3>
-            {isDemoData && (
-              <span className="bg-gold-soft text-gold border-gold/40 rounded border px-1.5 py-0.5 text-xs font-bold tracking-wider">
-                FICTICIO
-              </span>
-            )}
+            {isDemoData && <Tag variant="gold">Ficticio</Tag>}
           </div>
           <p className="text-gold mt-0.5 text-xs">{court}</p>
         </div>
-        <span className="bg-gold-soft text-gold border-gold/30 mt-0.5 shrink-0 rounded-full border px-2.5 py-0.5 text-xs font-medium">
-          {location.province}
-        </span>
+        <div className="mt-0.5 shrink-0">
+          <Tag variant="gold">{location.province}</Tag>
+        </div>
       </div>
 
       {/* ── Jurisdicción ── */}

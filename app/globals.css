@@ -57,9 +57,37 @@
   --font-mono:  var(--font-ibm-plex-mono);
 }
 
+html {
+  /* Smooth anchor scroll + offset so sticky navbar doesn't overlap targets */
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+  /* Themed scrollbar — Firefox */
+  scrollbar-color: var(--border-strong) transparent;
+  scrollbar-width: thin;
+}
+
 html,
 body {
   min-height: 100%;
+}
+
+/* Themed scrollbar — WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--border-strong);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--gold);
+  background-clip: padding-box;
 }
 
 body {

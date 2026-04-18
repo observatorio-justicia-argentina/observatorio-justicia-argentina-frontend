@@ -12,6 +12,7 @@ import {
   PaginatedResult,
   ResultadoCaso,
 } from "../../lib/api";
+import { Tag } from "../../components/Tag";
 
 // ── Mock data ─────────────────────────────────────────────────────────────────
 // Fallback cuando el backend no tiene los endpoints aún.
@@ -274,25 +275,14 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                 >
                   Perfil Judicial
                 </p>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-3">
                   <h1
                     className="font-serif text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl"
                     style={{ color: "#f4f2e6" }}
                   >
                     {judge.name}
                   </h1>
-                  {judge.isDemoData && (
-                    <span
-                      className="rounded-full px-2 py-0.5 text-xs"
-                      style={{
-                        backgroundColor: "#f4b94215",
-                        color: "#f4b942",
-                        border: "1px solid #f4b94230",
-                      }}
-                    >
-                      Demo
-                    </span>
-                  )}
+                  {judge.isDemoData && <Tag variant="warning">Demo</Tag>}
                 </div>
                 <p className="mt-1 text-sm" style={{ color: "#d0a04a" }}>
                   {judge.court}
@@ -302,25 +292,16 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
+                <Tag variant="gold">{judge.location.province}</Tag>
                 <span
-                  className="rounded-full px-2.5 py-0.5 text-xs font-medium"
-                  style={{
-                    backgroundColor: "#d0a04a15",
-                    color: "#d0a04a",
-                    border: "1px solid #d0a04a30",
-                  }}
-                >
-                  {judge.location.province}
-                </span>
-                <span
-                  className="rounded-full px-3 py-0.5 text-sm font-bold"
+                  className="rounded-sm border px-2.5 py-0.5 text-sm font-bold"
                   style={{
                     backgroundColor: rateBg,
                     color: rateColor,
-                    border: `1px solid ${rateColor}40`,
+                    borderColor: `${rateColor}80`,
                   }}
                 >
-                  {failureRate}% falla procesal
+                  {failureRate}% falla
                 </span>
               </div>
             </div>

@@ -8,6 +8,7 @@ import JudgeCard from "./components/JudgeCard";
 import JudgeFilters, { FilterState, applyFilters } from "./components/JudgeFilters";
 import JurisdictionStats from "./components/JurisdictionStats";
 import StatsBar from "./components/StatsBar";
+import { Tag } from "./components/Tag";
 import Link from "next/link";
 import { fetchHierarchy, fetchJudges, Judge, JurisdictionNode } from "./lib/api";
 
@@ -137,30 +138,11 @@ export default function HomePage() {
           <h2 className="text-cream font-serif text-3xl font-bold tracking-tight sm:text-4xl">
             Jueces
           </h2>
-          <span className="bg-border text-cream-muted rounded-full px-2 py-0.5 text-xs font-semibold">
-            {judges.length}
-          </span>
-
-          {loading && (
-            <span className="bg-gold-soft text-gold border-gold/30 ml-1 rounded-full border px-2.5 py-0.5 text-xs font-medium">
-              Cargando...
-            </span>
-          )}
-          {!loading && error && (
-            <span className="bg-danger-soft text-danger border-danger/30 ml-1 rounded-full border px-2.5 py-0.5 text-xs font-medium">
-              Sin conexión al backend
-            </span>
-          )}
-          {!loading && !error && (
-            <span className="bg-success-soft text-success border-success/30 ml-1 rounded-full border px-2.5 py-0.5 text-xs font-medium">
-              Datos del backend
-            </span>
-          )}
-          {activeProvince && (
-            <span className="bg-gold-soft text-gold border-gold/50 ml-1 rounded-full border px-2.5 py-0.5 text-xs font-medium">
-              Provincia: {activeProvince}
-            </span>
-          )}
+          <Tag>{judges.length}</Tag>
+          {loading && <Tag variant="gold">Cargando</Tag>}
+          {!loading && error && <Tag variant="danger">Sin conexión</Tag>}
+          {!loading && !error && <Tag variant="success">Datos del backend</Tag>}
+          {activeProvince && <Tag variant="gold">Provincia: {activeProvince}</Tag>}
         </div>
 
         {/* Error banner */}

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { JurisdictionNode } from "../lib/api";
 import { ChevronDownIcon, ChevronRightIcon, XIcon } from "./icons";
+import { Tag } from "./Tag";
 
 // ── Helpers de color ─────────────────────────────────────────────────────────
 
@@ -143,9 +144,7 @@ export default function JurisdictionStats({
         <h2 className="text-cream font-serif text-3xl font-bold tracking-tight sm:text-4xl">
           Estadísticas por Jurisdicción
         </h2>
-        <span className="bg-border text-cream-muted rounded-full px-2 py-0.5 text-xs font-semibold">
-          Argentina → Provincia → Depto. Judicial
-        </span>
+        <Tag>Argentina → Provincia → Depto. Judicial</Tag>
       </div>
 
       {/* Summary row for the country */}
