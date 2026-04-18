@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { JurisdictionNode } from "../lib/api";
+import { ChevronDownIcon, ChevronRightIcon, XIcon } from "./icons";
 
 // ── Helpers de color ─────────────────────────────────────────────────────────
 
@@ -50,12 +51,20 @@ function NodeRow({ node, onFilterClick, activeProvince }: NodeRowProps) {
         {/* Expand/collapse toggle */}
         <button
           onClick={() => hasChildren && setOpen((o) => !o)}
-          className={`flex h-5 w-5 shrink-0 items-center justify-center rounded text-xs ${
+          className={`flex h-5 w-5 shrink-0 items-center justify-center rounded ${
             hasChildren ? "text-gold cursor-pointer" : "text-border-strong cursor-default"
           }`}
           aria-label={open ? "Colapsar" : "Expandir"}
         >
-          {hasChildren ? (open ? "▼" : "▶") : "·"}
+          {hasChildren ? (
+            open ? (
+              <ChevronDownIcon className="h-3.5 w-3.5" aria-hidden />
+            ) : (
+              <ChevronRightIcon className="h-3.5 w-3.5" aria-hidden />
+            )
+          ) : (
+            <span className="text-xs">·</span>
+          )}
         </button>
 
         {/* Level badge */}
@@ -82,13 +91,14 @@ function NodeRow({ node, onFilterClick, activeProvince }: NodeRowProps) {
         {node.level === "province" && (
           <button
             onClick={() => onFilterClick(isActiveFilter ? null : node.name)}
-            className={`shrink-0 rounded border px-2 py-0.5 text-xs font-medium transition-colors ${
+            className={`flex shrink-0 items-center gap-1 rounded border px-2 py-0.5 text-xs font-medium transition-colors ${
               isActiveFilter
                 ? "bg-gold text-cream border-gold"
                 : "bg-border text-gold border-gold/40 hover:bg-gold-soft"
             }`}
           >
-            {isActiveFilter ? "✕ Filtro activo" : "Filtrar"}
+            {isActiveFilter && <XIcon className="h-3 w-3" aria-hidden />}
+            {isActiveFilter ? "Filtro activo" : "Filtrar"}
           </button>
         )}
       </div>

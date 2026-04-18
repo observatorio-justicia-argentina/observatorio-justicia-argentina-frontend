@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Judge, JudgeCase, SALARY_BAND_LABELS, getSalaryBand } from "../lib/api";
+import { ChevronDownIcon, ExternalLinkIcon } from "./icons";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -222,7 +223,10 @@ export default function JudgeCard(judge: Judge) {
         className="text-gold hover:bg-cream/5 flex w-full items-center justify-between px-5 py-3 text-xs font-medium transition-colors"
       >
         <span>{expanded ? "Ocultar detalle" : "Ver detalle completo"}</span>
-        <span>{expanded ? "▲" : "▼"}</span>
+        <ChevronDownIcon
+          className={`h-4 w-4 transition-transform ${expanded ? "rotate-180" : ""}`}
+          aria-hidden
+        />
       </button>
 
       {/* ── Panel expandido ── */}
@@ -384,9 +388,10 @@ export default function JudgeCard(judge: Judge) {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gold text-xs font-medium hover:underline"
+                      className="text-gold flex items-center gap-1.5 text-xs font-medium hover:underline"
                     >
-                      ↗ {link.label}
+                      <ExternalLinkIcon className="h-3.5 w-3.5" aria-hidden />
+                      {link.label}
                     </a>
                     <p className="text-cream-muted text-xs">{link.description}</p>
                   </div>

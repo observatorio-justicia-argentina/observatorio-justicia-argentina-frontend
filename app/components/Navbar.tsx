@@ -4,7 +4,7 @@ import { useState } from "react";
 import DisclaimerModal from "./DisclaimerModal";
 import SubmitJudgeModal from "./SubmitJudgeModal";
 import AuthModal from "./AuthModal";
-import { AlertIcon, ScaleIcon } from "./icons";
+import { AlertIcon, ChevronDownIcon, ScaleIcon } from "./icons";
 import { useAuth } from "../context/AuthContext";
 
 function UserInitials({ nombre }: { nombre: string }) {
@@ -97,7 +97,7 @@ export default function Navbar() {
                     <UserInitials nombre={user.nombre} />
                   </span>
                   <span className="max-w-30 truncate">{user.nombre.split(" ")[0]}</span>
-                  <span className="text-cream-muted">▾</span>
+                  <ChevronDownIcon className="text-cream-muted h-3.5 w-3.5" aria-hidden />
                 </button>
 
                 {userMenuOpen && (

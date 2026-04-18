@@ -3,6 +3,7 @@
 import { useState, FormEvent } from "react";
 import { useAuth } from "../context/AuthContext";
 import { RegisterData } from "../lib/auth-api";
+import { XIcon } from "./icons";
 
 const ROLES = [
   "Periodista",
@@ -164,7 +165,7 @@ export default function AuthModal({ initialTab = "login", onClose }: AuthModalPr
             className="text-cream-muted hover:bg-cream/5 flex h-8 w-8 items-center justify-center rounded-lg"
             aria-label="Cerrar"
           >
-            ✕
+            <XIcon className="h-4 w-4" aria-hidden />
           </button>
         </div>
 

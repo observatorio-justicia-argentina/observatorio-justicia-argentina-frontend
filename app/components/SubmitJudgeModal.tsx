@@ -2,6 +2,7 @@
 
 import { useState, useRef, ChangeEvent } from "react";
 import { useAuth } from "../context/AuthContext";
+import { CheckIcon, DocumentIcon, XIcon } from "./icons";
 
 // ── Provincias / jurisdicciones argentinas ───────────────────────────────────
 
@@ -266,15 +267,15 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
             className="text-cream-muted hover:bg-cream/5 flex h-8 w-8 items-center justify-center rounded-lg transition-colors"
             aria-label="Cerrar"
           >
-            ✕
+            <XIcon className="h-4 w-4" aria-hidden />
           </button>
         </div>
 
         {submitted ? (
           // ── Estado de éxito ──
           <div className="flex flex-col items-center gap-4 px-6 py-12 text-center">
-            <div className="bg-success-soft border-success flex h-16 w-16 items-center justify-center rounded-full border-2 text-3xl">
-              ✓
+            <div className="bg-success-soft border-success text-success flex h-16 w-16 items-center justify-center rounded-full border-2">
+              <CheckIcon className="h-8 w-8" aria-hidden />
             </div>
             <h3 className="text-success font-serif text-lg font-bold">Informe recibido</h3>
             <p className="text-cream-muted text-sm">
@@ -511,7 +512,7 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
                       className="bg-ink border-border flex items-center justify-between rounded-lg border px-3 py-2"
                     >
                       <div className="flex min-w-0 items-center gap-2">
-                        <span className="text-danger">📄</span>
+                        <DocumentIcon className="text-gold h-4 w-4 shrink-0" aria-hidden />
                         <span className="text-cream truncate text-xs font-medium">{f.name}</span>
                         <span className="text-cream-muted shrink-0 text-xs">
                           {(f.size / 1024).toFixed(0)} KB
@@ -519,10 +520,10 @@ export default function SubmitJudgeModal({ onClose }: SubmitJudgeModalProps) {
                       </div>
                       <button
                         onClick={() => removeFile(f.name)}
-                        className="text-cream-muted hover:text-danger ml-2 shrink-0 text-xs"
+                        className="text-cream-muted hover:text-danger ml-2 flex shrink-0 items-center"
                         aria-label="Quitar archivo"
                       >
-                        ✕
+                        <XIcon className="h-3.5 w-3.5" aria-hidden />
                       </button>
                     </li>
                   ))}
