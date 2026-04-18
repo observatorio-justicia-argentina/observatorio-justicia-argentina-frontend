@@ -84,7 +84,7 @@ export function applyFilters(judges: Judge[], filters: FilterState): Judge[] {
       const matchesScope = !filters.activeScope || j.jurisdiction.scope === filters.activeScope;
       const matchesSalary =
         !filters.activeSalaryBand ||
-        getSalaryBand(j.salary.grossMonthlyARS) === filters.activeSalaryBand;
+        getSalaryBand(j.salary?.grossMonthlyARS ?? 0) === filters.activeSalaryBand;
       const matchesYears =
         !filters.activeYearsBand ||
         (filters.activeYearsBand === "junior" && j.yearsOnBench < 5) ||
