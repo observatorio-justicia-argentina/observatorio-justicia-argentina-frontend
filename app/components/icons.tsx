@@ -29,61 +29,6 @@ export function ScaleIcon({ className, ...rest }: IconProps) {
   );
 }
 
-export function FolderIcon({ className, ...rest }: IconProps) {
-  return (
-    <svg
-      className={`${base} ${className ?? ""}`}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...rest}
-    >
-      <path d="M6 14v-4m0 4 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2" />
-    </svg>
-  );
-}
-
-export function ChartIcon({ className, ...rest }: IconProps) {
-  return (
-    <svg
-      className={`${base} ${className ?? ""}`}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...rest}
-    >
-      <path d="M3 3v18h18" />
-      <path d="M18 17V9" />
-      <path d="M13 17V5" />
-      <path d="M8 17v-3" />
-    </svg>
-  );
-}
-
-export function SearchIcon({ className, ...rest }: IconProps) {
-  return (
-    <svg
-      className={`${base} ${className ?? ""}`}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...rest}
-    >
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
-    </svg>
-  );
-}
-
 export function AlertIcon({ className, ...rest }: IconProps) {
   return (
     <svg
