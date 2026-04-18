@@ -28,21 +28,34 @@ function StepCard({ num, text }: { num: string; text: string }) {
 
 export default function Hero() {
   const colorEscudoRef = useRef<HTMLImageElement>(null);
+  const haloRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    const el = colorEscudoRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    el.style.setProperty("--spot-x", `${e.clientX - rect.left}px`);
-    el.style.setProperty("--spot-y", `${e.clientY - rect.top}px`);
+    const img = colorEscudoRef.current;
+    const halo = haloRef.current;
+    if (!img) return;
+    const rect = img.getBoundingClientRect();
+    const x = `${e.clientX - rect.left}px`;
+    const y = `${e.clientY - rect.top}px`;
+    img.style.setProperty("--spot-x", x);
+    img.style.setProperty("--spot-y", y);
+    if (halo) {
+      halo.style.setProperty("--spot-x", x);
+      halo.style.setProperty("--spot-y", y);
+    }
   };
 
   const handleMouseLeave = () => {
-    const el = colorEscudoRef.current;
-    if (!el) return;
-    // Reset spotlight off-canvas so no color shows when cursor leaves
-    el.style.setProperty("--spot-x", "-400px");
-    el.style.setProperty("--spot-y", "-400px");
+    const img = colorEscudoRef.current;
+    const halo = haloRef.current;
+    if (img) {
+      img.style.setProperty("--spot-x", "-400px");
+      img.style.setProperty("--spot-y", "-400px");
+    }
+    if (halo) {
+      halo.style.setProperty("--spot-x", "-400px");
+      halo.style.setProperty("--spot-y", "-400px");
+    }
   };
 
   return (
@@ -67,8 +80,10 @@ export default function Hero() {
           ref={colorEscudoRef}
           src="/coat-of-arms.svg"
           alt=""
-          className="escudo-spot absolute -right-16 top-1/2 h-[110%] w-auto -translate-y-1/2 opacity-80 sm:-right-8"
+          className="escudo-spot absolute -right-16 top-1/2 h-[110%] w-auto -translate-y-1/2 sm:-right-8"
         />
+        {/* Gold halo behind the spotlight — soft-light blend for warm illumination */}
+        <div ref={haloRef} aria-hidden className="escudo-halo absolute inset-0" />
         {/* Dark fade from left to right so the escudo bleeds into the ink on the text side */}
         <div className="from-ink via-ink/90 absolute inset-0 bg-gradient-to-r to-transparent" />
       </div>
