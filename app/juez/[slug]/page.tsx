@@ -505,7 +505,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                   </span>
                 </div>
                 <Link
-                  href={`/causas?juez=${slug}`}
+                  href="/causas"
                   className="text-xs underline transition-opacity hover:opacity-70"
                   style={{ color: "#74ACDF" }}
                 >
