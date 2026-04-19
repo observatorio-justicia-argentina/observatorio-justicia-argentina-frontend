@@ -238,7 +238,7 @@ function CausasContent() {
                 <button
                   key={estado}
                   onClick={() => updateURL({ estado: estado === "todas" ? null : estado })}
-                  className="rounded-full border px-3 py-1 text-xs font-medium transition-all"
+                  className="cursor-pointer rounded-full border px-3 py-1 text-xs font-medium transition-all"
                   style={{
                     borderColor: active ? (cfg?.color ?? "#74ACDF") : "#30363d",
                     backgroundColor: active ? (cfg?.bg ?? "#74ACDF15") : "transparent",
@@ -294,7 +294,7 @@ function CausasContent() {
                 <button
                   key={a}
                   onClick={() => updateURL({ alcance: alcanceParam === a ? null : a })}
-                  className="rounded-full border px-3 py-1 text-xs font-medium transition-all"
+                  className="cursor-pointer rounded-full border px-3 py-1 text-xs font-medium transition-all"
                   style={{
                     borderColor: alcanceParam === a ? "#74ACDF" : "#30363d",
                     backgroundColor: alcanceParam === a ? "#74ACDF15" : "transparent",
@@ -332,7 +332,7 @@ function CausasContent() {
               />
               <button
                 type="submit"
-                className="rounded-lg border px-3 py-2 text-xs font-medium transition-all hover:bg-white/5"
+                className="cursor-pointer rounded-lg border px-3 py-2 text-xs font-medium transition-all hover:bg-white/5"
                 style={{ borderColor: "#30363d", color: "#74ACDF" }}
               >
                 Buscar
@@ -350,7 +350,7 @@ function CausasContent() {
           <div className="mt-3 flex justify-end">
             <button
               onClick={() => router.push("/causas", { scroll: false })}
-              className="text-xs underline transition-opacity hover:opacity-70"
+              className="cursor-pointer text-xs underline transition-opacity hover:opacity-70"
               style={{ color: "#7d8590" }}
             >
               Limpiar todos los filtros
@@ -525,7 +525,7 @@ function CausasContent() {
               <button
                 disabled={result.page <= 1}
                 onClick={() => updateURL({ page: String(result.page - 1) })}
-                className="rounded-lg border px-3 py-2 text-xs font-medium disabled:opacity-40"
+                className="cursor-pointer rounded-lg border px-3 py-2 text-xs font-medium disabled:cursor-default disabled:opacity-40"
                 style={{ borderColor: "#30363d", color: "#e6edf3" }}
               >
                 ← Anterior
@@ -536,7 +536,7 @@ function CausasContent() {
               <button
                 disabled={result.page >= result.totalPages}
                 onClick={() => updateURL({ page: String(result.page + 1) })}
-                className="rounded-lg border px-3 py-2 text-xs font-medium disabled:opacity-40"
+                className="cursor-pointer rounded-lg border px-3 py-2 text-xs font-medium disabled:cursor-default disabled:opacity-40"
                 style={{ borderColor: "#30363d", color: "#e6edf3" }}
               >
                 Siguiente →
