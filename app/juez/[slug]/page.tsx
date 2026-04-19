@@ -9,6 +9,7 @@ import {
   fetchJudgeCases,
   fetchJudgeBySlug,
   Judge,
+  POLITICAL_ORIGIN_CONFIG,
   ResultadoCaso,
 } from "../../lib/api";
 import { Tag, type TagVariant } from "../../components/Tag";
@@ -325,13 +326,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
               {judge.appointmentDetail &&
                 (() => {
                   const d = judge.appointmentDetail;
-                  const originConfig: Record<string, { label: string; color: string }> = {
-                    judicial: { label: "Carrera judicial pura", color: "#3fb950" },
-                    academic: { label: "Origen académico", color: "#74ACDF" },
-                    mixed: { label: "Trayectoria mixta", color: "#F4B942" },
-                    political: { label: "Designación política", color: "#f85149" },
-                  };
-                  const cfg = originConfig[d.politicalOrigin];
+                  const cfg = POLITICAL_ORIGIN_CONFIG[d.politicalOrigin];
                   return (
                     <div className="px-5 py-4" style={{ borderBottom: "1px solid #21262d" }}>
                       <p
