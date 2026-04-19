@@ -197,6 +197,13 @@ body {
   mix-blend-mode: soft-light;
 }
 
+@media (hover: none), (pointer: coarse) {
+  .escudo-spot,
+  .escudo-halo {
+    display: none;
+  }
+}
+
 /* Modal / overlay reveal */
 @keyframes fadeIn {
   from {
