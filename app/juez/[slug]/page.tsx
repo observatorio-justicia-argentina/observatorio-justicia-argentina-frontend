@@ -9,58 +9,9 @@ import {
   fetchJudgeCases,
   fetchJudgeBySlug,
   Judge,
-  PaginatedResult,
   ResultadoCaso,
 } from "../../lib/api";
 import { Tag, type TagVariant } from "../../components/Tag";
-
-// ── Mock data ─────────────────────────────────────────────────────────────────
-// Fallback cuando el backend no tiene los endpoints aún.
-
-const MOCK_PAGINATED: PaginatedResult<Caso> = {
-  data: [
-    {
-      id: "mock-1",
-      expediente: "12345/2024",
-      decisionDate: "2024-03-15",
-      decisionType: "Libertad cautelar",
-      outcome: "fta",
-      outcomeDetail: "El imputado no se presentó a la audiencia fijada para el 20/04/2024.",
-    },
-    {
-      id: "mock-2",
-      expediente: "98732/2024",
-      decisionDate: "2024-06-02",
-      decisionType: "Excarcelación",
-      outcome: "newArrest",
-      outcomeDetail: "Detenido nuevamente el 14/07/2024 por robo agravado.",
-    },
-    {
-      id: "mock-3",
-      expediente: "45210/2023",
-      decisionDate: "2023-11-20",
-      decisionType: "Prisión preventiva atenuada",
-      outcome: "revoked",
-      outcomeDetail: "La Cámara revocó la medida por incumplimiento de condiciones.",
-    },
-    {
-      id: "mock-4",
-      expediente: "67891/2025",
-      decisionDate: "2025-01-10",
-      decisionType: "Libertad cautelar",
-      outcome: "ongoing",
-    },
-  ],
-  total: 4,
-  page: 1,
-  limit: 10,
-  totalPages: 1,
-};
-
-const MOCK_ARCHIVOS: ArchivoPublico[] = [
-  { id: "arch-1", nombre: "Resolución 12345-2024.pdf", url: "#", fechaCarga: "2024-04-01" },
-  { id: "arch-2", nombre: "Acta audiencia 98732-2024.pdf", url: "#", fechaCarga: "2024-07-20" },
-];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -138,13 +89,19 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
   const { slug } = use(params);
 
   const [judge, setJudge] = useState<Judge | null>(null);
-  const [paginated, setPaginated] = useState<PaginatedResult<Caso> | null>(null);
+  const [paginated, setPaginated] = useState<{
+    data: Caso[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  } | null>(null);
   const [archivos, setArchivos] = useState<ArchivoPublico[]>([]);
   const [page, setPage] = useState(1);
   const [loadingJudge, setLoadingJudge] = useState(true);
   const [loadingCasos, setLoadingCasos] = useState(true);
   const [errorJudge, setErrorJudge] = useState<string | null>(null);
-  const [usingMockData, setUsingMockData] = useState(false);
+  const [errorCasos, setErrorCasos] = useState(false);
 
   // Cargar datos del juez por slug
   useEffect(() => {
@@ -183,9 +140,9 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
         }
       } catch {
         if (!cancelled) {
-          setPaginated(MOCK_PAGINATED);
-          setArchivos(MOCK_ARCHIVOS);
-          setUsingMockData(true);
+          setPaginated(null);
+          setArchivos([]);
+          setErrorCasos(true);
         }
       } finally {
         if (!cancelled) setLoadingCasos(false);
@@ -390,27 +347,29 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
             </section>
           )}
 
-          {/* ── Mock data notice ────────────────────────────────────────────── */}
-          {usingMockData && (
-            <div className="bg-warning-soft border-warning/40 text-warning mb-5 flex items-start gap-3 rounded-lg border px-4 py-3 text-sm">
+          {/* ── Sin conexión notice ─────────────────────────────────────────── */}
+          {errorCasos && (
+            <div className="border-border bg-ink-elevated mb-5 flex items-center gap-3 rounded-xl border px-5 py-4">
               <svg
-                className="mt-0.5 h-4 w-4 shrink-0"
+                xmlns="http://www.w3.org/2000/svg"
+                className="text-cream-muted h-5 w-5 shrink-0"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth={2}
+                strokeWidth={1.5}
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+                  d="M3 3l18 18M8.111 8.111A7 7 0 0116.9 16.9M1.42 1.42l.58.58M22 12c0 5.523-4.477 10-10 10M12 2C6.477 2 2 6.477 2 12"
                 />
               </svg>
-              <span>
-                <strong>Vista previa con datos de ejemplo.</strong> El endpoint{" "}
-                <code className="bg-border rounded px-1 text-xs">GET /api/judges/:id/casos</code>{" "}
-                aún no está disponible. Los casos mostrados son ficticios.
-              </span>
+              <div>
+                <p className="text-cream text-sm font-medium">Sin conexión con el servidor</p>
+                <p className="text-cream-muted text-xs">
+                  No se pudieron cargar los casos. Reintentá cuando el servidor esté disponible.
+                </p>
+              </div>
             </div>
           )}
 
