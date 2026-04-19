@@ -11,6 +11,9 @@
     "format": "prettier --write \"app/**/*.{ts,tsx}\"",
     "format:check": "prettier --check \"app/**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -29,16 +32,23 @@
     "@commitlint/config-conventional": "^20.5.0",
     "@highcharts/map-collection": "^2.3.2",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.3",
     "husky": "^9.1.7",
+    "jest": "^30.3.0",
+    "jest-environment-jsdom": "^30.3.0",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.3",
     "proj4": "^2.20.8",
     "tailwindcss": "^4",
+    "ts-jest": "^29.4.9",
     "typescript": "^5"
   }
 }
