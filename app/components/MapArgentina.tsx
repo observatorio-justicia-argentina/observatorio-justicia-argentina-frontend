@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Judge } from "../lib/api";
+import { ArgentinaIcon } from "./icons";
 
 const HC_MIN_X = -999;
 const HC_MAX_Y = 9851;
@@ -258,12 +259,12 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
   }, {});
 
   function getFill(province: string): string {
-    if (activeProvince === province) return "#74ACDF";
+    if (activeProvince === province) return "#d0a04a";
     const count = judgesByProvince[province] ?? 0;
-    if (count === 0) return "#1c2128";
-    if (count <= 2) return "#1f3a5f";
-    if (count <= 5) return "#1e4976";
-    return "#1a5e94";
+    if (count === 0) return "#1a2340";
+    if (count <= 2) return "#242b48";
+    if (count <= 5) return "#5b6fa5";
+    return "#7c94d0";
   }
 
   function handleProvinceClick(province: string, feature: GeoFeature) {
@@ -322,7 +323,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
           key={`${prefix}-${feature.properties.key}`}
           d={d}
           fill={fill}
-          stroke="#30363d"
+          stroke="#363e5e"
           strokeWidth={strokeWidth}
           style={{ cursor: "pointer", transition: "fill 0.15s ease" }}
           onClick={() => handleProvinceClick(province, feature)}
@@ -348,8 +349,8 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
 
   return (
     <section
-      className="rounded-xl border overflow-hidden"
-      style={{ backgroundColor: "#161b22", borderColor: "#21262d" }}
+      className="overflow-hidden rounded-xl border shadow-md shadow-black/30"
+      style={{ backgroundColor: "#181f38", borderColor: "#242b48" }}
     >
       {/* Toggle header */}
       <button
@@ -357,49 +358,36 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
           if (justDraggedRef.current) return;
           setIsOpen((o) => !o);
         }}
-        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left hover:bg-white/3 transition-colors"
-        style={{ borderBottom: isOpen ? "1px solid #21262d" : "none" }}
+        className="hover:bg-cream/5 flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors"
+        style={{ borderBottom: isOpen ? "1px solid #242b48" : "none" }}
       >
-        {/* Ícono mapa */}
+        {/* Ícono mapa — silueta de Argentina */}
         <div
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md"
-          style={{ backgroundColor: "#74ACDF15", border: "1px solid #74ACDF30" }}
+          style={{ backgroundColor: "#d0a04a15", border: "1px solid #d0a04a30" }}
         >
-          <svg
-            viewBox="0 0 20 20"
-            fill="none"
-            className="h-4 w-4"
-            style={{ color: "#74ACDF" }}
-            stroke="currentColor"
-            strokeWidth={1.5}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9 6.75V15m0-8.25c0 0-2.25-.75-4.5 0v8.25m4.5-8.25c0 0 2.25-.75 4.5 0v8.25M9 15c0 0-2.25.75-4.5 0M9 15c0 0 2.25.75 4.5 0M3 6.75A2.25 2.25 0 015.25 4.5h9.5A2.25 2.25 0 0117 6.75v6.5A2.25 2.25 0 0114.75 15.5h-9.5A2.25 2.25 0 013 13.25v-6.5z"
-            />
-          </svg>
+          <ArgentinaIcon className="text-gold h-5 w-5" aria-hidden />
         </div>
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-bold" style={{ color: "#e6edf3" }}>
+            <span className="text-sm font-bold" style={{ color: "#f4f2e6" }}>
               Mapa jurisdiccional interactivo
             </span>
             {!isOpen && (
               <span
                 className="rounded-full px-2 py-0.5 text-xs font-medium"
                 style={{
-                  backgroundColor: "#74ACDF15",
-                  color: "#74ACDF",
-                  border: "1px solid #74ACDF30",
+                  backgroundColor: "#d0a04a15",
+                  color: "#d0a04a",
+                  border: "1px solid #d0a04a30",
                 }}
               >
                 {activeProvince ?? "Argentina"}
               </span>
             )}
           </div>
-          <p className="text-xs mt-0.5" style={{ color: "#7d8590" }}>
+          <p className="text-xs mt-0.5" style={{ color: "#a8a496" }}>
             {isOpen
               ? "Hacé click en una provincia · scroll para zoom · arrastrá para mover"
               : "Explorá el mapa de provincias — hacé click para desplegar"}
@@ -408,14 +396,14 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
 
         {/* Chevron */}
         <div
-          className="flex shrink-0 items-center gap-1.5 rounded-md border px-2 py-1"
-          style={{ borderColor: "#30363d", color: "#7d8590" }}
+          className="flex shrink-0 items-center gap-2 text-sm font-medium"
+          style={{ color: "#a8a496" }}
         >
-          <span className="text-xs">{isOpen ? "Cerrar" : "Abrir"}</span>
+          <span>{isOpen ? "Cerrar" : "Abrir"}</span>
           <svg
             viewBox="0 0 20 20"
             fill="currentColor"
-            className="h-3.5 w-3.5 transition-transform duration-200"
+            className="h-5 w-5 transition-transform duration-200"
             style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
           >
             <path
@@ -437,8 +425,8 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                 <button
                   key={label}
                   onClick={() => zoomStep(i === 0 ? 1.5 : 0.667)}
-                  className="flex h-7 w-7 items-center justify-center rounded border text-sm font-bold hover:bg-white/5"
-                  style={{ borderColor: "#30363d", color: "#e6edf3" }}
+                  className="flex h-7 w-7 items-center justify-center rounded border text-sm font-bold hover:bg-cream/5"
+                  style={{ borderColor: "#363e5e", color: "#f4f2e6" }}
                   title={i === 0 ? "Alejar" : "Acercar"}
                 >
                   {label}
@@ -447,8 +435,8 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
               {!fullView && (
                 <button
                   onClick={resetView}
-                  className="rounded border px-2.5 py-1 text-xs font-medium hover:bg-white/5"
-                  style={{ borderColor: "#30363d", color: "#7d8590" }}
+                  className="rounded border px-2.5 py-1 text-xs font-medium hover:bg-cream/5"
+                  style={{ borderColor: "#363e5e", color: "#a8a496" }}
                   title="Ver país completo"
                 >
                   ⊙ Todo el país
@@ -460,7 +448,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                     onProvinceSelect(null);
                     setVb(FULL_VB);
                   }}
-                  className="rounded border px-2.5 py-1 text-xs font-medium hover:bg-white/5"
+                  className="rounded border px-2.5 py-1 text-xs font-medium hover:bg-cream/5"
                   style={{ borderColor: "#f85149", color: "#f85149" }}
                 >
                   ✕ {activeProvince}
@@ -469,11 +457,11 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
             </div>
 
             {/* Leyenda */}
-            <div className="flex flex-wrap items-center gap-3 text-xs" style={{ color: "#7d8590" }}>
+            <div className="flex flex-wrap items-center gap-3 text-xs" style={{ color: "#a8a496" }}>
               {[
-                { bg: "#1c2128", label: "Sin datos", border: "1px solid #30363d" },
+                { bg: "#1c2128", label: "Sin datos", border: "1px solid #363e5e" },
                 { bg: "#1f3a5f", label: "1–2 jueces" },
-                { bg: "#74ACDF", label: "Seleccionada" },
+                { bg: "#d0a04a", label: "Seleccionada" },
               ].map(({ bg, label, border }) => (
                 <div key={label} className="flex items-center gap-1.5">
                   <span className="h-3 w-4 rounded" style={{ backgroundColor: bg, border }} />
@@ -484,20 +472,20 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
           </div>
 
           {/* Hint */}
-          <p className="mb-2 text-xs" style={{ color: "#7d8590" }}>
+          <p className="mb-2 text-xs" style={{ color: "#a8a496" }}>
             Click para seleccionar · Scroll para zoom · Arrastrá para mover
           </p>
 
           {/* SVG container */}
           <div
             className="overflow-hidden rounded-lg"
-            style={{ backgroundColor: "#0d1117", cursor: isDragging ? "grabbing" : "grab" }}
+            style={{ backgroundColor: "#0f1529", cursor: isDragging ? "grabbing" : "grab" }}
             onMouseLeave={() => setTooltip(null)}
           >
             {features.length === 0 ? (
               <div
                 className="flex h-64 items-center justify-center text-xs"
-                style={{ color: "#7d8590" }}
+                style={{ color: "#a8a496" }}
               >
                 Cargando mapa...
               </div>
@@ -516,7 +504,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                 {activeProvince === "Buenos Aires" &&
                   baPartidos.map((partido) => {
                     const depto = partido.properties.depto;
-                    const color = depto ? (DEPTO_COLORS[depto] ?? "#7d8590") : "#7d8590";
+                    const color = depto ? (DEPTO_COLORS[depto] ?? "#a8a496") : "#a8a496";
                     return (
                       <path
                         key={`ba-${partido.properties.osm_id}`}
@@ -552,7 +540,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                       width={96}
                       height={105}
                       fill="none"
-                      stroke="#74ACDF"
+                      stroke="#d0a04a"
                       strokeWidth={6}
                       strokeDasharray="18 8"
                       style={{ pointerEvents: "none" }}
@@ -564,7 +552,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                       y1={4237}
                       x2={INSET_POS.x}
                       y2={INSET_POS.y + 80}
-                      stroke="#74ACDF30"
+                      stroke="#d0a04a30"
                       strokeWidth={5}
                       strokeDasharray="16 10"
                       style={{ pointerEvents: "none" }}
@@ -574,7 +562,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                       y1={4290}
                       x2={INSET_POS.x}
                       y2={INSET_POS.y + INSET_POS.h - 80}
-                      stroke="#74ACDF30"
+                      stroke="#d0a04a30"
                       strokeWidth={5}
                       strokeDasharray="16 10"
                       style={{ pointerEvents: "none" }}
@@ -587,8 +575,8 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                       width={INSET_POS.w}
                       height={INSET_POS.h}
                       rx={24}
-                      fill="#0d1117"
-                      stroke="#74ACDF60"
+                      fill="#0f1529"
+                      stroke="#d0a04a60"
                       strokeWidth={7}
                     />
 
@@ -596,7 +584,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                     <text
                       x={INSET_POS.x + 28}
                       y={INSET_POS.y + 68}
-                      fill="#7d8590"
+                      fill="#a8a496"
                       fontSize={58}
                       fontFamily="system-ui, sans-serif"
                       style={{ pointerEvents: "none", userSelect: "none" }}
@@ -621,7 +609,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                         y={4261}
                         textAnchor="middle"
                         dominantBaseline="middle"
-                        fill="#e6edf3"
+                        fill="#f4f2e6"
                         fontSize={14}
                         fontWeight="bold"
                         fontFamily="system-ui, sans-serif"
@@ -639,7 +627,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                       height={INSET_POS.h}
                       rx={24}
                       fill="none"
-                      stroke="#74ACDF60"
+                      stroke="#d0a04a60"
                       strokeWidth={7}
                       style={{ pointerEvents: "none" }}
                     />
@@ -664,8 +652,8 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                   ];
               if (depts.length === 0) return null;
               return (
-                <div className="mt-3 border-t pt-3" style={{ borderColor: "#21262d" }}>
-                  <p className="mb-2 text-xs font-medium" style={{ color: "#7d8590" }}>
+                <div className="mt-3 border-t pt-3" style={{ borderColor: "#242b48" }}>
+                  <p className="mb-2 text-xs font-medium" style={{ color: "#a8a496" }}>
                     {isBsAs
                       ? "Departamentos judiciales — Buenos Aires"
                       : `Departamentos judiciales en ${activeProvince}`}
@@ -673,15 +661,15 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {depts.map((dept) => {
-                      const color = isBsAs ? DEPTO_COLORS[dept] : "#74ACDF";
+                      const color = isBsAs ? DEPTO_COLORS[dept] : "#d0a04a";
                       return (
                         <span
                           key={dept}
                           className="flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium"
                           style={{
-                            backgroundColor: isBsAs ? `${color}20` : "#74ACDF15",
-                            color: isBsAs ? color : "#74ACDF",
-                            border: `1px solid ${isBsAs ? `${color}60` : "#74ACDF30"}`,
+                            backgroundColor: isBsAs ? `${color}20` : "#d0a04a15",
+                            color: isBsAs ? color : "#d0a04a",
+                            border: `1px solid ${isBsAs ? `${color}60` : "#d0a04a30"}`,
                           }}
                         >
                           {isBsAs && (
@@ -708,13 +696,13 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
           style={{
             top: tooltip.y + 14,
             left: tooltip.x + 14,
-            backgroundColor: "#161b22",
-            borderColor: "#30363d",
-            color: "#e6edf3",
+            backgroundColor: "#181f38",
+            borderColor: "#363e5e",
+            color: "#f4f2e6",
           }}
         >
           <p className="font-semibold">{tooltip.title}</p>
-          <p style={{ color: "#7d8590" }}>{tooltip.subtitle}</p>
+          <p style={{ color: "#a8a496" }}>{tooltip.subtitle}</p>
         </div>
       )}
     </section>

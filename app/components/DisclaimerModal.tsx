@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ScaleIcon } from "./icons";
 
 const DISCLAIMER_KEY = "oja-disclaimer-accepted";
 
@@ -28,31 +29,25 @@ export default function DisclaimerModal({ forceOpen, onClose }: DisclaimerModalP
 
   return (
     <div
-      className="overlay-enter fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ backgroundColor: "rgba(0,0,0,0.8)", backdropFilter: "blur(4px)" }}
+      className="overlay-enter fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
+      style={{ backgroundColor: "rgba(0,0,0,0.8)" }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="disclaimer-title"
     >
-      <div
-        className="modal-enter relative w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl"
-        style={{ backgroundColor: "#161b22", border: "1px solid #30363d" }}
-      >
-        {/* Gold top bar */}
-        <div style={{ height: "3px", background: "linear-gradient(90deg, #74ACDF, #F4B942)" }} />
+      <div className="modal-enter bg-ink-elevated border-border-strong relative w-full max-w-2xl overflow-hidden rounded-2xl border shadow-2xl">
+        {/* Top gradient hairline */}
+        <div
+          className="h-[3px]"
+          style={{ background: "linear-gradient(90deg, var(--gold) 0%, var(--gold) 100%)" }}
+        />
 
         {/* Header */}
-        <div
-          className="flex items-center gap-3 px-6 py-4"
-          style={{ borderBottom: "1px solid #21262d" }}
-        >
-          <span className="text-2xl" aria-hidden="true">
-            ⚖️
-          </span>
+        <div className="border-border flex items-center gap-3 border-b px-6 py-4">
+          <ScaleIcon className="text-gold h-7 w-7" aria-hidden />
           <h2
             id="disclaimer-title"
-            className="font-bold text-lg leading-tight"
-            style={{ color: "#e6edf3" }}
+            className="text-cream font-serif text-lg font-bold leading-tight"
           >
             Aviso sobre los Datos
           </h2>
@@ -60,19 +55,10 @@ export default function DisclaimerModal({ forceOpen, onClose }: DisclaimerModalP
 
         {/* Body */}
         <div className="px-6 py-5">
-          <p className="text-sm leading-relaxed" style={{ color: "#c9d1d9" }}>
-            {disclaimerText}
-          </p>
+          <p className="text-cream text-sm leading-relaxed">{disclaimerText}</p>
 
-          <div
-            className="mt-4 rounded-lg px-4 py-3 text-xs leading-relaxed"
-            style={{
-              backgroundColor: "#0d1117",
-              borderLeft: "3px solid #F4B942",
-              color: "#8b949e",
-            }}
-          >
-            <strong style={{ color: "#e6edf3" }}>
+          <div className="bg-ink border-gold text-cream-muted mt-4 rounded-lg border-l-[3px] px-4 py-3 text-xs leading-relaxed">
+            <strong className="text-cream">
               Este sitio es de código abierto, estadístico y sin sesgo político.
             </strong>{" "}
             No tiene fines de vigilancia ni de castigo. Los datos mostrados son registros públicos
@@ -82,14 +68,10 @@ export default function DisclaimerModal({ forceOpen, onClose }: DisclaimerModalP
         </div>
 
         {/* Footer */}
-        <div
-          className="flex justify-end gap-3 px-6 pb-5"
-          style={{ borderTop: "1px solid #21262d", paddingTop: "1rem" }}
-        >
+        <div className="border-border flex justify-end gap-3 border-t px-6 py-4">
           <button
             onClick={handleClose}
-            className="cursor-pointer rounded-lg px-6 py-2.5 text-sm font-semibold transition-opacity hover:opacity-90 active:opacity-75"
-            style={{ backgroundColor: "#74ACDF", color: "#0d1117" }}
+            className="bg-gold text-cream hover:bg-gold-strong cursor-pointer rounded-lg px-6 py-2.5 text-sm font-semibold transition-colors"
           >
             Entendido, continuar
           </button>
