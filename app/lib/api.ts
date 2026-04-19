@@ -51,6 +51,37 @@ export interface JudgeSourceLink {
   description: string;
 }
 
+// ── Expediente Reputacional — Fase 1 ─────────────────────────────────────────
+
+export interface JudgeAssociation {
+  name: string;
+  role?: string;
+  since?: number;
+  sourceUrl?: string;
+}
+
+export type PoliticalOrigin = "judicial" | "political" | "academic" | "mixed";
+
+export const POLITICAL_ORIGIN_CONFIG: Record<PoliticalOrigin, { label: string; color: string }> = {
+  judicial: { label: "Carrera judicial pura", color: "#3fb950" },
+  academic: { label: "Origen académico", color: "#74ACDF" },
+  mixed: { label: "Trayectoria mixta", color: "#F4B942" },
+  political: { label: "Designación política", color: "#f85149" },
+};
+
+export interface JudgeAppointmentDetail {
+  politicalOrigin: PoliticalOrigin;
+  politicalOriginDetail?: string;
+  politicalOriginSources?: { label: string; url: string }[];
+  magistraturaScore?: number;
+  magistraturaRank?: number;
+  magistraturaCompetitionId?: string;
+  magistraturaSourceUrl?: string;
+  senateBackers?: string[];
+  senateSession?: string;
+  senateRecordUrl?: string;
+}
+
 // ── Campos extendidos (opcionales) ────────────────────────────────────────────
 
 export interface JudgeEducation {
@@ -111,6 +142,9 @@ export interface Judge {
   careerHistory?: JudgeCareerEntry[];
   notableDecisions?: JudgeNotableDecision[];
   extendedStats?: JudgeExtendedStats;
+  // Expediente Reputacional — Fase 1
+  associations?: JudgeAssociation[];
+  appointmentDetail?: JudgeAppointmentDetail;
 }
 
 // ── Bandas salariales y antigüedad ────────────────────────────────────────────
