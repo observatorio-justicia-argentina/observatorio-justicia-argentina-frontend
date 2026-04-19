@@ -62,6 +62,13 @@ export interface JudgeAssociation {
 
 export type PoliticalOrigin = "judicial" | "political" | "academic" | "mixed";
 
+export const POLITICAL_ORIGIN_CONFIG: Record<PoliticalOrigin, { label: string; color: string }> = {
+  judicial: { label: "Carrera judicial pura", color: "#3fb950" },
+  academic: { label: "Origen académico", color: "#74ACDF" },
+  mixed: { label: "Trayectoria mixta", color: "#F4B942" },
+  political: { label: "Designación política", color: "#f85149" },
+};
+
 export interface JudgeAppointmentDetail {
   politicalOrigin: PoliticalOrigin;
   politicalOriginDetail?: string;
