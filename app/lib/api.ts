@@ -217,9 +217,10 @@ export interface FilterOptions {
   scopes: string[];
 }
 
-// ── Causas cajoneadas ─────────────────────────────────────────────────────────
+// ── Causas demoradas ──────────────────────────────────────────────────────────
 
-export type EstadoCausa = "activa" | "demorada" | "cajoneada" | "resuelta";
+/** Clasificación objetiva por días transcurridos. NO implica juicio sobre la conducta del magistrado. */
+export type EstadoCausa = "activa" | "demora-moderada" | "alta-demora" | "resuelta";
 
 export interface CausaRanking {
   expediente: string;

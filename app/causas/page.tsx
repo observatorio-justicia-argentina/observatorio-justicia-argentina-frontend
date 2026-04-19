@@ -23,14 +23,14 @@ const ESTADO_CONFIG: Record<
     bg: "#3fb95015",
     dot: "🟢",
   },
-  demorada: {
-    label: "Demorada",
+  "demora-moderada": {
+    label: "Demora moderada",
     color: "#d29922",
     bg: "#d2992215",
     dot: "🟡",
   },
-  cajoneada: {
-    label: "Cajoneada",
+  "alta-demora": {
+    label: "Alta demora",
     color: "#f85149",
     bg: "#f8514915",
     dot: "🔴",
@@ -45,15 +45,15 @@ const ESTADO_CONFIG: Record<
 
 const ESTADOS: Array<EstadoCausa | "todas"> = [
   "todas",
-  "cajoneada",
-  "demorada",
+  "alta-demora",
+  "demora-moderada",
   "activa",
   "resuelta",
 ];
 const ESTADO_LABELS: Record<EstadoCausa | "todas", string> = {
   todas: "Todas",
-  cajoneada: "Cajoneada",
-  demorada: "Demorada",
+  "alta-demora": "Alta demora",
+  "demora-moderada": "Demora moderada",
   activa: "Activa",
   resuelta: "Resuelta",
 };
@@ -482,9 +482,9 @@ function CausasContent() {
                             className="text-lg font-bold"
                             style={{
                               color:
-                                causa.estadoCausa === "cajoneada"
+                                causa.estadoCausa === "alta-demora"
                                   ? "#f85149"
-                                  : causa.estadoCausa === "demorada"
+                                  : causa.estadoCausa === "demora-moderada"
                                     ? "#d29922"
                                     : causa.estadoCausa === "activa"
                                       ? "#3fb950"

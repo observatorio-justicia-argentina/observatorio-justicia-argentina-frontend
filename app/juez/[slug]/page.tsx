@@ -535,14 +535,14 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                         { label: string; color: string; bg: string; dot: string }
                       > = {
                         activa: { label: "Activa", color: "#3fb950", bg: "#3fb95015", dot: "🟢" },
-                        demorada: {
-                          label: "Demorada",
+                        "demora-moderada": {
+                          label: "Demora moderada",
                           color: "#d29922",
                           bg: "#d2992215",
                           dot: "🟡",
                         },
-                        cajoneada: {
-                          label: "Cajoneada",
+                        "alta-demora": {
+                          label: "Alta demora",
                           color: "#f85149",
                           bg: "#f8514915",
                           dot: "🔴",

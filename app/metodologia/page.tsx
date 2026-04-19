@@ -30,29 +30,30 @@ export default function MetodologiaPage() {
       </div>
 
       <div className="space-y-10">
-        {/* ── Sección 1: Definición de cajoneada ────────────────────────────── */}
+        {/* ── Sección 1: Criterio de clasificación ──────────────────────────── */}
         <section>
           <h2 className="mb-4 text-xl font-semibold" style={{ color: "#e6edf3" }}>
-            1. Cómo definimos &quot;cajoneada&quot;
+            1. Criterio de clasificación por tiempo
           </h2>
           <div
             className="mb-4 rounded-xl border-l-4 p-4 text-sm"
             style={{
-              borderLeftColor: "#f85149",
-              backgroundColor: "#f8514908",
+              borderLeftColor: "#74ACDF",
+              backgroundColor: "#74ACDF08",
               color: "#e6edf3",
             }}
           >
-            <strong>Definición objetiva:</strong> Una causa está <em>cajoneada</em> cuando fue
-            iniciada (denuncia, apertura de instrucción) y no ha registrado movimiento hacia una
-            resolución en un tiempo que supera los umbrales estadísticos del sistema judicial
-            argentino.
+            <strong>Principio:</strong> Las categorías describen únicamente el tiempo transcurrido
+            desde el inicio de la causa hasta hoy. No implican juicio sobre la conducta, intención
+            ni responsabilidad del magistrado.
           </div>
           <p className="text-sm leading-relaxed" style={{ color: "#7d8590" }}>
-            La clasificación es{" "}
-            <strong style={{ color: "#e6edf3" }}>puramente objetiva y temporal</strong>: no requiere
-            juicio editorial. El dato es: fecha de inicio + ausencia de resolución + días
-            transcurridos.
+            El dato es:{" "}
+            <strong style={{ color: "#e6edf3" }}>
+              fecha de inicio + ausencia de resolución + días transcurridos
+            </strong>
+            . Cada usuario puede cruzar los filtros y extraer sus propias conclusiones. El
+            Observatorio publica el dato; no lo interpreta.
           </p>
         </section>
 
@@ -88,21 +89,21 @@ export default function MetodologiaPage() {
                   },
                   {
                     dot: "🟡",
-                    label: "Demorada",
+                    label: "Demora moderada",
                     color: "#d29922",
                     bg: "#d2992210",
                     dias: "365 – 730",
                     criterio:
-                      "Supera 1 año. Por debajo de la mediana nacional (~1.000 días para el proceso completo).",
+                      "Supera 1 año sin resolución. Por debajo de la mediana nacional (~1.000 días para el proceso completo).",
                   },
                   {
                     dot: "🔴",
-                    label: "Cajoneada",
+                    label: "Alta demora",
                     color: "#f85149",
                     bg: "#f8514910",
                     dias: "> 730",
                     criterio:
-                      "Supera 2 años sin salir de instrucción. Indicador claro de estancamiento para primera instancia.",
+                      "Supera 2 años sin resolución. Excede el umbral para primera instancia según estadísticas de la Procuración General.",
                   },
                   {
                     dot: "✅",
@@ -185,7 +186,7 @@ export default function MetodologiaPage() {
               },
               {
                 value: "730 días",
-                label: 'Umbral de "cajoneada" usado por el Observatorio',
+                label: "Umbral de alta demora usado por el Observatorio",
                 source: "Derivado de la mediana para primera instancia",
               },
             ].map((stat) => (
