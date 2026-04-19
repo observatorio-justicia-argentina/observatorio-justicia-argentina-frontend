@@ -72,6 +72,7 @@ export const POLITICAL_ORIGIN_CONFIG: Record<PoliticalOrigin, { label: string; c
 export interface JudgeAppointmentDetail {
   politicalOrigin: PoliticalOrigin;
   politicalOriginDetail?: string;
+  politicalOriginSources?: { label: string; url: string }[];
   magistraturaScore?: number;
   magistraturaRank?: number;
   magistraturaCompetitionId?: string;
