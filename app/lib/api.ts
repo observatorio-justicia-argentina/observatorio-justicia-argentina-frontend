@@ -6,6 +6,7 @@ export interface JudgeLocation {
   country: string;
   province: string;
   department: string;
+  city?: string;
 }
 
 // ── Jurisdicción ─────────────────────────────────────────────────────────────
@@ -112,9 +113,17 @@ export interface Judge {
   extendedStats?: JudgeExtendedStats;
 }
 
-// ── Bandas salariales ─────────────────────────────────────────────────────────
+// ── Bandas salariales y antigüedad ────────────────────────────────────────────
 
 export type SalaryBand = "baja" | "media" | "alta";
+export type YearsBand = "junior" | "mid" | "senior";
+export type SortKey =
+  | "name"
+  | "totalReleases"
+  | "ftaCount"
+  | "newArrestCount"
+  | "revokedCount"
+  | "failureRate";
 
 export function getSalaryBand(grossMonthlyARS: number): SalaryBand {
   if (grossMonthlyARS < 6_000_000) return "baja";
@@ -178,11 +187,57 @@ export interface PaginatedResult<T> {
   totalPages: number;
 }
 
+// ── Parámetros de fetch paginado ──────────────────────────────────────────────
+
+export interface JudgesFetchParams {
+  page?: number;
+  limit?: number;
+  province?: string;
+  department?: string;
+  city?: string;
+  search?: string;
+  fuero?: string;
+  instance?: string;
+  scope?: string;
+  salaryBand?: SalaryBand;
+  yearsBand?: YearsBand;
+  sortKey?: SortKey;
+  sortDir?: "asc" | "desc";
+}
+
+export interface JudgeCounts {
+  byProvince: Record<string, number>;
+  byDepto: Record<string, number>;
+  byCity: Record<string, number>;
+}
+
+export interface FilterOptions {
+  fueros: string[];
+  instances: string[];
+  scopes: string[];
+}
+
 // ── Fetch ────────────────────────────────────────────────────────────────────
 
-export async function fetchJudges(): Promise<Judge[]> {
-  const res = await fetch(`${API_BASE}/judges`);
+export async function fetchJudges(params: JudgesFetchParams = {}): Promise<PaginatedResult<Judge>> {
+  const qs = new URLSearchParams();
+  (Object.entries(params) as [string, unknown][]).forEach(([k, v]) => {
+    if (v != null && v !== "") qs.set(k, String(v));
+  });
+  const res = await fetch(`${API_BASE}/judges?${qs}`);
   if (!res.ok) throw new Error(`Error ${res.status} al cargar jueces`);
+  return res.json();
+}
+
+export async function fetchJudgeCounts(): Promise<JudgeCounts> {
+  const res = await fetch(`${API_BASE}/judges/counts`);
+  if (!res.ok) throw new Error(`Error ${res.status} al cargar conteos`);
+  return res.json();
+}
+
+export async function fetchFilterOptions(): Promise<FilterOptions> {
+  const res = await fetch(`${API_BASE}/judges/options`);
+  if (!res.ok) throw new Error(`Error ${res.status} al cargar opciones de filtro`);
   return res.json();
 }
 
