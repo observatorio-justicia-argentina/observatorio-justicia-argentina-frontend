@@ -185,16 +185,13 @@ body {
   );
 }
 
-/* Gold halo that tracks the same cursor position, soft-light blended so it
-   reads as warm illumination behind the spotlight rather than a highlight on top. */
 .escudo-halo {
   background: radial-gradient(
     circle 380px at var(--spot-x) var(--spot-y),
-    rgba(208, 160, 74, 0.22) 0%,
-    rgba(208, 160, 74, 0.08) 40%,
+    rgba(208, 160, 74, 0.12) 0%,
+    rgba(208, 160, 74, 0.04) 40%,
     transparent 75%
   );
-  mix-blend-mode: soft-light;
 }
 
 @media (hover: none), (pointer: coarse) {
