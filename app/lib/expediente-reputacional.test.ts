@@ -1,4 +1,4 @@
-import { POLITICAL_ORIGIN_CONFIG, type PoliticalOrigin } from "./api";
+import { POLITICAL_ORIGIN_CONFIG, type PoliticalOrigin, type JudgeAppointmentDetail } from "./api";
 
 /**
  * Tests del Expediente Reputacional — Fase 1
@@ -54,5 +54,39 @@ describe("POLITICAL_ORIGIN_CONFIG", () => {
     expect(POLITICAL_ORIGIN_CONFIG.political.label).toMatch(/pol[ií]tica/i);
     expect(POLITICAL_ORIGIN_CONFIG.academic.label).toMatch(/acad[eé]m/i);
     expect(POLITICAL_ORIGIN_CONFIG.mixed.label).toMatch(/mixta/i);
+  });
+});
+
+// ── JudgeAppointmentDetail — politicalOriginSources ──────────────────────────
+
+describe("JudgeAppointmentDetail.politicalOriginSources", () => {
+  it("acepta una lista de fuentes con label y url", () => {
+    const detail: JudgeAppointmentDetail = {
+      politicalOrigin: "judicial",
+      politicalOriginSources: [
+        { label: "Ingresó al PJ en 2001", url: "https://example.com/res-45-2001" },
+        { label: "Concurso N° 247", url: "https://example.com/concurso-247" },
+      ],
+    };
+    expect(detail.politicalOriginSources).toHaveLength(2);
+    detail.politicalOriginSources!.forEach((src) => {
+      expect(typeof src.label).toBe("string");
+      expect(typeof src.url).toBe("string");
+    });
+  });
+
+  it("es opcional — puede estar ausente sin romper la interfaz", () => {
+    const detail: JudgeAppointmentDetail = {
+      politicalOrigin: "political",
+    };
+    expect(detail.politicalOriginSources).toBeUndefined();
+  });
+
+  it("label y url no pueden ser strings vacíos en datos válidos", () => {
+    const sources = [{ label: "Resolución senatorial 2020", url: "https://example.com/decreto" }];
+    sources.forEach((src) => {
+      expect(src.label.length).toBeGreaterThan(0);
+      expect(src.url.length).toBeGreaterThan(0);
+    });
   });
 });
