@@ -6,7 +6,6 @@ import DisclaimerModal from "./DisclaimerModal";
 import SubmitJudgeModal from "./SubmitJudgeModal";
 import AuthModal from "./AuthModal";
 import { AlertIcon, ChevronDownIcon, ScaleIcon } from "./icons";
-import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
 
 function UserInitials({ nombre }: { nombre: string }) {
