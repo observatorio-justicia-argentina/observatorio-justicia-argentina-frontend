@@ -1,16 +1,8 @@
 "use client";
 
-import { Judge, SalaryBand, SALARY_BAND_LABELS, getSalaryBand } from "../lib/api";
+import { FilterOptions, SalaryBand, SALARY_BAND_LABELS, SortKey, YearsBand } from "../lib/api";
 
-export type SortKey =
-  | "name"
-  | "totalReleases"
-  | "ftaCount"
-  | "newArrestCount"
-  | "revokedCount"
-  | "failureRate";
-
-export type YearsBand = "junior" | "mid" | "senior";
+export type { SortKey, YearsBand };
 
 export interface FilterState {
   search: string;
@@ -26,7 +18,7 @@ export interface FilterState {
 interface Props {
   filters: FilterState;
   onChange: (patch: Partial<FilterState>) => void;
-  judges: Judge[];
+  filterOptions: FilterOptions;
 }
 
 const SORT_OPTIONS: { key: SortKey; label: string }[] = [
@@ -73,65 +65,8 @@ function FilterRow({ label, children }: { label: string; children: React.ReactNo
   );
 }
 
-export function applyFilters(judges: Judge[], filters: FilterState): Judge[] {
-  return judges
-    .filter((j) => {
-      const q = filters.search.toLowerCase();
-      const matchesSearch =
-        !q ||
-        j.name.toLowerCase().includes(q) ||
-        j.court.toLowerCase().includes(q) ||
-        j.location.province.toLowerCase().includes(q) ||
-        j.location.department.toLowerCase().includes(q) ||
-        j.jurisdiction.fuero.toLowerCase().includes(q);
-
-      const matchesFuero = !filters.activeFuero || j.jurisdiction.fuero === filters.activeFuero;
-      const matchesInstance =
-        !filters.activeInstance || j.jurisdiction.instance === filters.activeInstance;
-      const matchesScope = !filters.activeScope || j.jurisdiction.scope === filters.activeScope;
-      const matchesSalary =
-        !filters.activeSalaryBand ||
-        getSalaryBand(j.salary?.grossMonthlyARS ?? 0) === filters.activeSalaryBand;
-      const matchesYears =
-        !filters.activeYearsBand ||
-        (filters.activeYearsBand === "junior" && j.yearsOnBench < 5) ||
-        (filters.activeYearsBand === "mid" && j.yearsOnBench >= 5 && j.yearsOnBench <= 15) ||
-        (filters.activeYearsBand === "senior" && j.yearsOnBench > 15);
-
-      return (
-        matchesSearch &&
-        matchesFuero &&
-        matchesInstance &&
-        matchesScope &&
-        matchesSalary &&
-        matchesYears
-      );
-    })
-    .sort((a, b) => {
-      const { sortKey, sortDir } = filters;
-      let av: number | string;
-      let bv: number | string;
-      if (sortKey === "name") {
-        av = a.name;
-        bv = b.name;
-      } else if (sortKey === "failureRate") {
-        av = a.failureRate;
-        bv = b.failureRate;
-      } else {
-        av = a[sortKey];
-        bv = b[sortKey];
-      }
-      if (typeof av === "string" && typeof bv === "string") {
-        return sortDir === "asc" ? av.localeCompare(bv, "es") : bv.localeCompare(av, "es");
-      }
-      return sortDir === "asc" ? (av as number) - (bv as number) : (bv as number) - (av as number);
-    });
-}
-
-export default function JudgeFilters({ filters, onChange, judges }: Props) {
-  const fueros = [...new Set(judges.map((j) => j.jurisdiction?.fuero).filter(Boolean))];
-  const instances = [...new Set(judges.map((j) => j.jurisdiction?.instance).filter(Boolean))];
-  const scopes = [...new Set(judges.map((j) => j.jurisdiction?.scope).filter(Boolean))];
+export default function JudgeFilters({ filters, onChange, filterOptions }: Props) {
+  const { fueros, instances, scopes } = filterOptions;
 
   const hasActiveFilters =
     filters.activeFuero ||

@@ -5,6 +5,7 @@ import DisclaimerModal from "./DisclaimerModal";
 import SubmitJudgeModal from "./SubmitJudgeModal";
 import AuthModal from "./AuthModal";
 import { AlertIcon, ChevronDownIcon, ScaleIcon } from "./icons";
+import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
 
 function UserInitials({ nombre }: { nombre: string }) {
@@ -39,7 +40,10 @@ export default function Navbar() {
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           {/* Logo */}
-          <div className="flex min-w-0 items-center gap-2.5">
+          <Link
+            href="/"
+            className="flex min-w-0 items-center gap-2.5 hover:opacity-80 transition-opacity"
+          >
             <ScaleIcon className="text-gold h-6 w-6 sm:h-7 sm:w-7" aria-hidden />
             <div className="min-w-0">
               <span className="text-cream block truncate font-serif text-sm font-bold leading-tight sm:text-base">
@@ -49,7 +53,7 @@ export default function Navbar() {
                 Conocé a los jueces
               </span>
             </div>
-          </div>
+          </Link>
 
           {/* Desktop actions */}
           <div className="hidden items-center gap-2 sm:flex">

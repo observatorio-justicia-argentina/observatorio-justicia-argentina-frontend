@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Judge } from "../lib/api";
+import { JudgeCounts } from "../lib/api";
 import { ArgentinaIcon } from "./icons";
 
 const HC_MIN_X = -999;
@@ -168,16 +168,25 @@ function isVbFull(vb: Vb) {
 }
 
 interface Props {
-  judges: Judge[];
+  judgeCounts: JudgeCounts;
   activeProvince: string | null;
   onProvinceSelect: (province: string | null) => void;
+  onDeptoSelect?: (depto: string | null) => void;
+  onPartidoSelect?: (partido: string | null) => void;
 }
 
-export default function MapArgentina({ judges, activeProvince, onProvinceSelect }: Props) {
+export default function MapArgentina({
+  judgeCounts,
+  activeProvince,
+  onProvinceSelect,
+  onDeptoSelect,
+  onPartidoSelect,
+}: Props) {
   const [features, setFeatures] = useState<GeoFeature[]>([]);
   const [baPartidos, setBaPartidos] = useState<BaPartidoFeature[]>([]);
   const [activeDepto, setActiveDepto] = useState<string | null>(null);
   const [activePartido, setActivePartido] = useState<string | null>(null);
+  const [hoveredDepto, setHoveredDepto] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<{
     title: string;
     subtitle: string;
@@ -281,10 +290,9 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
     return () => svg.removeEventListener("wheel", onWheel);
   }, []);
 
-  const judgesByProvince = judges.reduce<Record<string, number>>((acc, j) => {
-    acc[j.location.province] = (acc[j.location.province] ?? 0) + 1;
-    return acc;
-  }, {});
+  const judgesByProvince = judgeCounts.byProvince;
+  const judgesByDepto = judgeCounts.byDepto;
+  const judgesByCity = judgeCounts.byCity;
 
   // Group partidos by judicial department
   const deptosMap = baPartidos.reduce<Record<string, BaPartidoFeature[]>>((acc, p) => {
@@ -295,13 +303,13 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
   }, {});
 
   function getFill(province: string): string {
-    // When selected, use a muted dark color so department overlays are readable
     if (activeProvince === province) return "#1a2235";
     const count = judgesByProvince[province] ?? 0;
-    if (count === 0) return "#1a2340";
-    if (count <= 2) return "#242b48";
-    if (count <= 5) return "#5b6fa5";
-    return "#7c94d0";
+    if (count === 0) return "#151b30";
+    if (count <= 2) return "#3d5080";
+    if (count <= 10) return "#5b6fa5";
+    if (count <= 50) return "#7c94d0";
+    return "#a0b8e8";
   }
 
   function handleProvinceClick(province: string, feature: GeoFeature) {
@@ -309,6 +317,8 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
     const isActive = activeProvince === province;
     setActiveDepto(null);
     setActivePartido(null);
+    onDeptoSelect?.(null);
+    onPartidoSelect?.(null);
     onProvinceSelect(isActive ? null : province);
     if (isActive) {
       setVb(FULL_VB);
@@ -324,23 +334,29 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
     if (justDraggedRef.current || dragRef.current?.moved) return;
     setActiveDepto(depto);
     setActivePartido(null);
+    onDeptoSelect?.(depto);
+    onPartidoSelect?.(null);
     setVb(getPartidosBounds(partidos, 0.12));
   }
 
   function handlePartidoClick(partido: BaPartidoFeature) {
     if (justDraggedRef.current || dragRef.current?.moved) return;
     setActivePartido(partido.properties.name);
-    setVb(getPartidosBounds([partido], 0.2));
+    onPartidoSelect?.(partido.properties.name);
+    // no zoom — already at depto level
   }
 
   function goBackToProvince() {
     setActiveDepto(null);
     setActivePartido(null);
+    onDeptoSelect?.(null);
+    onPartidoSelect?.(null);
     setVb(provinceVbRef.current);
   }
 
   function goBackToDepto() {
     setActivePartido(null);
+    onPartidoSelect?.(null);
     if (activeDepto && deptosMap[activeDepto]) {
       setVb(getPartidosBounds(deptosMap[activeDepto], 0.12));
     }
@@ -374,6 +390,8 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
     onProvinceSelect(null);
     setActiveDepto(null);
     setActivePartido(null);
+    onDeptoSelect?.(null);
+    onPartidoSelect?.(null);
     setVb(FULL_VB);
   }
 
@@ -406,31 +424,23 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
           stroke="#363e5e"
           strokeWidth={strokeWidth}
           style={{
-            cursor: activeProvince && !isActive ? "default" : "pointer",
+            cursor: "pointer",
             transition: "fill 0.15s ease",
           }}
           onClick={() => {
-            // Clicking non-active province while one is selected → ignore
-            if (activeProvince && !isActive) return;
             handleProvinceClick(province, feature);
           }}
           onMouseEnter={(e) => {
-            if (activeProvince && !isActive) return;
             const count = judgesByProvince[province] ?? 0;
             setTooltip({
               title: province,
-              subtitle:
-                count === 0
-                  ? "Sin jueces relevados"
-                  : `${count} juez${count !== 1 ? "es" : ""} relevado${count !== 1 ? "s" : ""}`,
+              subtitle: `${count} juez${count !== 1 ? "es" : ""} relevado${count !== 1 ? "s" : ""}`,
               x: e.clientX,
               y: e.clientY,
             });
           }}
           onMouseLeave={() => setTooltip(null)}
-        >
-          <title>{province}</title>
-        </path>
+        ></path>
       );
     });
   }
@@ -577,9 +587,10 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
             <div className="flex flex-wrap items-center gap-3 text-xs" style={{ color: "#a8a496" }}>
               {level === 0 &&
                 [
-                  { bg: "#1c2128", label: "Sin datos", border: "1px solid #363e5e" },
-                  { bg: "#242b48", label: "1–2 jueces" },
-                  { bg: "#5b6fa5", label: "3–5 jueces" },
+                  { bg: "#151b30", label: "Sin datos", border: "1px solid #363e5e" },
+                  { bg: "#3d5080", label: "1–2 jueces" },
+                  { bg: "#5b6fa5", label: "3–10 jueces" },
+                  { bg: "#7c94d0", label: "11–50 jueces" },
                 ].map(({ bg, label, border }) => (
                   <div key={label} className="flex items-center gap-1.5">
                     <span className="h-3 w-4 rounded" style={{ backgroundColor: bg, border }} />
@@ -600,7 +611,10 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
           <div
             className="overflow-hidden rounded-lg"
             style={{ backgroundColor: "#0f1529", cursor: isDragging ? "grabbing" : "grab" }}
-            onMouseLeave={() => setTooltip(null)}
+            onMouseLeave={() => {
+              setTooltip(null);
+              setHoveredDepto(null);
+            }}
           >
             {features.length === 0 ? (
               <div
@@ -620,93 +634,86 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                 {/* Capa base: provincias */}
                 {renderPaths("main", 8)}
 
-                {/* Level 1: departamentos judiciales clickeables */}
+                {/* Departamentos: visibles en nivel 1 y 2 (mientras BA esté seleccionada) */}
                 {activeProvince === "Buenos Aires" &&
-                  !activeDepto &&
                   Object.entries(deptosMap).map(([depto, partidos]) => {
+                    const isActive = depto === activeDepto;
+                    const isHovered = depto === hoveredDepto;
                     const color = DEPTO_COLORS[depto] ?? "#a8a496";
                     const d = partidos.map((p) => geometryToPath(p.geometry)).join(" ");
+                    // Hover ilumina el grupo; el activo tiene relleno más opaco
+                    const fillHex = isActive ? "50" : isHovered ? "48" : "28";
+                    const strokeHex = isHovered || isActive ? "cc" : "70";
                     return (
                       <path
                         key={`depto-${depto}`}
                         d={d}
-                        fill={`${color}35`}
-                        stroke={color}
-                        strokeWidth={5}
-                        style={{ cursor: "pointer", transition: "fill 0.12s ease" }}
+                        fill={`${color}${fillHex}`}
+                        stroke={`${color}${strokeHex}`}
+                        strokeWidth={isActive ? 7 : 5}
+                        style={{
+                          cursor: "pointer",
+                          transition: "fill 0.12s ease, stroke 0.12s ease",
+                        }}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleDeptoClick(depto, partidos);
                         }}
-                        onMouseEnter={(e) =>
+                        onMouseEnter={(e) => {
+                          setHoveredDepto(depto);
+                          const dc = judgesByDepto[depto] ?? 0;
                           setTooltip({
                             title: depto,
-                            subtitle: "Departamento judicial — hacé click para explorar partidos",
+                            subtitle: `${dc} juez${dc !== 1 ? "es" : ""} · ${partidos.length} partido${partidos.length !== 1 ? "s" : ""}`,
                             x: e.clientX,
                             y: e.clientY,
-                          })
+                          });
+                        }}
+                        onMouseLeave={() => {
+                          setHoveredDepto(null);
+                          setTooltip(null);
+                        }}
+                        onMouseMove={(e) =>
+                          setTooltip((t) => (t ? { ...t, x: e.clientX, y: e.clientY } : null))
                         }
+                      ></path>
+                    );
+                  })}
+
+                {/* Partidos: encima de los departamentos, solo cuando hay depto activo */}
+                {activeProvince === "Buenos Aires" &&
+                  activeDepto &&
+                  (deptosMap[activeDepto] ?? []).map((partido) => {
+                    const color = DEPTO_COLORS[activeDepto] ?? "#a8a496";
+                    const isSelected = partido.properties.name === activePartido;
+                    return (
+                      <path
+                        key={`partido-${partido.properties.osm_id}`}
+                        d={geometryToPath(partido.geometry)}
+                        fill={isSelected ? `${color}70` : `${color}40`}
+                        stroke={isSelected ? color : `${color}aa`}
+                        strokeWidth={isSelected ? 8 : 3}
+                        style={{ cursor: "pointer", transition: "fill 0.12s ease" }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handlePartidoClick(partido);
+                        }}
+                        onMouseEnter={(e) => {
+                          const pc = judgesByCity[partido.properties.name] ?? 0;
+                          setTooltip({
+                            title: partido.properties.name,
+                            subtitle: `${pc} juez${pc !== 1 ? "es" : ""} · Depto. ${activeDepto}`,
+                            x: e.clientX,
+                            y: e.clientY,
+                          });
+                        }}
                         onMouseLeave={() => setTooltip(null)}
                         onMouseMove={(e) =>
                           setTooltip((t) => (t ? { ...t, x: e.clientX, y: e.clientY } : null))
                         }
-                      >
-                        <title>{depto}</title>
-                      </path>
+                      ></path>
                     );
                   })}
-
-                {/* Level 2: partidos individuales del departamento seleccionado */}
-                {activeProvince === "Buenos Aires" &&
-                  activeDepto &&
-                  (() => {
-                    const color = DEPTO_COLORS[activeDepto] ?? "#a8a496";
-                    const deptoPartidos = deptosMap[activeDepto] ?? [];
-                    return (
-                      <>
-                        {/* Borde del departamento (highlight de fondo) */}
-                        <path
-                          d={deptoPartidos.map((p) => geometryToPath(p.geometry)).join(" ")}
-                          fill={`${color}20`}
-                          stroke={color}
-                          strokeWidth={10}
-                          style={{ pointerEvents: "none" }}
-                        />
-                        {/* Partidos individuales clickeables */}
-                        {deptoPartidos.map((partido) => {
-                          const isSelected = partido.properties.name === activePartido;
-                          return (
-                            <path
-                              key={`partido-${partido.properties.osm_id}`}
-                              d={geometryToPath(partido.geometry)}
-                              fill={isSelected ? `${color}60` : `${color}25`}
-                              stroke={isSelected ? color : `${color}90`}
-                              strokeWidth={isSelected ? 8 : 3}
-                              style={{ cursor: "pointer", transition: "fill 0.12s ease" }}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handlePartidoClick(partido);
-                              }}
-                              onMouseEnter={(e) =>
-                                setTooltip({
-                                  title: partido.properties.name,
-                                  subtitle: `Departamento ${activeDepto}`,
-                                  x: e.clientX,
-                                  y: e.clientY,
-                                })
-                              }
-                              onMouseLeave={() => setTooltip(null)}
-                              onMouseMove={(e) =>
-                                setTooltip((t) => (t ? { ...t, x: e.clientX, y: e.clientY } : null))
-                              }
-                            >
-                              <title>{partido.properties.name}</title>
-                            </path>
-                          );
-                        })}
-                      </>
-                    );
-                  })()}
 
                 {/* Inset CABA/AMBA — solo en vista completa */}
                 {fullView && (
@@ -811,6 +818,7 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
               <div className="flex flex-wrap gap-2">
                 {Object.keys(deptosMap).map((depto) => {
                   const color = DEPTO_COLORS[depto] ?? "#a8a496";
+                  const dc = judgesByDepto[depto] ?? 0;
                   return (
                     <button
                       key={depto}
@@ -827,6 +835,12 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                         style={{ backgroundColor: color }}
                       />
                       {depto}
+                      <span
+                        className="rounded-full px-1.5 py-0 text-[10px] font-bold"
+                        style={{ backgroundColor: `${color}40`, color }}
+                      >
+                        {dc}
+                      </span>
                     </button>
                   );
                 })}
@@ -843,11 +857,12 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                 {(deptosMap[activeDepto] ?? []).map((partido) => {
                   const color = DEPTO_COLORS[activeDepto] ?? "#a8a496";
                   const isSelected = partido.properties.name === activePartido;
+                  const pc = judgesByCity[partido.properties.name] ?? 0;
                   return (
                     <button
                       key={partido.properties.osm_id}
                       onClick={() => handlePartidoClick(partido)}
-                      className="rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors hover:opacity-80"
+                      className="flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors hover:opacity-80"
                       style={{
                         backgroundColor: isSelected ? `${color}40` : `${color}15`,
                         color: isSelected ? color : `${color}cc`,
@@ -855,6 +870,15 @@ export default function MapArgentina({ judges, activeProvince, onProvinceSelect 
                       }}
                     >
                       {partido.properties.name}
+                      <span
+                        className="rounded-full px-1.5 py-0 text-[10px] font-bold"
+                        style={{
+                          backgroundColor: `${color}40`,
+                          color: isSelected ? color : `${color}cc`,
+                        }}
+                      >
+                        {pc}
+                      </span>
                     </button>
                   );
                 })}
