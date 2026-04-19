@@ -434,7 +434,7 @@ export default function MapArgentina({
             const count = judgesByProvince[province] ?? 0;
             setTooltip({
               title: province,
-              subtitle: `${count} juez${count !== 1 ? "es" : ""} relevado${count !== 1 ? "s" : ""}`,
+              subtitle: `${count} ${count !== 1 ? "jueces" : "juez"} relevado${count !== 1 ? "s" : ""}`,
               x: e.clientX,
               y: e.clientY,
             });
@@ -664,7 +664,7 @@ export default function MapArgentina({
                           const dc = judgesByDepto[depto] ?? 0;
                           setTooltip({
                             title: depto,
-                            subtitle: `${dc} juez${dc !== 1 ? "es" : ""} · ${partidos.length} partido${partidos.length !== 1 ? "s" : ""}`,
+                            subtitle: `${dc} ${dc !== 1 ? "jueces" : "juez"} · ${partidos.length} partido${partidos.length !== 1 ? "s" : ""}`,
                             x: e.clientX,
                             y: e.clientY,
                           });
@@ -702,7 +702,7 @@ export default function MapArgentina({
                           const pc = judgesByCity[partido.properties.name] ?? 0;
                           setTooltip({
                             title: partido.properties.name,
-                            subtitle: `${pc} juez${pc !== 1 ? "es" : ""} · Depto. ${activeDepto}`,
+                            subtitle: `${pc} ${pc !== 1 ? "jueces" : "juez"} · Depto. ${activeDepto}`,
                             x: e.clientX,
                             y: e.clientY,
                           });

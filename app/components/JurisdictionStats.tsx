@@ -34,7 +34,7 @@ interface NodeRowProps {
 }
 
 function NodeRow({ node, onFilterClick, activeProvince }: NodeRowProps) {
-  const [open, setOpen] = useState(node.level === "country" || node.level === "province");
+  const [open, setOpen] = useState(node.level === "country");
   const hasChildren = node.children && node.children.length > 0;
   const indent = LEVEL_INDENT[node.level];
   const rate = node.failureRate;
