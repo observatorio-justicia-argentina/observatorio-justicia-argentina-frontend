@@ -351,6 +351,31 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
                         </p>
                       )}
 
+                      {d.politicalOriginSources && d.politicalOriginSources.length > 0 && (
+                        <ul className="mt-2 space-y-1">
+                          {d.politicalOriginSources.map((src, i) => (
+                            <li
+                              key={i}
+                              className="flex items-start gap-1.5 text-xs"
+                              style={{ color: "#8b949e" }}
+                            >
+                              <span className="mt-0.5 shrink-0" style={{ color: "#3d444d" }}>
+                                •
+                              </span>
+                              <a
+                                href={src.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="underline decoration-dotted transition-colors hover:opacity-80"
+                                style={{ color: "#74ACDF" }}
+                              >
+                                {src.label}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+
                       {/* Concurso Magistratura */}
                       {(d.magistraturaScore !== undefined || d.magistraturaRank !== undefined) && (
                         <div className="mt-4 flex flex-wrap gap-3">
