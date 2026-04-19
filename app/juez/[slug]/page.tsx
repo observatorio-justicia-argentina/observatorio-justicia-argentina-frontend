@@ -5,9 +5,12 @@ import { use, useEffect, useState } from "react";
 import {
   ArchivoPublico,
   Caso,
+  CausaRanking,
+  EstadoCausa,
   fetchJudgeArchivos,
   fetchJudgeCases,
   fetchJudgeBySlug,
+  fetchJudgeCausasRanking,
   Judge,
   ResultadoCaso,
 } from "../../lib/api";
@@ -98,6 +101,7 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
   } | null>(null);
   const [archivos, setArchivos] = useState<ArchivoPublico[]>([]);
   const [page, setPage] = useState(1);
+  const [causasRanking, setCausasRanking] = useState<CausaRanking[]>([]);
   const [loadingJudge, setLoadingJudge] = useState(true);
   const [loadingCasos, setLoadingCasos] = useState(true);
   const [errorJudge, setErrorJudge] = useState<string | null>(null);
@@ -119,6 +123,21 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
       }
     }
     load();
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
+
+  // Cargar causas ranking del juez
+  useEffect(() => {
+    let cancelled = false;
+    fetchJudgeCausasRanking(slug)
+      .then((data) => {
+        if (!cancelled) setCausasRanking(data);
+      })
+      .catch(() => {
+        /* silencioso — la sección simplemente no aparece */
+      });
     return () => {
       cancelled = true;
     };
@@ -469,6 +488,122 @@ export default function JudgeDetailPage({ params }: { params: Promise<{ slug: st
               </>
             )}
           </section>
+
+          {/* ── Causas por tiempo de demora ────────────────────────────────── */}
+          {causasRanking.length > 0 && (
+            <section className="mb-6">
+              <div className="mb-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-base font-bold" style={{ color: "#e6edf3" }}>
+                    Causas por tiempo de demora
+                  </h2>
+                  <span
+                    className="rounded-full px-2 py-0.5 text-xs font-semibold"
+                    style={{ backgroundColor: "#21262d", color: "#7d8590" }}
+                  >
+                    {causasRanking.length}
+                  </span>
+                </div>
+                <Link
+                  href={`/causas?juez=${slug}`}
+                  className="text-xs underline transition-opacity hover:opacity-70"
+                  style={{ color: "#74ACDF" }}
+                >
+                  Ver ranking global →
+                </Link>
+              </div>
+
+              <div className="overflow-x-auto rounded-xl border" style={{ borderColor: "#21262d" }}>
+                <table className="w-full border-collapse text-sm">
+                  <thead>
+                    <tr style={{ backgroundColor: "#161b22", borderBottom: "1px solid #21262d" }}>
+                      {["Expediente", "Tipo de causa", "Días", "Estado"].map((col) => (
+                        <th
+                          key={col}
+                          className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider"
+                          style={{ color: "#7d8590" }}
+                        >
+                          {col}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {causasRanking.map((causa, idx) => {
+                      const estadoCfg: Record<
+                        EstadoCausa,
+                        { label: string; color: string; bg: string; dot: string }
+                      > = {
+                        activa: { label: "Activa", color: "#3fb950", bg: "#3fb95015", dot: "🟢" },
+                        demorada: {
+                          label: "Demorada",
+                          color: "#d29922",
+                          bg: "#d2992215",
+                          dot: "🟡",
+                        },
+                        cajoneada: {
+                          label: "Cajoneada",
+                          color: "#f85149",
+                          bg: "#f8514915",
+                          dot: "🔴",
+                        },
+                        resuelta: {
+                          label: "Resuelta",
+                          color: "#7d8590",
+                          bg: "#7d859015",
+                          dot: "✅",
+                        },
+                      };
+                      const cfg = estadoCfg[causa.estadoCausa];
+                      return (
+                        <tr
+                          key={`${causa.expediente}-${idx}`}
+                          style={{
+                            borderBottom: "1px solid #21262d",
+                            backgroundColor: idx % 2 === 0 ? "transparent" : "#0d111720",
+                          }}
+                        >
+                          <td className="px-4 py-3 font-mono text-xs" style={{ color: "#e6edf3" }}>
+                            {causa.expediente}
+                          </td>
+                          <td className="px-4 py-3 text-xs" style={{ color: "#e6edf3" }}>
+                            {causa.delito}
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className="text-base font-bold" style={{ color: cfg.color }}>
+                              {causa.diasDesdeInicio.toLocaleString("es-AR")}
+                            </span>
+                            <span className="ml-1 text-xs" style={{ color: "#7d8590" }}>
+                              días
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span
+                              className="inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium"
+                              style={{
+                                borderColor: cfg.color + "40",
+                                backgroundColor: cfg.bg,
+                                color: cfg.color,
+                              }}
+                            >
+                              {cfg.dot} {cfg.label}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              <p className="mt-2 text-xs" style={{ color: "#7d8590" }}>
+                Ordenadas por días desde inicio (mayor primero).{" "}
+                <Link href="/metodologia" className="underline" style={{ color: "#74ACDF" }}>
+                  Ver metodología y umbrales
+                </Link>
+              </p>
+            </section>
+          )}
 
           {/* ── Documentación pública ──────────────────────────────────────── */}
           {archivos.length > 0 && (
