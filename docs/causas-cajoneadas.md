@@ -19,8 +19,9 @@ Tabla de todas las causas del sistema ordenadas por `diasDesdeInicio` DESC. Las 
 | Columna | Dato | Notas |
 |---|---|---|
 | Juez | `judgeName` | Link a `/juez/:judgeSlug` |
+| Jurisdicción | `provincia` + `fuero` | Dos líneas: provincia arriba, fuero abajo |
 | Expediente | `expediente` | Texto |
-| Delito | `delito` | Texto |
+| Tipo de causa | `delito` | Texto |
 | Días | `diasDesdeInicio` | Número destacado |
 | Estado | `estadoCausa` | Badge con color |
 
@@ -35,7 +36,20 @@ Tabla de todas las causas del sistema ordenadas por `diasDesdeInicio` DESC. Las 
 
 #### Filtros
 
-- Por estado: `activa / demorada / cajoneada / resuelta / todas`
+El objetivo de los filtros es permitir que cada usuario construya su propio análisis
+sobre los datos del observatorio — sin que el sitio emita juicio, el usuario puede
+cruzar jurisdicción + tipo de causa + estado y ver patrones por sí mismo.
+
+| Filtro | Tipo | Opciones |
+|---|---|---|
+| **Estado** | Pills / toggle | Todas · Activa · Demorada · Cajoneada · Resuelta |
+| **Jurisdicción** | Dropdown | Por provincia (CABA, Buenos Aires, Córdoba...) |
+| **Fuero** | Dropdown | Criminal Nacional · Penal Federal · Correccional... |
+| **Alcance** | Pills | Nacional · Federal · Provincial |
+| **Tipo de causa** | Input libre | Búsqueda en el campo delito |
+
+Todos los filtros son acumulables (AND). La URL refleja el estado de los filtros
+para que el análisis sea compartible: `/causas?estado=cajoneada&provincia=CABA&fuero=Penal+Federal`.
 
 ---
 
