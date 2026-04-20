@@ -79,7 +79,7 @@ function Pagination({
 }
 
 interface JudgeListProps {
-  judges: Judge[];
+  judges: Judge[] | undefined;
   loading: boolean;
   error: boolean;
   page: number;
@@ -120,7 +120,7 @@ export default function JudgeList({
     );
   }
 
-  if (judges.length === 0) {
+  if ((judges ?? []).length === 0) {
     return (
       <div className="bg-ink-elevated border-border flex flex-col items-center justify-center rounded-xl border py-16">
         <p className="text-cream font-medium">No se encontraron jueces</p>
