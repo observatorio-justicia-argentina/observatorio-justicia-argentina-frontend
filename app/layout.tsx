@@ -44,7 +44,7 @@ export default function RootLayout({
       lang="es"
       className={`${instrumentSans.variable} ${instrumentSerif.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">
+      <body className="flex min-h-full flex-col" suppressHydrationWarning>
         <Providers>
           <Navbar />
           <DisclaimerBanner />

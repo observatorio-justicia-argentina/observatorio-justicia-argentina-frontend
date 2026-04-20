@@ -217,6 +217,35 @@ export interface FilterOptions {
   scopes: string[];
 }
 
+// ── Causas demoradas ──────────────────────────────────────────────────────────
+
+/** Clasificación objetiva por días transcurridos. NO implica juicio sobre la conducta del magistrado. */
+export type EstadoCausa = "activa" | "demora-moderada" | "alta-demora" | "resuelta";
+
+export interface CausaRanking {
+  expediente: string;
+  judgeSlug: string;
+  judgeName: string;
+  provincia: string;
+  fuero: string;
+  alcance: "Nacional" | "Federal" | "Provincial";
+  delito: string;
+  fechaInicio: string;
+  diasDesdeInicio: number;
+  estadoCausa: EstadoCausa;
+  tieneResolucion: boolean;
+}
+
+export interface CausasFilter {
+  estado?: EstadoCausa | "todas";
+  provincia?: string;
+  fuero?: string;
+  alcance?: "Nacional" | "Federal" | "Provincial";
+  delito?: string;
+  page?: number;
+  limit?: number;
+}
+
 // ── Fetch ────────────────────────────────────────────────────────────────────
 
 export async function fetchJudges(params: JudgesFetchParams = {}): Promise<PaginatedResult<Judge>> {
@@ -266,5 +295,28 @@ export async function fetchJudgeArchivos(slug: string): Promise<ArchivoPublico[]
 export async function fetchJudgeBySlug(slug: string): Promise<Judge> {
   const res = await fetch(`${API_BASE}/judges/${slug}`);
   if (!res.ok) throw new Error(`Error ${res.status} al cargar el juez`);
+  return res.json();
+}
+
+export async function fetchCausasRanking(
+  filter: CausasFilter = {},
+): Promise<PaginatedResult<CausaRanking>> {
+  const params = new URLSearchParams();
+  if (filter.estado) params.set("estado", filter.estado);
+  if (filter.provincia) params.set("provincia", filter.provincia);
+  if (filter.fuero) params.set("fuero", filter.fuero);
+  if (filter.alcance) params.set("alcance", filter.alcance);
+  if (filter.delito) params.set("delito", filter.delito);
+  if (filter.page) params.set("page", String(filter.page));
+  if (filter.limit) params.set("limit", String(filter.limit));
+  const qs = params.toString();
+  const res = await fetch(`${API_BASE}/causas${qs ? `?${qs}` : ""}`);
+  if (!res.ok) throw new Error(`Error ${res.status} al cargar ranking de causas`);
+  return res.json();
+}
+
+export async function fetchJudgeCausasRanking(slug: string): Promise<CausaRanking[]> {
+  const res = await fetch(`${API_BASE}/judges/${slug}/causas-ranking`);
+  if (!res.ok) throw new Error(`Error ${res.status} al cargar causas del juez`);
   return res.json();
 }

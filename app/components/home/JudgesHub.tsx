@@ -74,12 +74,14 @@ export default function JudgesHub({
       };
       try {
         const result = await fetchJudges(params);
+        console.log("[JudgesHub] result:", result);
         setJudges(result.data);
         setTotal(result.total);
         setTotalPages(result.totalPages);
         setPage(result.page);
         setError(false);
-      } catch {
+      } catch (err) {
+        console.error("[JudgesHub] fetchPage error:", err);
         setJudges([]);
         setTotal(0);
         setTotalPages(1);

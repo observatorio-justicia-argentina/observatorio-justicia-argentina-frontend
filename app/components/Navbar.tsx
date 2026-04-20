@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import DisclaimerModal from "./DisclaimerModal";
 import SubmitJudgeModal from "./SubmitJudgeModal";
 import AuthModal from "./AuthModal";
 import { AlertIcon, ChevronDownIcon, ScaleIcon } from "./icons";
-import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
 
 function UserInitials({ nombre }: { nombre: string }) {
@@ -72,6 +72,14 @@ export default function Navbar() {
             >
               Jueces
             </a>
+
+            <Link
+              href="/causas"
+              className="rounded-md border px-3 py-1.5 text-xs font-medium transition-all hover:bg-white/5"
+              style={{ borderColor: "#21262d", color: "#e6edf3" }}
+            >
+              Causas
+            </Link>
 
             <button
               onClick={() => setDisclaimerOpen(true)}
@@ -198,6 +206,14 @@ export default function Navbar() {
               >
                 Jueces
               </a>
+              <Link
+                href="/causas"
+                onClick={() => setMenuOpen(false)}
+                className="rounded-md px-3 py-2 text-sm font-medium hover:bg-white/5"
+                style={{ color: "#e6edf3" }}
+              >
+                Causas
+              </Link>
               <button
                 onClick={() => {
                   setDisclaimerOpen(true);
