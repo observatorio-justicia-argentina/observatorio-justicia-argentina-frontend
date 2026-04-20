@@ -143,7 +143,7 @@ export default function JudgeList({
         onChange={onPageChange}
       />
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {judges.map((judge) => (
+        {(judges ?? []).map((judge) => (
           <Link
             key={judge.id}
             href={`/juez/${judge.slug}`}
