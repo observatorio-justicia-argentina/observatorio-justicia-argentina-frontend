@@ -164,12 +164,9 @@ body {
   initial-value: -400px;
 }
 
-/* Escudo spotlight — multi-stop soft radial mask tracks the cursor with a 150ms trail.
+/* Escudo spotlight — multi-stop soft radial mask tracks the cursor.
    The mask uses alpha values for a smooth feathered edge instead of a hard cutoff. */
 .escudo-spot {
-  transition:
-    --spot-x 150ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    --spot-y 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
   mask-image: radial-gradient(
     circle 320px at var(--spot-x) var(--spot-y),
     rgba(0, 0, 0, 1) 0%,
@@ -188,19 +185,20 @@ body {
   );
 }
 
-/* Gold halo that tracks the same cursor position, soft-light blended so it
-   reads as warm illumination behind the spotlight rather than a highlight on top. */
 .escudo-halo {
-  transition:
-    --spot-x 150ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    --spot-y 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
   background: radial-gradient(
     circle 380px at var(--spot-x) var(--spot-y),
-    rgba(208, 160, 74, 0.22) 0%,
-    rgba(208, 160, 74, 0.08) 40%,
+    rgba(208, 160, 74, 0.12) 0%,
+    rgba(208, 160, 74, 0.04) 40%,
     transparent 75%
   );
-  mix-blend-mode: soft-light;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .escudo-spot,
+  .escudo-halo {
+    display: none;
+  }
 }
 
 /* Modal / overlay reveal */
